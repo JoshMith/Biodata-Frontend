@@ -36,7 +36,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      role: ['member', Validators.required], // Default to 'member'
+      roles: ['member', Validators.required], // Default to 'member'
       phone_number: [''],
       first_name: ['', [Validators.required, Validators.minLength(2)]],
       last_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -135,13 +135,13 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
   // Handle successful form submission
   private handleSuccessfulSubmission(response: any): void {
     if (response && response.user) {
-      this.userId = response.user.user_id;
+      this.userId = response.user.id;
 
       // Store user info in localStorage
       localStorage.setItem('addedUser', JSON.stringify({
-        user_id: response.user.user_id,
+        id: response.user.id,
         email: response.user.email,
-        role: response.user.role,
+        roles: response.user.roles,
         first_name: response.user.first_name,
         last_name: response.user.last_name
       }));
@@ -197,7 +197,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
       'birth_place': 'Birth Place',
       'subcounty': 'Sub County',
       'parish_id': 'Parish',
-      'role': 'Role'
+      'roles': 'Roles'
     };
     return labels[fieldName] || fieldName;
   }

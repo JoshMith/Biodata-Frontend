@@ -18,12 +18,12 @@
     <div class="details" *ngIf="selectedChristian">
         <h1 id="christianName">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</h1>
         <div class="christian-details"
-            [ngClass]="{'highlighted': selectedChristian?.user_id === selectedChristian.user_id}">
+            [ngClass]="{'highlighted': selectedChristian?.id === selectedChristian.id}">
             <div class="personal-details">
                 <h3>Personal Details <span><a type="button" href="/edit-personal-info">Edit Personal Details</a></span></h3>
                 <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
                 <p><strong>Email:</strong> {{ selectedChristian.email }}</p>
-                <p><strong>Role:</strong> {{ selectedChristian.role ? (selectedChristian.role.charAt(0).toUpperCase() + selectedChristian.role.slice(1).toLowerCase()) : '' }}</p>
+                <p><strong>Role:</strong> {{ selectedChristian.roles ? (selectedChristian.roles.charAt(0).toUpperCase() + selectedChristian.roles.slice(1).toLowerCase()) : '' }}</p>
                 <p><strong>Parish:</strong> {{ parishName }}</p>
                 <p><strong>Father's Name:</strong> {{ selectedChristian.father }}</p>
                 <p><strong>Mother's Name:</strong> {{ selectedChristian.mother }}</p>
@@ -113,7 +113,7 @@
             (click)="selectChristian(christian)">
             <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
             <p><strong>Email:</strong> {{ christian.email }}</p>
-            <p><strong>Role:</strong> {{ christian.role }}</p>
+            <p><strong>Role:</strong> {{ christian.roles }}</p>
         </div>
     </div>
 </body>

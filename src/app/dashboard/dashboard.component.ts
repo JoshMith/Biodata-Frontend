@@ -8,7 +8,7 @@ import { ApiService } from '../services/api.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'] // Corrected from 'styleUrl'
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
   constructor(private router: Router, private apiService: ApiService) { }
@@ -24,7 +24,7 @@ export class DashboardComponent {
     const userData = localStorage.getItem('userLoggedIn');
     if (userData) {
       const user = JSON.parse(userData);
-      const role = user.role;
+      const role = user.roles;
 
       if (role === 'superuser') {
         this.showBanner = true;

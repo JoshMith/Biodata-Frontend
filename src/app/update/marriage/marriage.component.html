@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marriage Registration Form</title>
-    <link rel="stylesheet" href="marriage-form.css">
-</head>
 
 <body>
     <div class="container">
         <div class="div-home">
-            <a href="/dashboard" class="home-link">Home</a>
+            <a type="button" href="/dashboard" class="home-link">Home</a>
         </div>
 
         <div class="form-header">
@@ -20,7 +12,7 @@
             </p>
         </div>
 
-        <form id="marriageForm" class="formContainer">
+        <form [formGroup]="marriageForm" (ngSubmit)="onSubmitMarriageForm()" class="formContainer">
 
             <!-- Marriage Certificate Section -->
             <div class="section">
@@ -29,41 +21,58 @@
                 <div class="form-group">
                     <label for="marriage_certificate_no">Marriage Certificate No: <span
                             class="required">*</span></label>
-                    <input type="text" id="marriage_certificate_no" name="marriage_certificate_no"
-                        placeholder="Enter marriage certificate number" required>
-                    <span class="error-message" id="error_marriage_certificate_no"></span>
+                    <input type="text" id="marriage_certificate_no" formControlName="marriage_certificate_no"
+                        placeholder="Enter marriage certificate number"
+                        [class.error]="hasFieldError('marriage_certificate_no')">
+                    <span *ngIf="hasFieldError('marriage_certificate_no')" class="error-message">
+                        {{ getFieldError('marriage_certificate_no') }}
+                    </span>
                 </div>
 
                 <div class="form-group">
                     <label for="entry_no">Entry No: <span class="required">*</span></label>
-                    <input type="text" id="entry_no" name="entry_no" placeholder="Enter entry number" required>
-                    <span class="error-message" id="error_entry_no"></span>
+                    <input type="text" id="entry_no" formControlName="entry_no" placeholder="Enter entry number"
+                        [class.error]="hasFieldError('entry_no')">
+                    <span *ngIf="hasFieldError('entry_no')" class="error-message">
+                        {{ getFieldError('entry_no') }}
+                    </span>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="county">County: <span class="required">*</span></label>
-                        <input type="text" id="county" name="county" placeholder="Enter county" required>
-                        <span class="error-message" id="error_county"></span>
+                        <input type="text" id="county" formControlName="county" placeholder="Enter county"
+                            [class.error]="hasFieldError('county')">
+                        <span *ngIf="hasFieldError('county')" class="error-message">
+                            {{ getFieldError('county') }}
+                        </span>
                     </div>
                     <div class="form-group half-width">
                         <label for="subcounty">Sub County: <span class="required">*</span></label>
-                        <input type="text" id="subcounty" name="subcounty" placeholder="Enter sub county" required>
-                        <span class="error-message" id="error_subcounty"></span>
+                        <input type="text" id="subcounty" formControlName="subcounty" placeholder="Enter sub county"
+                            [class.error]="hasFieldError('subcounty')">
+                        <span *ngIf="hasFieldError('subcounty')" class="error-message">
+                            {{ getFieldError('subcounty') }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="place_of_marriage">Place of Marriage: <span class="required">*</span></label>
-                    <input type="text" id="place_of_marriage" name="place_of_marriage"
-                        placeholder="Enter place of marriage" required>
-                    <span class="error-message" id="error_place_of_marriage"></span>
+                    <input type="text" id="place_of_marriage" formControlName="place_of_marriage"
+                        placeholder="Enter place of marriage" [class.error]="hasFieldError('place_of_marriage')">
+                    <span *ngIf="hasFieldError('place_of_marriage')" class="error-message">
+                        {{ getFieldError('place_of_marriage') }}
+                    </span>
                 </div>
 
                 <div class="form-group">
                     <label for="marriage_date">Date of Marriage: <span class="required">*</span></label>
-                    <input type="date" id="marriage_date" name="marriage_date" required>
-                    <span class="error-message" id="error_marriage_date"></span>
+                    <input type="date" id="marriage_date" formControlName="marriage_date"
+                        [class.error]="hasFieldError('marriage_date')">
+                    <span *ngIf="hasFieldError('marriage_date')" class="error-message">
+                        {{ getFieldError('marriage_date') }}
+                    </span>
                 </div>
             </div>
 
@@ -74,38 +83,48 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="first_name_groom">First Name: <span class="required">*</span></label>
-                        <input type="text" id="first_name_groom" name="first_name_groom" placeholder="Enter first name"
-                            required>
-                        <span class="error-message" id="error_first_name_groom"></span>
+                        <input type="text" id="first_name_groom" formControlName="first_name_groom"
+                            placeholder="Enter first name" [class.error]="hasFieldError('first_name_groom')">
+                        <span *ngIf="hasFieldError('first_name_groom')" class="error-message">
+                            {{ getFieldError('first_name_groom') }}
+                        </span>
                     </div>
                     <div class="form-group half-width">
                         <label for="last_name_groom">Last Name: <span class="required">*</span></label>
-                        <input type="text" id="last_name_groom" name="last_name_groom" placeholder="Enter last name"
-                            required>
-                        <span class="error-message" id="error_last_name_groom"></span>
+                        <input type="text" id="last_name_groom" formControlName="last_name_groom"
+                            placeholder="Enter last name" [class.error]="hasFieldError('last_name_groom')">
+                        <span *ngIf="hasFieldError('last_name_groom')" class="error-message">
+                            {{ getFieldError('last_name_groom') }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="age_groom">Age: <span class="required">*</span></label>
-                        <input type="number" id="age_groom" name="age_groom" placeholder="Enter age" min="18" max="150"
-                            required>
-                        <span class="error-message" id="error_age_groom"></span>
+                        <input type="number" id="age_groom" formControlName="age_groom" placeholder="Enter age" min="18"
+                            max="150" [class.error]="hasFieldError('age_groom')">
+                        <span *ngIf="hasFieldError('age_groom')" class="error-message">
+                            {{ getFieldError('age_groom') }}
+                        </span>
                     </div>
                     <div class="form-group half-width">
                         <label for="occupation_groom">Occupation: <span class="required">*</span></label>
-                        <input type="text" id="occupation_groom" name="occupation_groom" placeholder="Enter occupation"
-                            required>
-                        <span class="error-message" id="error_occupation_groom"></span>
+                        <input type="text" id="occupation_groom" formControlName="occupation_groom"
+                            placeholder="Enter occupation" [class.error]="hasFieldError('occupation_groom')">
+                        <span *ngIf="hasFieldError('occupation_groom')" class="error-message">
+                            {{ getFieldError('occupation_groom') }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="residence_groom">Residence: <span class="required">*</span></label>
-                    <input type="text" id="residence_groom" name="residence_groom" placeholder="Enter residence"
-                        required>
-                    <span class="error-message" id="error_residence_groom"></span>
+                    <input type="text" id="residence_groom" formControlName="residence_groom"
+                        placeholder="Enter residence" [class.error]="hasFieldError('residence_groom')">
+                    <span *ngIf="hasFieldError('residence_groom')" class="error-message">
+                        {{ getFieldError('residence_groom') }}
+                    </span>
                 </div>
             </div>
 
@@ -116,38 +135,48 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="first_name_bride">First Name: <span class="required">*</span></label>
-                        <input type="text" id="first_name_bride" name="first_name_bride" placeholder="Enter first name"
-                            required>
-                        <span class="error-message" id="error_first_name_bride"></span>
+                        <input type="text" id="first_name_bride" formControlName="first_name_bride"
+                            placeholder="Enter first name" [class.error]="hasFieldError('first_name_bride')">
+                        <span *ngIf="hasFieldError('first_name_bride')" class="error-message">
+                            {{ getFieldError('first_name_bride') }}
+                        </span>
                     </div>
                     <div class="form-group half-width">
                         <label for="last_name_bride">Last Name: <span class="required">*</span></label>
-                        <input type="text" id="last_name_bride" name="last_name_bride" placeholder="Enter last name"
-                            required>
-                        <span class="error-message" id="error_last_name_bride"></span>
+                        <input type="text" id="last_name_bride" formControlName="last_name_bride"
+                            placeholder="Enter last name" [class.error]="hasFieldError('last_name_bride')">
+                        <span *ngIf="hasFieldError('last_name_bride')" class="error-message">
+                            {{ getFieldError('last_name_bride') }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="age_bride">Age: <span class="required">*</span></label>
-                        <input type="number" id="age_bride" name="age_bride" placeholder="Enter age" min="18" max="150"
-                            required>
-                        <span class="error-message" id="error_age_bride"></span>
+                        <input type="number" id="age_bride" formControlName="age_bride" placeholder="Enter age" min="18"
+                            max="150" [class.error]="hasFieldError('age_bride')">
+                        <span *ngIf="hasFieldError('age_bride')" class="error-message">
+                            {{ getFieldError('age_bride') }}
+                        </span>
                     </div>
                     <div class="form-group half-width">
                         <label for="occupation_bride">Occupation: <span class="required">*</span></label>
-                        <input type="text" id="occupation_bride" name="occupation_bride" placeholder="Enter occupation"
-                            required>
-                        <span class="error-message" id="error_occupation_bride"></span>
+                        <input type="text" id="occupation_bride" formControlName="occupation_bride"
+                            placeholder="Enter occupation" [class.error]="hasFieldError('occupation_bride')">
+                        <span *ngIf="hasFieldError('occupation_bride')" class="error-message">
+                            {{ getFieldError('occupation_bride') }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="residence_bride">Residence: <span class="required">*</span></label>
-                    <input type="text" id="residence_bride" name="residence_bride" placeholder="Enter residence"
-                        required>
-                    <span class="error-message" id="error_residence_bride"></span>
+                    <input type="text" id="residence_bride" formControlName="residence_bride"
+                        placeholder="Enter residence" [class.error]="hasFieldError('residence_bride')">
+                    <span *ngIf="hasFieldError('residence_bride')" class="error-message">
+                        {{ getFieldError('residence_bride') }}
+                    </span>
                 </div>
             </div>
 
@@ -159,15 +188,19 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="first_name_witness1">First Name: <span class="required">*</span></label>
-                        <input type="text" id="first_name_witness1" name="first_name_witness1"
-                            placeholder="Enter first name" required>
-                        <span class="error-message" id="error_first_name_witness1"></span>
+                        <input type="text" id="first_name_witness1" formControlName="first_name_witness1"
+                            placeholder="Enter first name" [class.error]="hasFieldError('first_name_witness1')">
+                        <span *ngIf="hasFieldError('first_name_witness1')" class="error-message">
+                            {{ getFieldError('first_name_witness1') }}
+                        </span>
                     </div>
                     <div class="form-group half-width">
                         <label for="last_name_witness1">Last Name: <span class="required">*</span></label>
-                        <input type="text" id="last_name_witness1" name="last_name_witness1"
-                            placeholder="Enter last name" required>
-                        <span class="error-message" id="error_last_name_witness1"></span>
+                        <input type="text" id="last_name_witness1" formControlName="last_name_witness1"
+                            placeholder="Enter last name" [class.error]="hasFieldError('last_name_witness1')">
+                        <span *ngIf="hasFieldError('last_name_witness1')" class="error-message">
+                            {{ getFieldError('last_name_witness1') }}
+                        </span>
                     </div>
                 </div>
 
@@ -175,12 +208,12 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label for="first_name_witness2">First Name:</label>
-                        <input type="text" id="first_name_witness2" name="first_name_witness2"
+                        <input type="text" id="first_name_witness2" formControlName="first_name_witness2"
                             placeholder="Enter first name (optional)">
                     </div>
                     <div class="form-group half-width">
                         <label for="last_name_witness2">Last Name:</label>
-                        <input type="text" id="last_name_witness2" name="last_name_witness2"
+                        <input type="text" id="last_name_witness2" formControlName="last_name_witness2"
                             placeholder="Enter last name (optional)">
                     </div>
                 </div>
@@ -192,14 +225,20 @@
 
                 <div class="form-group">
                     <label for="registrar">Registrar: <span class="required">*</span></label>
-                    <input type="text" id="registrar" name="registrar" placeholder="Enter registrar name" required>
-                    <span class="error-message" id="error_registrar"></span>
+                    <input type="text" id="registrar" formControlName="registrar" placeholder="Enter registrar name"
+                        [class.error]="hasFieldError('registrar')">
+                    <span *ngIf="hasFieldError('registrar')" class="error-message">
+                        {{ getFieldError('registrar') }}
+                    </span>
                 </div>
 
                 <div class="form-group">
                     <label for="ref_number">Reference Number: <span class="required">*</span></label>
-                    <input type="text" id="ref_number" name="ref_number" placeholder="Enter reference number" required>
-                    <span class="error-message" id="error_ref_number"></span>
+                    <input type="text" id="ref_number" formControlName="ref_number" placeholder="Enter reference number"
+                        [class.error]="hasFieldError('ref_number')">
+                    <span *ngIf="hasFieldError('ref_number')" class="error-message">
+                        {{ getFieldError('ref_number') }}
+                    </span>
                 </div>
             </div>
 
@@ -208,227 +247,62 @@
                 <h3>Marriage Certificate Document</h3>
 
                 <div class="form-group">
-                    <label for="certificate_file">Upload Marriage Certificate (Optional):</label>
+                    <label for="file_upload">Upload Marriage Certificate (Optional):</label>
                     <div class="file-upload-container">
-                        <input type="file" id="certificate_file" name="certificate_file" accept=".jpg,.jpeg,.png,.pdf"
-                            class="file-input">
-                        <label for="certificate_file" class="file-upload-label">
+                        <input type="file" id="file_upload" accept=".jpg,.jpeg,.png,.pdf"
+                            (change)="onFileSelected($event)" class="file-input">
+                        <label for="file_upload" class="file-upload-label">
                             <span class="upload-icon">📁</span>
-                            <span class="upload-text">Choose File</span>
+                            <span *ngIf="!selectedFile" class="upload-text">Choose File</span>
+                            <span *ngIf="selectedFile" class="upload-text">Change File</span>
                             <small class="file-info-text">JPEG, PNG, PDF - Max 5MB</small>
                         </label>
                     </div>
 
-                    <div id="file-preview" class="file-preview" style="display: none;">
+                    <div *ngIf="selectedFile" class="file-preview">
                         <div class="file-details">
                             <span class="file-icon">📄</span>
                             <div class="file-text">
-                                <strong id="file-name"></strong>
-                                <small id="file-size"></small>
+                                <strong>{{ getFileName() }}</strong>
+                                <small>{{ getFileSize() }}</small>
                             </div>
-                            <button type="button" class="remove-file-btn" onclick="removeFile()"
+                            <button type="button" class="remove-file-btn" (click)="removeSelectedFile()"
                                 title="Remove file">✕</button>
                         </div>
                     </div>
 
-                    <div id="upload-progress" class="upload-progress" style="display: none;">
+                    <div *ngIf="isUploading" class="upload-progress">
                         <div class="progress-bar">
-                            <div class="progress-fill" id="progress-fill"></div>
+                            <div class="progress-fill" [style.width.%]="uploadProgress"></div>
                         </div>
-                        <small id="progress-text">Uploading... 0%</small>
+                        <small>Uploading... {{ uploadProgress }}%</small>
                     </div>
                 </div>
             </div>
 
             <!-- Messages -->
-            <div id="success-message" class="alert alert-success" style="display: none;">
+            <div *ngIf="successMessage" class="alert alert-success">
                 <span class="alert-icon">✅</span>
-                <span id="success-text"></span>
+                {{ successMessage }}
             </div>
 
-            <div id="error-message" class="alert alert-error" style="display: none;">
+            <div *ngIf="errorMessage" class="alert alert-error">
                 <span class="alert-icon">❌</span>
-                <span id="error-text"></span>
+                {{ errorMessage }}
             </div>
 
             <!-- Form Actions -->
             <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="goBack()">
+                <button type="button" class="btn btn-secondary" (click)="navigateToConfirmation()">
                     ← Back
                 </button>
-                <button type="submit" class="btn btn-primary" id="submit-btn">
-                    Submit Form
+                <button type="submit" class="btn btn-primary" [disabled]="marriageForm.invalid || isUploading">
+                    <!-- <span *ngIf="!isUploading">Submit Form</span>
+                    <span *ngIf="isUploading">Processing...</span> -->
+                    Submit
                 </button>
             </div>
         </form>
     </div>
-
-    <script>
-        // Form validation and submission
-        document.getElementById('marriageForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Clear previous errors
-            clearErrors();
-
-            // Validate form
-            if (validateForm()) {
-                submitForm();
-            }
-        });
-
-        // File upload handling
-        document.getElementById('certificate_file').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                // Validate file size (5MB max)
-                if (file.size > 5 * 1024 * 1024) {
-                    showError('File size must be less than 5MB');
-                    e.target.value = '';
-                    return;
-                }
-
-                // Show file preview
-                showFilePreview(file);
-                updateUploadLabel('Change File');
-            }
-        });
-
-        function validateForm() {
-            let isValid = true;
-            const requiredFields = [
-                'marriage_certificate_no', 'entry_no', 'county', 'subcounty',
-                'place_of_marriage', 'marriage_date', 'first_name_groom',
-                'last_name_groom', 'age_groom', 'occupation_groom', 'residence_groom',
-                'first_name_bride', 'last_name_bride', 'age_bride', 'occupation_bride',
-                'residence_bride', 'first_name_witness1', 'last_name_witness1',
-                'registrar', 'ref_number'
-            ];
-
-            requiredFields.forEach(field => {
-                const input = document.getElementById(field);
-                if (!input.value.trim()) {
-                    showFieldError(field, 'This field is required');
-                    input.classList.add('error');
-                    isValid = false;
-                }
-            });
-
-            // Validate ages
-            const groomAge = parseInt(document.getElementById('age_groom').value);
-            const brideAge = parseInt(document.getElementById('age_bride').value);
-
-            if (groomAge < 18 || groomAge > 150) {
-                showFieldError('age_groom', 'Age must be between 18 and 150');
-                isValid = false;
-            }
-
-            if (brideAge < 18 || brideAge > 150) {
-                showFieldError('age_bride', 'Age must be between 18 and 150');
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        function submitForm() {
-            const formData = new FormData();
-            const form = document.getElementById('marriageForm');
-
-            // Add all form fields to FormData
-            const inputs = form.querySelectorAll('input');
-            inputs.forEach(input => {
-                if (input.type === 'file') {
-                    if (input.files[0]) {
-                        formData.append(input.name, input.files[0]);
-                    }
-                } else {
-                    formData.append(input.name, input.value);
-                }
-            });
-
-            // Show loading state
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = 'Processing...';
-
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                showSuccess('Marriage registration submitted successfully!');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Submit Form';
-                // form.reset(); // Uncomment to reset form after successful submission
-            }, 2000);
-        }
-
-        function showFilePreview(file) {
-            document.getElementById('file-name').textContent = file.name;
-            document.getElementById('file-size').textContent = formatFileSize(file.size);
-            document.getElementById('file-preview').style.display = 'block';
-        }
-
-        function removeFile() {
-            document.getElementById('certificate_file').value = '';
-            document.getElementById('file-preview').style.display = 'none';
-            updateUploadLabel('Choose File');
-        }
-
-        function updateUploadLabel(text) {
-            document.querySelector('.upload-text').textContent = text;
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        function showFieldError(fieldName, message) {
-            const errorElement = document.getElementById(`error_${fieldName}`);
-            if (errorElement) {
-                errorElement.textContent = message;
-            }
-        }
-
-        function clearErrors() {
-            const errorMessages = document.querySelectorAll('.error-message');
-            errorMessages.forEach(element => {
-                element.textContent = '';
-            });
-
-            const errorInputs = document.querySelectorAll('.error');
-            errorInputs.forEach(input => {
-                input.classList.remove('error');
-            });
-
-            hideMessage('error-message');
-            hideMessage('success-message');
-        }
-
-        function showSuccess(message) {
-            document.getElementById('success-text').textContent = message;
-            document.getElementById('success-message').style.display = 'block';
-            document.getElementById('error-message').style.display = 'none';
-        }
-
-        function showError(message) {
-            document.getElementById('error-text').textContent = message;
-            document.getElementById('error-message').style.display = 'block';
-            document.getElementById('success-message').style.display = 'none';
-        }
-
-        function hideMessage(messageId) {
-            document.getElementById(messageId).style.display = 'none';
-        }
-
-        function goBack() {
-            if (confirm('Are you sure you want to go back? Any unsaved changes will be lost.')) {
-                window.history.back();
-            }
-        }
-    </script>
 </body>
 
-</html>

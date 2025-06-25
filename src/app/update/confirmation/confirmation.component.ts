@@ -65,7 +65,7 @@ export class ConfirmationUpdateComponent implements OnInit {
     const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      this.userId = parsedData?.user_id;
+      this.userId = parsedData?.id;
 
       this.confirmationForm.patchValue({ user_id: this.userId }); // Assign userId from local storage to the form data
 

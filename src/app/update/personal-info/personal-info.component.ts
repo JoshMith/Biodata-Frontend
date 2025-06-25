@@ -23,7 +23,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
   christianForm = this.fb.group({ // Create a form group for the personal information form
     email: [''],
     password: [''],
-    role: [''],
+    roles: [''],
     phone_number: [''],
     first_name: [''],
     last_name: [''],
@@ -71,13 +71,13 @@ export class PersonalInfoUpdateComponent implements OnInit {
     this.localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (this.localStorageData) {
       const parsedData = JSON.parse(this.localStorageData);
-      this.userId = parsedData?.user_id;
+      this.userId = parsedData?.id;
 
 
       // Populate the form fields with the data from localStorage
       this.christianForm.patchValue({
         email: parsedData?.email,
-        role: parsedData?.role,
+        roles: parsedData?.roles,
         phone_number: parsedData?.phone_number,
         first_name: parsedData?.first_name,
         last_name: parsedData?.last_name,
@@ -152,11 +152,11 @@ export class PersonalInfoUpdateComponent implements OnInit {
    // Handle successful form submission
   private handleSuccessfulSubmission(response: any): void {
     if (response && response.user) {
-      this.userId = response.user.user_id;
+      this.userId = response.user.id;
 
       // Store user info in localStorage
       localStorage.setItem('selectedChristian', JSON.stringify({
-        user_id: response.user.user_id,
+        id: response.user.id,
         email: response.user.email,
         role: response.user.role,
         first_name: response.user.first_name,
@@ -214,7 +214,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
       'birth_place': 'Birth Place',
       'subcounty': 'Sub County',
       'parish_id': 'Parish',
-      'role': 'Role'
+      'roles': 'Role'
     };
     return labels[fieldName] || fieldName;
   }

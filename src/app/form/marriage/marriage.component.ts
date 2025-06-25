@@ -90,7 +90,7 @@ export class MarriageComponent {
     const localStorageData = localStorage.getItem('addedUser'); // Updated to match confirmation component
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      const userId = parsedData?.user_id;
+      const userId = parsedData?.id;
       this.marriageForm.patchValue({ user_id: userId });
 
       // If file is selected, upload it first
@@ -115,7 +115,7 @@ export class MarriageComponent {
       next: (response) => {
         console.log('Marriage information added successfully:', response);
         this.successMessage = 'Marriage Information Added successfully! Redirecting to dashboard...';
-        localStorage.removeItem('addedUser');
+        // localStorage.removeItem('addedUser');
         sessionStorage.removeItem('marriageFormData'); // Clear stored form data
         this.navigateToDashboard();
       },

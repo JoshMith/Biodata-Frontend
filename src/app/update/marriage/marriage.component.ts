@@ -8,51 +8,54 @@ import { NgIf } from '@angular/common';
   selector: 'app-marriage',
   imports: [ReactiveFormsModule],
   templateUrl: './marriage.component.html',
-  styleUrl: './marriage.component.css'
+  styleUrls: ['./marriage.component.css'] // ✅ Fixed typo here
 })
 export class MarriageUpdateComponent implements OnInit {
   constructor(
     private router: Router,
     private marriageService: ApiService
-  ) { }
+  ) {}
 
-  private fb = inject(FormBuilder)
+  private fb = inject(FormBuilder);
+
   marriageForm = this.fb.group({
-    marriage_certificate_no: [''],
-    entry_no: [''],
-    county: [''],
-    subcounty: [''],
-    place_of_marriage: [''],
-    marriage_date: [''],
-    first_name_groom: [''],
-    last_name_groom: [''],
-    age_groom: [''],
-    occupation_groom: [''],
-    residence_groom: [''],
-    first_name_bride: [''],
-    last_name_bride: [''],
-    age_bride: [''],
-    occupation_bride: [''],
-    residence_bride: [''],
-    first_name_witness1: [''],
-    last_name_witness1: [''],
-    first_name_witness2: [''],
-    last_name_witness2: [''],
-    registrar: [''],
-    ref_number: [''],
+    marriage_certificate_no: ['', Validators.required],
+    entry_no: ['', Validators.required],
+    county: ['', Validators.required],
+    subcounty: ['', Validators.required],
+    place_of_marriage: ['', Validators.required],
+    marriage_date: ['', Validators.required],
+    first_name_groom: ['', Validators.required],
+    last_name_groom: ['', Validators.required],
+    age_groom: ['', Validators.required],
+    occupation_groom: ['', Validators.required],
+    residence_groom: ['', Validators.required],
+    first_name_bride: ['', Validators.required],
+    last_name_bride: ['', Validators.required],
+    age_bride: ['', Validators.required],
+    occupation_bride: ['', Validators.required],
+    residence_bride: ['', Validators.required],
+    first_name_witness1: ['', Validators.required],
+    last_name_witness1: ['', Validators.required],
+    first_name_witness2: ['', Validators.required],
+    last_name_witness2: ['', Validators.required],
+    registrar: ['', Validators.required],
+    ref_number: ['', Validators.required],
+    file_url: [''],
     user_id: ['']
-  })
+  });
 
   errorMessage = '';
   successMessage = '';
   userId: any;
   selectedFile: File | null = null;
   isSubmitting = false;
+  isUploading = false;
+  uploadProgress = 0;
 
   ngOnInit(): void {
     console.log("Fill in the marriage form");
 
-    // Check if user is logged in
     const user = localStorage.getItem('userLoggedIn');
     if (!user) {
       setTimeout(() => {
@@ -63,7 +66,6 @@ export class MarriageUpdateComponent implements OnInit {
       return;
     }
 
-    // Check if form data exists in session storage
     const storedFormData = sessionStorage.getItem('christianFormData');
     if (storedFormData) {
       const formData = JSON.parse(storedFormData);
@@ -72,13 +74,9 @@ export class MarriageUpdateComponent implements OnInit {
   }
 
   onSubmitMarriageForm(): void {
-    if (this.marriageForm.untouched) {
+    if (this.marriageForm.untouched || this.marriageForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
-      return;
-    }
-    
-    if (this.marriageForm.invalid) {
-      this.errorMessage = 'Please fill in all required fields.';
+      this.markAllFieldsAsTouched();
       return;
     }
 
@@ -89,34 +87,43 @@ export class MarriageUpdateComponent implements OnInit {
     const localStorageData = localStorage.getItem('selectedChristian');
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      this.userId = parsedData?.user_id;
-
+      this.userId = parsedData?.id;
       this.marriageForm.patchValue({ user_id: this.userId });
 
-      // Check if the record already exists
-      this.marriageService.getMarriageByUserId(this.userId).subscribe({
-        next: (existingRecord: any) => {
-          if (existingRecord.length > 0) {
-            // Update existing record
-            this.updateMarriageRecord(existingRecord[0].marriage_id);
-          } else {
-            // Create new record
-            this.createMarriageRecord();
-          }
-        },
-        error: (error: any) => {
-          console.error('Error checking existing marriage record:', error);
-          this.errorMessage = 'Failed to check existing marriage record. Please try again.';
+      if (this.selectedFile) {
+        this.uploadFile().then((fileUrl) => {
+          this.marriageForm.patchValue({ file_url: fileUrl });
+          this.checkAndSaveMarriage();
+        }).catch((error) => {
+          console.error('Error uploading file:', error);
+          this.errorMessage = 'Error uploading file. Please try again.';
           this.isSubmitting = false;
-        }
-      });
+        });
+      } else {
+        this.checkAndSaveMarriage();
+      }
     }
+  }
+
+  private checkAndSaveMarriage(): void {
+    this.marriageService.getMarriageByUserId(this.userId).subscribe({
+      next: (existingRecord: any) => {
+        if (existingRecord.length > 0) {
+          this.updateMarriageRecord(existingRecord[0].marriage_id);
+        } else {
+          this.createMarriageRecord();
+        }
+      },
+      error: (error: any) => {
+        console.error('Error checking existing marriage record:', error);
+        this.errorMessage = 'Failed to check existing marriage record. Please try again.';
+        this.isSubmitting = false;
+      }
+    });
   }
 
   private createMarriageRecord(): void {
     const formData = new FormData();
-    
-    // Add all form fields to FormData
     Object.keys(this.marriageForm.value).forEach(key => {
       const value = this.marriageForm.value[key as keyof typeof this.marriageForm.value];
       if (value !== null && value !== undefined && value !== '') {
@@ -124,7 +131,6 @@ export class MarriageUpdateComponent implements OnInit {
       }
     });
 
-    // Add file if selected
     if (this.selectedFile) {
       formData.append('marriage_certificate', this.selectedFile);
     }
@@ -133,7 +139,6 @@ export class MarriageUpdateComponent implements OnInit {
       next: (response) => {
         console.log('Marriage information added successfully:', response);
         this.successMessage = 'Marriage Information added successfully!';
-        localStorage.removeItem('selectedChristian');
         this.navigateToDashboard();
         this.isSubmitting = false;
       },
@@ -147,8 +152,6 @@ export class MarriageUpdateComponent implements OnInit {
 
   private updateMarriageRecord(marriageId: any): void {
     const formData = new FormData();
-    
-    // Add all form fields to FormData
     Object.keys(this.marriageForm.value).forEach(key => {
       const value = this.marriageForm.value[key as keyof typeof this.marriageForm.value];
       if (value !== null && value !== undefined && value !== '') {
@@ -156,7 +159,6 @@ export class MarriageUpdateComponent implements OnInit {
       }
     });
 
-    // Add file if selected
     if (this.selectedFile) {
       formData.append('marriage_certificate', this.selectedFile);
     }
@@ -176,6 +178,12 @@ export class MarriageUpdateComponent implements OnInit {
     });
   }
 
+  private markAllFieldsAsTouched(): void {
+    Object.keys(this.marriageForm.controls).forEach(key => {
+      this.marriageForm.get(key)?.markAsTouched();
+    });
+  }
+
   navigateToDashboard() {
     setTimeout(() => {
       this.router.navigate(['/dashboard']);
@@ -188,18 +196,15 @@ export class MarriageUpdateComponent implements OnInit {
     }, 1000);
   }
 
-  // Simplified file handling
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      // Validate file type
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
       if (!allowedTypes.includes(file.type)) {
         this.errorMessage = 'Please select a valid file type (JPEG, PNG, or PDF).';
         return;
       }
 
-      // Validate file size (5MB limit)
       const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
         this.errorMessage = 'File size must be less than 5MB.';
@@ -226,16 +231,51 @@ export class MarriageUpdateComponent implements OnInit {
   getFileSize(): string {
     if (!this.selectedFile) return '';
     const size = this.selectedFile.size;
-    if (size < 1024) {
-      return size + ' bytes';
-    } else if (size < 1024 * 1024) {
-      return (size / 1024).toFixed(1) + ' KB';
-    } else {
-      return (size / (1024 * 1024)).toFixed(1) + ' MB';
-    }
+    if (size < 1024) return size + ' bytes';
+    if (size < 1024 * 1024) return (size / 1024).toFixed(1) + ' KB';
+    return (size / (1024 * 1024)).toFixed(1) + ' MB';
   }
 
-  // Helper methods remain the same
+  private uploadFile(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.selectedFile) {
+        resolve('');
+        return;
+      }
+
+      this.isUploading = true;
+      this.uploadProgress = 0;
+
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+
+      // Simulated upload (replace with actual API call)
+      const uploadInterval = setInterval(() => {
+        this.uploadProgress += 10;
+        if (this.uploadProgress >= 100) {
+          clearInterval(uploadInterval);
+          this.isUploading = false;
+          this.uploadProgress = 0;
+          resolve('https://example.com/uploaded-file-url'); // Replace with real URL
+        }
+      }, 200);
+
+      // Real implementation example:
+      /*
+      this.marriageService.uploadFile(formData).subscribe({
+        next: (response) => {
+          this.isUploading = false;
+          resolve(response.fileUrl);
+        },
+        error: (error) => {
+          this.isUploading = false;
+          reject(error);
+        }
+      });
+      */
+    });
+  }
+
   hasFieldError(fieldName: string): boolean {
     const field = this.marriageForm.get(fieldName);
     return !!(field && field.invalid && field.touched);
@@ -243,7 +283,7 @@ export class MarriageUpdateComponent implements OnInit {
 
   getFieldError(fieldName: string): string {
     const field = this.marriageForm.get(fieldName);
-    if(field && field.errors && field.touched) {
+    if (field && field.errors && field.touched) {
       if (field.errors['required']) {
         return `${this.getFieldLabel(fieldName)} is required.`;
       }

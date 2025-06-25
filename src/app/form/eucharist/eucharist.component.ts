@@ -63,7 +63,7 @@ export class EucharistComponent {
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
       // const userId = parsedData?.id;
-    this.eucharistForm.value['user_id'] = parsedData?.user_id;
+    this.eucharistForm.value['user_id'] = parsedData?.id;
     this.eucharistService.createEucharist(this.eucharistForm.value).subscribe(
       (response) => {
         console.log('Eucharist information added successfully:', response); // Log the successful registration response

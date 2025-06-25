@@ -49,7 +49,7 @@ export class BaptismComponent {
     const localStorageData = localStorage.getItem('addedUser');
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      this.userId = parsedData?.user_id;
+      this.userId = parsedData?.id;
     }
 
     // Check if form data exists in session storage

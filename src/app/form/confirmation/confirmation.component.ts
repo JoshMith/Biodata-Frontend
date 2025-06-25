@@ -67,7 +67,7 @@ export class ConfirmationComponent {
     const localStorageData = localStorage.getItem('addedUser'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      const userId = parsedData?.user_id;
+      const userId = parsedData?.id;
 
       this.confirmationForm.value['user_id'] = userId;
 

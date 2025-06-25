@@ -8,10 +8,10 @@ import { takeUntil, catchError, switchMap, map } from 'rxjs/operators';
 
 // Updated interfaces to match database schema
 interface Christian {
-  user_id: string; // Changed from 'id: number' to match database UUID
+  id: string; // Changed from 'id: number' to match database UUID
   email: string;
   password_hash: string;
-  role: string;
+  roles: string;
   phone_number: string;
   first_name: string;
   last_name: string;
@@ -95,7 +95,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     // Check if userSession has the expected structure
-    if (!userSession.parishId && !userSession.role) {
+    if (!userSession.parishId && !userSession.roles) {
       console.log('UserSession does not have expected structure:', userSession);
       this.handleUnauthenticatedUser();
       return;
@@ -131,16 +131,16 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private loadChristians(userSession: any): void {
     // Handle different possible structures of userSession
-    let role: string;
+    let roles: string;
     let parishId: string;
 
     if (userSession) {
       // Structure: { user: { role: '', parishId: '' } }
-      role = userSession.role;
+      roles = userSession.roles;
       parishId = userSession.parishId;
-    } else if (userSession.role) {
+    } else if (userSession.roles) {
       // Structure: { role: '', parishId: '' } or { role: '', parish_id: '' }
-      role = userSession.role;
+      roles = userSession.roles;
       parishId = userSession.parishId || userSession.parish_id;
     } else {
       console.error('Cannot determine user role from session:', userSession);
@@ -148,15 +148,15 @@ export class SearchComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('User role:', role, 'Parish ID:', parishId);
+    console.log('User role:', roles, 'Parish ID:', parishId);
 
     this.apiService.getChristians()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Christian[]) => {
-          this.christians = this.filterChristiansByRole(data, role, parishId);
+          this.christians = this.filterChristiansByRole(data, roles, parishId);
           this.sortChristians();
-          this.setBannerMessage(role);
+          this.setBannerMessage(roles);
         },
         error: (error) => this.handleLoadError(error)
       });
@@ -179,9 +179,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       case 'superuser':
         return christians;
       case 'editor':
-      case 'priest':
         if (!parishId) {
-          console.warn('No parish ID provided for editor/priest role');
+          console.warn('No parish ID provided for editor role');
           return christians; // Show all if no parish restriction
         }
         return christians.filter(c => c.parish_id === parishId);
@@ -265,9 +264,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.selectedChristian = christian;
     this.storeSelectedChristian(christian);
 
-    // Load parish and sacrament data using user_id instead of id
     this.loadParishName(christian.parish_id);
-    this.loadSacramentData(christian.user_id);
+    this.loadSacramentData(christian.id);
   }
 
   searchChristianByName(): void {
@@ -311,7 +309,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            this.christians = this.christians.filter(c => c.user_id !== selectedChristianData.id);
+            this.christians = this.christians.filter(c => c.id !== selectedChristianData.id);
             console.log(`Deleted Christian: ${selectedChristianData.name}`);
             this.clearSelectedChristian();
           },
@@ -355,9 +353,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private storeSelectedChristian(christian: Christian): void {
     const christianData = {
-      id: christian.user_id, // Map user_id to id for compatibility
+      id: christian.id, // Map user_id to id for compatibility
       email: christian.email,
-      role: christian.role,
+      role: christian.roles,
       name: `${christian.first_name} ${christian.last_name}`.trim(),
       parishId: christian.parish_id
     };

@@ -72,16 +72,16 @@
                 <!-- Church Information Section -->
                 <div class="church-info">
                     <div class="form-group">
-                        <label for="role">Role <span class="required-asterisk">*</span></label>
-                        <select id="role" formControlName="role">
+                        <label for="roles">Role <span class="required-asterisk">*</span></label>
+                        <select id="roles" formControlName="roles">
                             <option value="" disabled>Select your role</option>
                             <option value="superuser">Super User</option>
                             <option value="editor">Editor</option>
                             <option value="viewer">Viewer</option>
                             <option value="member">Member</option>
                         </select>
-                        <span *ngIf="hasFieldError('role')" class="error-message">
-                            {{ getFieldError('role') }}
+                        <span *ngIf="hasFieldError('s')" class="error-message">
+                            {{ getFieldError('roles') }}
                         </span>
                     </div>
 

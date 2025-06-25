@@ -1,249 +1,314 @@
-/* Marriage Registration Form Styles */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
-    line-height: 1.6;
-    color: #333;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    background-image: url(../../../../public/sunset-sky.jpg);
+    color: black;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 800px;
-    margin: 0 auto;
+    background: #F1E9E9;
     padding: 20px;
-    background-color: white;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 20px 0;
 }
 
-/* Header Styles */
-.div-home {
-    margin-bottom: 20px;
-}
-
-.home-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    font-weight: 500;
-}
-
-.home-link:hover {
-    background-color: #0056b3;
-}
-
-.form-header {
+h2 {
     text-align: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e9ecef;
-}
-
-.form-header h2 {
     color: #333;
-    margin-bottom: 10px;
-    font-size: 28px;
-    font-weight: 600;
+    margin-bottom: 20px;
 }
 
-.form-description {
-    color: #666;
-    font-size: 16px;
+h3 {
+    color: #4A002A;
+    border-bottom: 2px solid #C2AE6D;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    color: #6d5507;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: #333;
 }
 
 .required {
-    color: #dc3545;
+    color: red;
     font-weight: bold;
 }
 
-/* Section Styles */
-.section {
-    margin-bottom: 30px;
-    padding: 25px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-}
-
-.section h3 {
-    color: #495057;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #dee2e6;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.section h4 {
-    color: #6c757d;
-    margin-bottom: 15px;
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-/* Form Layout */
-.form-row {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.half-width {
-    flex: 1;
-}
-
-/* Form Elements */
-label {
+input, select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+    color: #4A002A;
+    font-weight: bold;
+    border: 1px solid #ffb433;
+    border-radius: 5px;
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #495057;
-    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="date"] {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #ced4da;
-    border-radius: 6px;
-    font-size: 16px;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    background-color: white;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-input[type="date"]:focus {
+input:focus, select:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    background-color: #fff;
+    border-color: #6d5507;
+    box-shadow: 0 0 5px rgba(109, 85, 7, 0.3);
 }
 
 input.error {
     border-color: #dc3545;
-    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    background-color: #ffeaea;
 }
 
-input::placeholder {
-    color: #adb5bd;
-    font-style: italic;
+input.error:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
 }
 
-/* Error Handling */
 .error-message {
     color: #dc3545;
-    font-size: 13px;
-    margin-top: 5px;
+    font-size: 12px;
+    margin-top: 2px;
     display: block;
-    font-weight: 500;
-}
-
-.optional-text {
-    color: #6c757d;
     font-weight: normal;
-    font-size: 13px;
 }
 
-/* File Upload Styles */
+.success-message {
+    color: #28a745;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.form-actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+button {
+    background: #6d5507;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 30%;
+    margin-top: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    background: #C2AE6D;
+}
+
+button:disabled {
+    background-color: #d3d3d3;
+    color: #a9a9a9;
+    cursor: not-allowed;
+}
+
+.div-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.div-home a {
+    text-decoration: none;
+    background: #6d5507;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.div-home a:hover {
+    background: #C2AE6D;
+}
+
+.section {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #4A002A;
+    border-radius: 5px;
+    background: #C2AE6D;
+}
+
+/* Name row styling for side-by-side name fields */
+.name-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.name-field {
+    flex: 1;
+}
+
+.name-field input {
+    width: calc(100% - 22px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+    
+    .name-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .div-btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    h3 {
+        font-size: 1.2em;
+    }
+}
+
+/* Form validation styling */
+.formContainer {
+    position: relative;
+}
+
+/* Enhanced visual feedback */
+input:valid:not(:placeholder-shown) {
+    border-color: #28a745;
+}
+
+input:invalid:not(:placeholder-shown):not(.error) {
+    border-color: #ffc107;
+}
+
+/* Smooth transitions */
+* {
+    transition: all 0.3s ease;
+}
+
+/* File Upload Styling */
 .file-upload-container {
     position: relative;
     margin-bottom: 15px;
 }
 
 .file-input {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    overflow: hidden;
 }
 
 .file-upload-label {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
-    border: 2px dashed #ced4da;
+    padding: 15px 20px;
+    border: 2px dashed #C2AE6D;
     border-radius: 8px;
+    background-color: #f8f9fa;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #fafafa;
+    color: #6d5507;
+    font-weight: bold;
     text-align: center;
+    min-height: 60px;
 }
 
 .file-upload-label:hover {
-    border-color: #007bff;
-    background-color: #f0f8ff;
+    border-color: #6d5507;
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
 }
 
 .upload-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
-    color: #6c757d;
+    font-size: 24px;
+    margin-right: 10px;
 }
 
-.upload-text {
-    font-size: 16px;
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 5px;
-}
-
-.file-info-text {
-    font-size: 12px;
-    color: #6c757d;
-}
-
-/* File Preview */
-.file-preview {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: #e7f3ff;
-    border: 1px solid #b8daff;
-    border-radius: 6px;
+.file-info {
+    background-color: #e9ecef;
+    border: 1px solid #C2AE6D;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
 }
 
 .file-details {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .file-icon {
     font-size: 24px;
-    color: #007bff;
+    color: #6d5507;
 }
 
 .file-text {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .file-text strong {
-    display: block;
-    color: #495057;
+    color: #333;
     font-size: 14px;
 }
 
 .file-text small {
-    color: #6c757d;
+    color: #666;
     font-size: 12px;
 }
 
@@ -252,23 +317,25 @@ input::placeholder {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
+    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+    padding: 0;
+    margin: 0;
 }
 
 .remove-file-btn:hover {
-    background-color: #c82333;
+    background: #c82333;
+    transform: scale(1.1);
 }
 
-/* Upload Progress */
 .upload-progress {
-    margin-top: 15px;
+    margin-top: 10px;
+    text-align: center;
 }
 
 .progress-bar {
@@ -282,162 +349,31 @@ input::placeholder {
 
 .progress-fill {
     height: 100%;
-    background-color: #007bff;
+    background: linear-gradient(90deg, #6d5507, #C2AE6D);
     transition: width 0.3s ease;
-    width: 0%;
+    border-radius: 4px;
 }
 
-/* Alert Messages */
-.alert {
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 500;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-}
-
-.alert-error {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
-}
-
-.alert-icon {
-    font-size: 18px;
-}
-
-/* Form Actions */
-.form-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 30px;
-    border-top: 2px solid #e9ecef;
-    margin-top: 30px;
-    gap: 15px;
-}
-
-/* Buttons */
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 120px;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-    background-color: #0056b3;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
-}
-
-.btn-primary:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background-color: #545b62;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        margin: 10px;
-        padding: 15px;
-        border-radius: 8px;
-    }
-    
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-    
-    .half-width {
-        width: 100%;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .btn {
-        width: 100%;
-    }
-    
-    .section {
-        padding: 20px 15px;
-    }
-    
-    .form-header h2 {
-        font-size: 24px;
-    }
-    
-    .file-upload-label {
-        padding: 30px 15px;
-    }
-}
-
+/* File upload responsive design */
 @media (max-width: 480px) {
-    .container {
-        margin: 5px;
-        padding: 10px;
-    }
-    
-    .section {
-        padding: 15px 10px;
-    }
-    
-    .form-header h2 {
-        font-size: 20px;
-    }
-    
-    input[type="text"],
-    input[type="number"],
-    input[type="date"] {
-        padding: 10px 12px;
-        font-size: 14px;
-    }
-    
     .file-upload-label {
-        padding: 25px 10px;
+        padding: 12px 15px;
+        min-height: 50px;
     }
     
     .upload-icon {
-        font-size: 24px;
+        font-size: 20px;
+        margin-right: 8px;
     }
     
-    .upload-text {
-        font-size: 14px;
+    .file-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .remove-file-btn {
+        align-self: flex-end;
+        margin-top: -30px;
     }
 }

@@ -42,18 +42,19 @@
 
             <input type="text" id="phone_number" placeholder="Phone Number" formControlName="phone_number">
 
-            <label for="role">Select Role</label>
-            <select id="role" formControlName="role" required>
+            <label for="roles">Select Role</label>
+            <select id="roles" formControlName="roles" required>
                 <option value="" disabled selected>Select Role</option>
                 <option value="superuser">superuser</option>
                 <option value="editor">editor</option>
                 <option value="viewer">viewer</option>
+                <option value="member">Member</option>
             </select>
-            <div *ngIf="form.controls.role?.touched && form.controls.role?.invalid">
-                <p *ngIf="form.controls.role.errors?.['required']">
+            <div *ngIf="form.controls.roles?.touched && form.controls.roles?.invalid">
+                <p *ngIf="form.controls.roles.errors?.['required']">
                     Role is required!
                 </p>
-                <p *ngIf="form.controls.role.errors?.['pattern']">
+                <p *ngIf="form.controls.roles.errors?.['pattern']">
                     Invalid role selected!
                 </p>
             </div>
