@@ -25,6 +25,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
 
   // Parish data
   parishes: any[] = [];
+  deaneries: any[] = [];
 
   private fb = inject(FormBuilder);
 
@@ -50,6 +51,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
       tribe: [''],
       clan: [''],
       residence: [''],
+      deanery: ['', Validators.required],
       parish_id: ['', Validators.required]
     });
   }
@@ -66,8 +68,9 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Load parishes
-    this.loadParishes();
+    // Load parishes and deaneries
+    this.loadDeaneries();
+    this.loadParishesByDeanery();
 
     // Check if form data exists in session storage
     const storedFormData = sessionStorage.getItem('userFormData');
@@ -81,22 +84,48 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     // Any additional setup can be done here
   }
 
-  //Load parishes from API
-  private loadParishes(): void {
+  // Load deaneries from API
+  private loadDeaneries(): void {
     this.apiService.getParishes().subscribe({
-      next: (parishes) => {
-        this.parishes = parishes;
+      next: (data) => {
+        // Remove duplicate deaneries by name
+        const seen = new Set<string>();
+        this.deaneries = data.filter((item: any) => {
+          if (seen.has(item.name)) {
+            return false;
+          }
+          seen.add(item.name);
+          return true;
+        });
       },
       error: (error) => {
-        console.error('Error loading parishes:', error);
-        this.errorMessage = 'Failed to load parishes. Please refresh the page.';
+        console.error('Error loading deaneries:', error);
+        this.errorMessage = 'Failed to load deaneries. Please refresh the page.';
       }
     });
   }
 
-  /**
-   * Submit the form
-   */
+  //Load parishes from API
+  private loadParishesByDeanery(): void {
+    this.userForm.get('deanery')?.valueChanges.subscribe(deanery => {
+      if (deanery) {
+        this.apiService.getParishByDeanery(deanery).subscribe({
+          next: (parishes) => {
+            this.parishes = parishes;
+          },
+          error: (error) => {
+            console.error('Error loading parishes:', error);
+            this.errorMessage = 'Failed to load parishes for the selected deanery. Please try again.';
+          }
+        });
+      } else {
+        this.parishes = [];
+      }
+    });
+  }
+
+
+  //Submit the form
   onSubmitUserForm(): void {
     if (this.userForm.invalid) {
       this.markFormGroupTouched(this.userForm);

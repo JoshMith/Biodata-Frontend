@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
       } else {
         console.error("Deanery not found")
         this.parishes = [];
-        this.form.get('parish_id')?.setValue(0);
+        // this.form.get('parish_id')?.setValue(0);
       }
     });
   }
