@@ -65,6 +65,9 @@ export class ApiService {
   getParishByName(name: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/parish/name/${name}`, { withCredentials: true });
   }
+  getParishByDeanery(deanery: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/parish/deanery/${deanery}`, { withCredentials: true });
+  }
 
   updateParish(id: string, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/parish/${id}`, data, { withCredentials: true });

@@ -59,7 +59,18 @@
                 </p>
             </div>
 
-            <label for="parish_id">Select Parish</label>
+            <label for="deanery">Select Deanery</label>
+            <select id="deanery" formControlName="deanery" required>
+                <option value="" disabled selected>Select Deanery</option>
+                <option *ngFor="let deanery of deaneries" [value]="deanery.deanery">{{ deanery.deanery }}</option>
+            </select>
+            <div *ngIf="form.controls.deanery?.touched && form.controls.deanery?.invalid">
+                <p *ngIf="form.controls.deanery.errors?.['required']">
+                    Deanery is required!
+                </p>
+            </div>
+
+            <label>Select Parish</label>
             <select id="parish_id" formControlName="parish_id" required>
                 <option value="" disabled selected>Select Parish</option>
                 <option *ngFor="let parish of parishes" [value]="parish.parish_id">{{ parish.parish_name }}</option>

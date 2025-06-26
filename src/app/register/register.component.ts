@@ -28,31 +28,71 @@ export class RegisterComponent implements OnInit {
     password: ['', [Validators.required, Validators.minLength(8)]],
     roles: ['', [Validators.required, Validators.pattern(/^(superuser|editor|viewer|member)$/)]],
     phone_number: [''],
+    deanery: [''],
     parish_id: [0]
   })
 
 
   ngOnInit(): void {
     // Initialize any data if needed
+    this.loadDeaneries();
+    this.loadParishesByDeanery();
   }
 
   parishes: any[] = [];
+  deaneries: any[] = [];
 
   ngAfterViewInit(): void {
-    this.fetchParishes();
+
   }
 
-  fetchParishes(): void {
+
+
+  private loadDeaneries(): void {
     this.register.getParishes().subscribe({
       next: (data) => {
-        this.parishes = data;
-        console.log('Parishes loaded:', this.parishes);
+        // Remove duplicate deaneries by name
+        const seen = new Set<string>();
+        this.deaneries = data.filter((item: any) => {
+          if (seen.has(item.deanery)) {
+            return false;
+          }
+          seen.add(item.deanery);
+          return true;
+        });
+        // console.log("Deaneries loaded:", this.deaneries)
       },
-      error: (err) => {
-        this.errorMessage = 'Failed to load parishes.';
+      error: (error) => {
+        console.error('Error loading deaneries:', error);
+        this.errorMessage = 'Failed to load deaneries. Please refresh the page.';
       }
     });
   }
+
+  // Load parishes for selected deanery
+  private loadParishesByDeanery(): void {
+    this.form.valueChanges.subscribe(values => {
+      // console.log('Current form values:', values.deanery);
+      const deanery = values.deanery;
+      if (deanery) {
+        // console.log("Deanery found")
+        this.register.getParishByDeanery(deanery).subscribe({
+          next: (parishes) => {
+            this.parishes = parishes;
+          },
+          error: (error) => {
+            console.error('Error loading parishes:', error);
+            this.errorMessage = 'Failed to load parishes for the selected deanery. Please try again.';
+          }
+        });
+      } else {
+        console.error("Deanery not found")
+        this.parishes = [];
+        this.form.get('parish_id')?.setValue(0);
+      }
+    });
+  }
+
 
 
 
@@ -75,7 +115,7 @@ export class RegisterComponent implements OnInit {
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
         }, 1500);
-        
+
 
         // this.navigateToLogin();
 
