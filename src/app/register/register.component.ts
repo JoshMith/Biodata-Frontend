@@ -86,7 +86,7 @@ export class RegisterComponent implements OnInit {
           }
         });
       } else {
-        console.error("Deanery not found")
+        // console.error("Deanery not found")
         this.parishes = [];
         // this.form.get('parish_id')?.setValue(0);
       }
@@ -111,10 +111,20 @@ export class RegisterComponent implements OnInit {
         // this.isLoading = true;
 
         localStorage.setItem('userLoggedIn', JSON.stringify(response.user));
-        console.log('Registration and Login successful:', response.user.email);
+
+        if (!response.user.verified) {
+          this.successMessage = 'Registration successful! Please verify your email before proceeding to the dashboard.';
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2500);
+          return;
+        }
+
+        // Navigate to login page after successful registration
+        console.log('Registration successful:', response.user.email);
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
-        }, 1500);
+        }, 2500);
 
 
         // this.navigateToLogin();
@@ -122,8 +132,10 @@ export class RegisterComponent implements OnInit {
       },
 
       (error: any) => {
+        this.registerMessage = '';
+        this.successMessage = '';
         console.error('Registration failed:', error);
-        this.errorMessage = error.error.message;
+        this.errorMessage = error.error.message || "Registration Failed!";
       }
     );
 

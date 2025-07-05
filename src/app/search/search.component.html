@@ -1,7 +1,7 @@
 <body>
     <div class="header">Search Christians</div>
     <div class="div-home">
-        <a type="button" href="/dashboard">Home</a>
+        <a type="button" routerLink="/dashboard">Home</a>
     </div>
 
     <div *ngIf="showBanner" class="role-banner">
@@ -9,111 +9,160 @@
     </div>
 
     <div class="search-container">
-        <input type="search" class="search-box"
-            placeholder="Search by Name" [(ngModel)]="searchQuery" />
+        <input type="search" class="search-box" placeholder="Search by Name, Phone, or Email" 
+               [(ngModel)]="searchQuery" (keyup.enter)="searchChristianByName()" />
         <button class="search-button" (click)="searchChristianByName()">Search</button>
+        <button class="clear-button" (click)="clearSearch()">Clear</button>
     </div>
 
-    <!-- Christian Details -->
-    <div class="details" *ngIf="selectedChristian">
-        <h1 id="christianName">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</h1>
-        <div class="christian-details"
-            [ngClass]="{'highlighted': selectedChristian?.id === selectedChristian.id}">
-            <div class="personal-details">
-                <h3>Personal Details <span><a type="button" href="/edit-personal-info">Edit Personal Details</a></span></h3>
-                <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
-                <p><strong>Email:</strong> {{ selectedChristian.email }}</p>
-                <p><strong>Role:</strong> {{ selectedChristian.roles ? (selectedChristian.roles.charAt(0).toUpperCase() + selectedChristian.roles.slice(1).toLowerCase()) : '' }}</p>
-                <p><strong>Parish:</strong> {{ parishName }}</p>
-                <p><strong>Father's Name:</strong> {{ selectedChristian.father }}</p>
-                <p><strong>Mother's Name:</strong> {{ selectedChristian.mother }}</p>
-                <p><strong>Siblings:</strong> {{ selectedChristian.siblings }}</p>
-                <p><strong>Tribe:</strong> {{ selectedChristian.tribe }}</p>
-                <p><strong>Clan:</strong> {{ selectedChristian.clan }}</p>
-                <p><strong>Place of Birth:</strong> {{ selectedChristian.birth_place }}</p>
-                <p><strong>Date of Birth:</strong> {{ selectedChristian.birth_date ? (selectedChristian.birth_date | date:'yyyy-MM-dd') : '' }}</p>
-                <p><strong>Sub County:</strong> {{ selectedChristian.subcounty }}</p>
-                <p><strong>Residence:</strong> {{ selectedChristian.residence }}</p>
-                <p><strong>Phone Number:</strong> {{ selectedChristian.phone_number }}</p>
-                <p *ngIf="!selectedBaptism" style="color: red;">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }} is not yet baptised <span><a href="/edit-baptism">Add Baptism</a></span></p>
-                <p *ngIf="!selectedEucharist" style="color: red;">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }} is yet to receive eucharist <span><a href="/edit-eucharist">Add Eucharist</a></span></p>
-                <p *ngIf="!selectedConfirmation" style="color: red;">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }} is not yet confirmed <span><a href="/edit-confirmation">Add Confirmation</a></span></p>
-                <p *ngIf="!selectedMarriage" style="color: red;">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }} is not yet married <span><a href="/edit-marriage">Add Marriage</a></span></p>
-            </div>
-            
-            <div *ngIf="selectedBaptism" class="baptism-details">
-                <h3>Baptism Details <span><a type="button" href="/edit-baptism">Edit Baptism</a></span></h3>
-                <p><strong>Parish:</strong> {{ selectedBaptism.parish }}</p>
-                <p><strong>Date:</strong> {{ selectedBaptism.baptism_date ? (selectedBaptism.baptism_date | date:'yyyy-MM-dd') : '' }}</p>
-                <p><strong>Minister:</strong> {{ selectedBaptism.minister }}</p>
-                <p><strong>Sponsor:</strong> {{ selectedBaptism.sponsor }}</p>
-            </div>
-            
-            <div *ngIf="selectedEucharist" class="eucharist-details">
-                <h3>Eucharist Details <span><a type="button" href="/edit-eucharist">Edit Eucharist</a></span></h3>
-                <p><strong>Place:</strong> {{ selectedEucharist.eucharist_place }}</p>
-                <p><strong>Date:</strong> {{ selectedEucharist.eucharist_date ? (selectedEucharist.eucharist_date | date:'yyyy-MM-dd') : '' }}</p>
-            </div>
-            
-            <div *ngIf="selectedConfirmation" class="confirmation-details">
-                <h3>Confirmation Details <span><a type="button" href="/edit-confirmation">Edit Confirmation</a></span></h3>
-                <p><strong>Place:</strong> {{ selectedConfirmation.confirmation_place }}</p>
-                <p><strong>Date:</strong> {{ selectedConfirmation.confirmation_date ? (selectedConfirmation.confirmation_date | date:'yyyy-MM-dd') : '' }}</p>
-                <p><strong>Confirmation Number:</strong> {{ selectedConfirmation.confirmation_no }}</p>
-            </div>
-            
-            <div *ngIf="selectedMarriage" class="marriage-details">
-                <h3>Marriage Details 
-                    <span><a type="button" href="/edit-marriage">Edit Marriage</a></span>
-                    <span><a id="print-card" type="button" href="/marriage-card">Print Marriage Card</a></span>
-                </h3>
-                <p><strong>Marriage Certificate No:</strong> {{ selectedMarriage.marriage_certificate_no }}</p>
-                <p><strong>Entry No:</strong> {{ selectedMarriage.entry_no }}</p>
-                <p><strong>County:</strong> {{ selectedMarriage.county }}</p>
-                <p><strong>Sub County:</strong> {{ selectedMarriage.sub_county }}</p>
-                <p><strong>Place of Marriage:</strong> {{ selectedMarriage.place_of_marriage }}</p>
-                <hr>
-                <h4>Bridegroom</h4>
-                <p><strong>Name:</strong> {{ selectedMarriage.name1 }}</p>
-                <p><strong>Age:</strong> {{ selectedMarriage.age1 }}</p>
-                <p><strong>Marital Status:</strong> {{ selectedMarriage.marital_status1 }}</p>
-                <p><strong>Occupation:</strong> {{ selectedMarriage.occupation1 }}</p>
-                <p><strong>Residence:</strong> {{ selectedMarriage.residence1 }}</p>
-                <hr>
-                <h4>Bride</h4>
-                <p><strong>Name:</strong> {{ selectedMarriage.name2 }}</p>
-                <p><strong>Age:</strong> {{ selectedMarriage.age2 }}</p>
-                <p><strong>Marital Status:</strong> {{ selectedMarriage.marital_status2 }}</p>
-                <p><strong>Occupation:</strong> {{ selectedMarriage.occupation2 }}</p>
-                <p><strong>Residence:</strong> {{ selectedMarriage.residence2 }}</p>
-                <hr>
-                <p><strong>Witnessed By:</strong> {{ selectedMarriage.witnessed_by }}</p>
-                <p><strong>Registrar:</strong> {{ selectedMarriage.registrar }}</p>
-                <p><strong>Reference Number:</strong> {{ selectedMarriage.ref_number }}</p>
-                <p><strong>Date:</strong> {{ selectedMarriage.marriage_date ? (selectedMarriage.marriage_date | date:'yyyy-MM-dd') : '' }}</p>
-            </div>
-        </div>
-
-        <div class="christian-actions">
-            <button class="update-button" (click)="redirectToUpdateChristian()">
-                <strong>Edit {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</strong>
-            </button>
-            <button class="delete-button" (click)="deleteChristian()">
-                <strong>Delete {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</strong>
-            </button>
-        </div>
-    </div>
-    
     <!-- Error Message -->
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
 
-    <!-- Christians List -->
-    <div>
-        <div type="button" *ngFor="let christian of christians" class="styled-christian-card" 
-            (click)="selectChristian(christian)">
+    <!-- Christians List (Always Visible) -->
+    <div class="christians-list">
+        <div *ngFor="let christian of christians" class="styled-christian-card" 
+             (click)="selectChristian(christian)">
             <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
             <p><strong>Email:</strong> {{ christian.email }}</p>
-            <p><strong>Role:</strong> {{ christian.roles }}</p>
+            <p><strong>Phone:</strong> {{ christian.phone_number }}</p>
+            <p><strong>Role:</strong> {{ christian.roles | titlecase }}</p>
         </div>
+    </div>
+    <!-- Christian Details -->
+    <div class="details" *ngIf="selectedChristian">
+        <h1 id="christianName">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</h1>
+        <div class="christian-details" [ngClass]="{'highlighted': selectedChristian.id === selectedChristian.id}">
+            <div class="personal-details">
+                <h3>Personal Details <span><a type="button" href="/edit-personal-info">Edit Personal Details</a></span>
+                </h3>
+                <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
+                <p><strong>Email:</strong> {{ selectedChristian.email }}</p>
+                <p><strong>Role:</strong> {{ selectedChristian.roles ? (selectedChristian.roles.charAt(0).toUpperCase()
+                    + selectedChristian.roles.slice(1).toLowerCase()) : '' }}</p>
+                <p><strong>Parish:</strong> {{ parishName }}</p>
+                <p><strong>Father's Name:</strong> {{ selectedChristian.father }}</p>
+                <p><strong>Mother's Name:</strong> {{ selectedChristian.mother }}</p>
+                <p><strong>Tribe:</strong> {{ selectedChristian.tribe }}</p>
+                <p><strong>Clan:</strong> {{ selectedChristian.clan }}</p>
+                <p><strong>Place of Birth:</strong> {{ selectedChristian.birth_place }}</p>
+                <p><strong>Date of Birth:</strong> {{ selectedChristian.birth_date ? (selectedChristian.birth_date |
+                    date:'yyyy-MM-dd') : '' }}</p>
+                <p><strong>Sub County:</strong> {{ selectedChristian.subcounty }}</p>
+                <p><strong>Residence:</strong> {{ selectedChristian.residence }}</p>
+                <p><strong>Phone Number:</strong> {{ selectedChristian.phone_number }}</p>
+                <p *ngIf="!selectedBaptism" style="color: red;">{{ selectedChristian.first_name }} {{
+                    selectedChristian.last_name }} is not yet baptised <span><a href="/edit-baptism">Add
+                            Baptism</a></span></p>
+                <p *ngIf="!selectedEucharist" style="color: red;">{{ selectedChristian.first_name }} {{
+                    selectedChristian.last_name }} is yet to receive eucharist <span><a href="/edit-eucharist">Add
+                            Eucharist</a></span></p>
+                <p *ngIf="!selectedConfirmation" style="color: red;">{{ selectedChristian.first_name }} {{
+                    selectedChristian.last_name }} is not yet confirmed <span><a href="/edit-confirmation">Add
+                            Confirmation</a></span></p>
+                <p *ngIf="!selectedMarriage" style="color: red;">{{ selectedChristian.first_name }} {{
+                    selectedChristian.last_name }} is not yet married <span><a href="/edit-marriage">Add
+                            Marriage</a></span></p>
+            </div>
+
+            <div *ngIf="selectedBaptism" class="baptism-details">
+                <h3>Baptism Details <span><a type="button" href="/edit-baptism">Edit Baptism</a></span></h3>
+                <p><strong>Parish:</strong> {{ selectedBaptism.parish }}</p>
+                <p><strong>Date:</strong> {{ selectedBaptism.baptism_date ? (selectedBaptism.baptism_date |
+                    date:'yyyy-MM-dd') : '' }}</p>
+                <p><strong>Minister:</strong> {{ selectedBaptism.minister }}</p>
+                <p><strong>Sponsor:</strong> {{ selectedBaptism.sponsor }}</p>
+            </div>
+
+            <div *ngIf="selectedEucharist" class="eucharist-details">
+                <h3>Eucharist Details <span><a type="button" href="/edit-eucharist">Edit Eucharist</a></span></h3>
+                <p><strong>Place:</strong> {{ selectedEucharist.eucharist_place }}</p>
+                <p><strong>Date:</strong> {{ selectedEucharist.eucharist_date ? (selectedEucharist.eucharist_date |
+                    date:'yyyy-MM-dd') : '' }}</p>
+            </div>
+
+            <div *ngIf="selectedConfirmation" class="confirmation-details">
+                <h3>Confirmation Details <span><a type="button" href="/edit-confirmation">Edit Confirmation</a></span>
+                </h3>
+                <p><strong>Place:</strong> {{ selectedConfirmation.confirmation_place }}</p>
+                <p><strong>Date:</strong> {{ selectedConfirmation.confirmation_date ?
+                    (selectedConfirmation.confirmation_date | date:'yyyy-MM-dd') : '' }}</p>
+                <p><strong>Confirmation Number:</strong> {{ selectedConfirmation.confirmation_no }}</p>
+            </div>
+            <div *ngIf="selectedMarriage" class="marriage-details">
+                <h3>Marriage Details
+                    <span><a type="button" [routerLink]="['/edit-marriage', selectedMarriage.marriage_id]">Edit
+                            Marriage</a></span>
+                    <span><a id="print-card" type="button"
+                            [routerLink]="['/marriage-card']">Print Marriage
+                            Card</a></span>
+                </h3>
+                <p><strong>Marriage Certificate No:</strong> {{ selectedMarriage.certificate_number }}</p>
+                <p><strong>Entry No:</strong> {{ selectedMarriage.marriage_entry_number }}</p>
+                <p><strong>County:</strong> {{ selectedMarriage.submission_county }}</p>
+                <p><strong>Sub County:</strong> {{ selectedMarriage.submission_sub_county }}</p>
+                <p><strong>Place of Marriage:</strong> {{ selectedMarriage.submission_location }}</p>
+                <hr>
+                <div *ngIf="selectedMarriage.parties && selectedMarriage.parties.length">
+                    <div *ngFor="let party of selectedMarriage.parties">
+                        <h4>
+                            {{
+                            party.party_type === 'groom' ? 'Bridegroom' :
+                            (party.party_type === 'bride' ? 'Bride' : (party.party_type | titlecase))
+                            }}
+                        </h4>
+                        <p><strong>Name:</strong> {{ party.full_name }}</p>
+                        <p><strong>Age:</strong> {{ party.age }}</p>
+                        <!-- <p><strong>Marital Status:</strong> {{ party.marital_status }}</p>
+                        <p><strong>Occupation:</strong> {{ party.occupation }}</p>
+                        <p><strong>Residence:</strong> {{ party.residence_address }}</p>
+                        <p><strong>Father's Name:</strong> {{ party.father_name }}</p>
+                        <p><strong>Father's Occupation:</strong> {{ party.father_occupation }}</p>
+                        <p><strong>Father's Residence:</strong> {{ party.father_residence }}</p>
+                        <p><strong>Mother's Name:</strong> {{ party.mother_name }}</p>
+                        <p><strong>Mother's Occupation:</strong> {{ party.mother_occupation }}</p>
+                        <p><strong>Mother's Residence:</strong> {{ party.mother_residence }}</p> -->
+                        <hr>
+                    </div>
+                </div>
+                <p><strong>Registrar:</strong> {{ selectedMarriage.conducted_by }}</p>
+                <p><strong>Reference Number:</strong> {{ selectedMarriage.registrar_certification_number }}</p>
+                <p><strong>Date:</strong> {{ selectedMarriage.marriage_date | date:'yyyy-MM-dd' }}</p>
+                <div *ngIf="selectedMarriage.documents && selectedMarriage.documents.length">
+                    <h4>Marriage Documents</h4>
+                    <ul>
+                        <li *ngFor="let doc of selectedMarriage.documents">
+                            <a [href]="getDocumentUrl(doc.file_path)" download="{{ doc.file_name }}">
+                                {{ doc.file_name }}
+                            </a>
+                            <span>({{ doc.document_type }})</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="christian-actions">
+                <button class="update-button" (click)="redirectToUpdateChristian()">
+                    <strong>Edit {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</strong>
+                </button>
+                <button class="delete-button" (click)="deleteChristian()">
+                    <strong>Delete {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</strong>
+                </button>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <!-- <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div> -->
+
+        <!-- Christians List -->
+        <!-- <div>
+            <div type="but
+            ton" *ngFor="let christian of christians" class="styled-christian-card"
+                (click)="selectChristian(christian)">
+                <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
+                <p><strong>Email:</strong> {{ christian.email }}</p>
+                <p><strong>Role:</strong> {{ christian.roles ? (christian.roles.charAt(0).toUpperCase() +
+                    christian.roles.slice(1).toLowerCase()) : '' }}</p>
+            </div>
+        </div> -->
     </div>
 </body>

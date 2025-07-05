@@ -45,9 +45,9 @@
             <label for="roles">Select Role</label>
             <select id="roles" formControlName="roles" required>
                 <option value="" disabled selected>Select Role</option>
-                <option value="superuser">superuser</option>
-                <option value="editor">editor</option>
-                <option value="viewer">viewer</option>
+                <option value="superuser">Superuser</option>
+                <option value="editor">Editor</option>
+                <option value="viewer">Viewer</option>
                 <option value="member">Member</option>
             </select>
             <div *ngIf="form.controls.roles?.touched && form.controls.roles?.invalid">
@@ -81,9 +81,10 @@
                 </p>
             </div>
 
+            <p *ngIf="registerMessage">{{ registerMessage }}</p>
             <p *ngIf="successMessage">{{ successMessage }}</p>
             <p *ngIf="errorMessage">{{ errorMessage }}</p>
-            <p *ngIf="registerMessage">{{ registerMessage }}</p>
+            
 
             <button type="submit" [disabled]="form.invalid">Register</button>
             <!-- <p *ngIf="!form.valid && errorMessage" class="error-message">{{ errorMessage }}</p> -->

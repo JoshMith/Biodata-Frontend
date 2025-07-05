@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../services/api.service';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subject, forkJoin, of, EMPTY } from 'rxjs';
 import { takeUntil, catchError, switchMap, map } from 'rxjs/operators';
 
@@ -44,7 +44,7 @@ interface UserSession {
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
@@ -62,7 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   selectedBaptism: any = null;
   selectedEucharist: any = null;
   selectedConfirmation: any = null;
-  selectedMarriage: any = null;
+  selectedMarriage: any = [];
 
   // UI state
   showBanner = false;
@@ -84,9 +84,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private initializeComponent(): void {
     const userSession = this.getUserSession();
-
-    // Debug: Log the userSession to see its structure
-    console.log('UserSession from localStorage:', userSession);
 
     if (!userSession) {
       console.log('No userSession found');
@@ -113,7 +110,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
 
       const parsedData = JSON.parse(userData);
-      console.log('Parsed userData:', parsedData);
+      // console.log('Parsed userData:', parsedData);
       return parsedData;
     } catch (error) {
       console.error('Error parsing userLoggedIn from localStorage:', error);
@@ -167,7 +164,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     role: string,
     parishId: string
   ): Christian[] {
-    console.log('Filtering Christians by role:', role, 'Parish ID:', parishId);
+    // console.log('Filtering Christians by role:', role, 'Parish ID:', parishId);
 
     if (!role) {
       console.warn('No role provided for filtering');
@@ -194,7 +191,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.showBanner = true;
     const messages = {
       superuser: 'You are logged in as SUPERUSER. You have full access to view and manage all Christians in the system.',
-      editor: 'You are logged in as PRIEST. You can view and manage Christians from your own parish only.',
+      editor: 'You are logged in as EDITOR. You can view and manage Christians from your own parish only.',
       viewer: 'You are logged in as VIEWER. You can only view Christians in the system.',
       member: 'You are logged in as MEMBER. You can only view your own personal information and not other Christians in the system.'
     };
@@ -216,9 +213,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private sortChristians(): void {
-    this.christians.sort((a, b) => {
-      const nameA = `${a.first_name} ${a.last_name}`.trim();
-      const nameB = `${b.first_name} ${b.last_name}`.trim();
+    this.christians.sort((a: Christian, b: Christian) => {
+      const nameA = `${a.first_name} ${a.last_name} ${a.middle_name}`.trim();
+      const nameB = `${b.first_name} ${b.last_name} ${b.middle_name}`.trim();
       return nameA.localeCompare(nameB);
     });
   }
@@ -249,7 +246,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   clearSearch(): void {
     this.searchQuery = '';
+    this.errorMessage = '';
     this.displayChristians();
+    this.selectedChristian = null;
   }
 
   selectChristian(christian: Christian): void {
@@ -270,31 +269,42 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   searchChristianByName(): void {
     if (!this.searchQuery.trim()) {
+      this.displayChristians(); // Show all when search is empty
       return;
     }
 
-    this.apiService.getChristians()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (christians: Christian[]) => {
-          const found = this.findChristianByName(christians);
+    const query = this.searchQuery.toLowerCase().trim();
 
-          if (found) {
-            this.selectChristian(found);
-          } else {
-            this.handleChristianNotFound();
-          }
-        },
-        error: (error) => this.handleLoadError(error)
-      });
-  }
+    this.apiService.getChristians().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (christians: Christian[]) => {
+        const found = christians.filter(c =>
+          `${c.first_name} ${c.last_name} ${c.middle_name} ${c.phone_number} ${c.email}`
+            .toLowerCase()
+            .includes(query)
+        );
 
-  private findChristianByName(christians: Christian[]): Christian | undefined {
-    return christians.find(christian => {
-      const fullName = `${christian.first_name} ${christian.last_name}`.trim();
-      return fullName.toLowerCase().includes(this.searchQuery.toLowerCase().trim());
+        if (found.length > 0) {
+          this.christians = found;
+          this.sortChristians();
+          this.selectedChristian = null; // Clear selection
+          this.errorMessage = ''
+        } else {
+          this.errorMessage = 'No matching Christians found';
+          this.christians = []; // Clear list
+        }
+      },
+      error: (error) => this.handleLoadError(error)
     });
   }
+
+  // private findChristianByName(christians: Christian[]): Christian | undefined {
+  //   return christians.find(christian => {
+  //     const searchText = `${christian.first_name} ${christian.last_name} ${christian.middle_name} ${christian.phone_number} ${christian.email}`.trim();
+  //     return searchText.toLowerCase().includes(this.searchQuery.toLowerCase().trim());
+  //   });
+  // }
+
+
 
   deleteChristian(): void {
     const selectedChristianData = this.getStoredSelectedChristian();
@@ -315,7 +325,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             console.error('Error deleting Christian:', error);
-            this.errorMessage = 'Error deleting Christian.';
+            this.errorMessage = error.error.message;
           }
         });
     }
@@ -416,9 +426,8 @@ export class SearchComponent implements OnInit, OnDestroy {
             baptism: baptism ? this.apiService.getBaptismById(baptism.baptism_id.toString()) : of(null),
             eucharist: eucharist ? this.apiService.getEucharistById(eucharist.eucharist_id.toString()) : of(null),
             confirmation: confirmation ? this.apiService.getConfirmationById(confirmation.confirmation_id.toString()) : of(null),
-            marriage: marriage ? this.apiService.getMarriageById(marriage.marriage_id.toString()) : of(null)
+            marriage: marriage ? this.apiService.getFullMarriageByUserId(christianId) : of(null)
           };
-
           return forkJoin(detailRequests);
         }),
         catchError((error) => {
@@ -430,8 +439,29 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.selectedBaptism = sacramentData.baptism;
         this.selectedEucharist = sacramentData.eucharist;
         this.selectedConfirmation = sacramentData.confirmation;
-        this.selectedMarriage = sacramentData.marriage;
+
+        // Handle marriage data - get first marriage if array exists
+        if (Array.isArray(sacramentData.marriage)) {
+          this.selectedMarriage = sacramentData.marriage.length > 0
+            ? sacramentData.marriage[0]
+            : null;
+        } else {
+          this.selectedMarriage = sacramentData.marriage;
+        }
+      
+
+        console.log('Loaded sacrament data:', {
+          baptism: this.selectedBaptism,
+          eucharist: this.selectedEucharist,
+          confirmation: this.selectedConfirmation,
+          marriage: this.selectedMarriage
+        });
         this.sortChristians();
       });
   }
+
+  getDocumentUrl(filePath: string): string {
+    return this.apiService.getDocumentUrl(filePath);
+  }
+
 }

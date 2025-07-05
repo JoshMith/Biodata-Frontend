@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoginResponse } from '../login/login.component';
@@ -134,24 +134,59 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/confirmation/${id}`, { withCredentials: true });
   }
 
-  getMarriages(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/marriage`, { withCredentials: true });
-  }
-  getMarriageById(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/marriage/${id}`, { withCredentials: true });
-  }
-  getMarriageByUserId(userId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/marriage/user/${userId}`, { withCredentials: true });
-  }
+  // Marriage Records
   createMarriage(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/marriage`, data, { withCredentials: true });
-  }
-  updateMarriage(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/marriage/${id}`, data, { withCredentials: true });
-  }
-  deleteMarriage(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/marriage/${id}`, { withCredentials: true });
+    return this.http.post(`${this.baseUrl}/marriages`, data, { withCredentials: true });
   }
 
+  getMarriages(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/marriages`, { withCredentials: true });
+  }
+
+  getMarriageById(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/marriages/${id}`, { withCredentials: true });
+  }
+
+  getFullMarriageByUserId(userId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/marriages/user/${userId}/full`, { withCredentials: true });
+  }
+  
+
+
+
+  updateMarriage(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/marriages/${id}`, data, { withCredentials: true });
+  }
+
+  deleteMarriage(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/marriages/${id}`, { withCredentials: true });
+  }
+
+  // Marriage Parties
+  createMarriageParty(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/marriage-parties`, data, { withCredentials: true });
+  }
+
+  // Marriage Documents
+  createMarriageDocument(formData: FormData): Observable<HttpEvent<any>> {
+    return this.http.post(`${this.baseUrl}/marriage-documents`, formData, { 
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  getDocumentUrl(filePath: string): string {
+    // Convert backslashes to forward slashes for proper URL formatting
+    const normalizedPath = filePath.replace(/\\/g, '/');
+    
+    // Check if the path already contains the base URL
+    if (normalizedPath.startsWith('http')) {
+        return normalizedPath;
+    }
+    
+    // Prepend the base URL if it's a local path
+    return `${this.baseUrl}/${normalizedPath}`;
+}
 
 }

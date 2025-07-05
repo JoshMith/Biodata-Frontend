@@ -19,6 +19,8 @@ export class DashboardComponent {
 
 
   ngOnInit(): void {
+
+
     this.loadUserCount();
 
     const userData = localStorage.getItem('userLoggedIn');
@@ -29,21 +31,22 @@ export class DashboardComponent {
       if (role === 'superuser') {
         this.showBanner = true;
         this.bannerMessage = `You are logged in as SUPERUSER. You have full access to view and manage all Christians in the system.`;
-      } else if (role === 'editor' ) {
+      } else if (role === 'editor') {
         this.showBanner = true;
         this.bannerMessage = `You are logged in as EDITOR. You can view and manage Christians from your own parish only.`;
       } else if (role === 'viewer') {
         this.showBanner = true;
         this.bannerMessage = `You are logged in as VIEWER. You only have view access.`;
-      } else {
-        this.showBanner = true;
-        this.bannerMessage = 'You are not logged in. Go to login page.';
-        setTimeout(() => {
-          if (confirm('You are not logged in. Do you want to go to the login page?')) {
+      }
+    }
+    else {
+      this.showBanner = true;
+      this.bannerMessage = 'You are not logged in. Go to login page.';
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
           this.router.navigate(['/login']);
         }
-        }, 3000);
-      }
+      }, 3000);
     }
   }
 

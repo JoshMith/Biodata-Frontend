@@ -32,12 +32,11 @@ export class PersonalInfoUpdateComponent implements OnInit {
     parish_id: [''],
     father: [''],
     mother: [''],
-    siblings: [''],
     tribe: [''],
     clan: [''],
     birth_place: [''],
     birth_date: [''],
-    sub_county: [''],
+    subcounty: [''],
     residence: [''],
   })
 
@@ -110,10 +109,10 @@ export class PersonalInfoUpdateComponent implements OnInit {
         // Remove duplicate deaneries by name
         const seen = new Set<string>();
         this.deaneries = data.filter((item: any) => {
-          if (seen.has(item.name)) {
+          if (seen.has(item.deanery)) {
             return false;
           }
-          seen.add(item.name);
+          seen.add(item.deanery);
           return true;
         });
       },

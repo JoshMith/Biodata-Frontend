@@ -1,0 +1,379 @@
+body {
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    background-image: url(../../../../public/sunset-sky.jpg);
+    color: black;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    background: #F1E9E9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 20px 0;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #4A002A;
+    border-bottom: 2px solid #C2AE6D;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    color: #6d5507;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: #333;
+}
+
+.required {
+    color: red;
+    font-weight: bold;
+}
+
+input, select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+    color: #4A002A;
+    font-weight: bold;
+    border: 1px solid #ffb433;
+    border-radius: 5px;
+    display: block;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #6d5507;
+    box-shadow: 0 0 5px rgba(109, 85, 7, 0.3);
+}
+
+input.error {
+    border-color: #dc3545;
+    background-color: #ffeaea;
+}
+
+input.error:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 2px;
+    display: block;
+    font-weight: normal;
+}
+
+.success-message {
+    color: #28a745;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.form-actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+button {
+    background: #6d5507;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 30%;
+    margin-top: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    background: #C2AE6D;
+}
+
+button:disabled {
+    background-color: #d3d3d3;
+    color: #a9a9a9;
+    cursor: not-allowed;
+}
+
+.div-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.div-home a {
+    text-decoration: none;
+    background: #6d5507;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.div-home a:hover {
+    background: #C2AE6D;
+}
+
+.section {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #4A002A;
+    border-radius: 5px;
+    background: #C2AE6D;
+}
+
+/* Name row styling for side-by-side name fields */
+.name-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.name-field {
+    flex: 1;
+}
+
+.name-field input {
+    width: calc(100% - 22px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+    
+    .name-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .div-btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    h3 {
+        font-size: 1.2em;
+    }
+}
+
+/* Form validation styling */
+.formContainer {
+    position: relative;
+}
+
+/* Enhanced visual feedback */
+input:valid:not(:placeholder-shown) {
+    border-color: #28a745;
+}
+
+input:invalid:not(:placeholder-shown):not(.error) {
+    border-color: #ffc107;
+}
+
+/* Smooth transitions */
+* {
+    transition: all 0.3s ease;
+}
+
+/* File Upload Styling */
+.file-upload-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    overflow: hidden;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    border: 2px dashed #C2AE6D;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6d5507;
+    font-weight: bold;
+    text-align: center;
+    min-height: 60px;
+}
+
+.file-upload-label:hover {
+    border-color: #6d5507;
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.upload-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.file-info {
+    background-color: #e9ecef;
+    border: 1px solid #C2AE6D;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.file-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-icon {
+    font-size: 24px;
+    color: #6d5507;
+}
+
+.file-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-text strong {
+    color: #333;
+    font-size: 14px;
+}
+
+.file-text small {
+    color: #666;
+    font-size: 12px;
+}
+
+.remove-file-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.remove-file-btn:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+.upload-progress {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6d5507, #C2AE6D);
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+/* File upload responsive design */
+@media (max-width: 480px) {
+    .file-upload-label {
+        padding: 12px 15px;
+        min-height: 50px;
+    }
+    
+    .upload-icon {
+        font-size: 20px;
+        margin-right: 8px;
+    }
+    
+    .file-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .remove-file-btn {
+        align-self: flex-end;
+        margin-top: -30px;
+    }
+}

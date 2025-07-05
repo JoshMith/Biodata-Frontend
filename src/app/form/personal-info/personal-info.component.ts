@@ -44,7 +44,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
       middle_name: [''],
       mother: [''],
       father: [''],
-      siblings: [''],
       birth_place: [''],
       subcounty: [''],
       birth_date: ['', Validators.required],
@@ -91,12 +90,13 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
         // Remove duplicate deaneries by name
         const seen = new Set<string>();
         this.deaneries = data.filter((item: any) => {
-          if (seen.has(item.name)) {
+          if (seen.has(item.deanery)) {
             return false;
           }
-          seen.add(item.name);
+          seen.add(item.deanery);
           return true;
         });
+        console.log("Deaneries loaded:", this.deaneries)
       },
       error: (error) => {
         console.error('Error loading deaneries:', error);

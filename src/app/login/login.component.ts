@@ -60,6 +60,7 @@ export class LoginComponent {
         this.navigateToDashboard();
       },
       (error: any) => {
+        this.loginMessage = '';
         console.error('Login failed:', error);
         this.errorMessage = error.error.message || 'Invalid email or password. Please try again.';
       });

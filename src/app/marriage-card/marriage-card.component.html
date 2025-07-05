@@ -1,118 +1,162 @@
-<!-- marriage-card.component.html -->
-<div class="print-guide">
-    <div class="instructions">
-        PRINTABLE WALLET-SIZED MARRIAGE CERTIFICATE CARD
-    </div>
-    <div class="notes">
-        Print this page at 100% scale (no scaling) for accurate wallet size. Cut
-        along the solid border after printing. For best results, use cardstock paper
-        and laminate.
-    </div>
-    <button class="print-button" (click)="printCard()">Print Card</button>
+<div *ngIf="isLoading" class="loading">Loading marriage certificate...</div>
+
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+  <button (click)="fetchMarriageData()">Retry</button>
 </div>
 
-<div class="card-container">
-    <div class="certificate-number">№: {{ marriage_certificate_no }}</div>
-    <div class="certificate-header">
-        <h1>Certificate of Marriage</h1>
-        <div class="subtitle">Republic of Kenya</div>
+<div *ngIf="marriageData && !isLoading && !errorMessage" class="card-container">
+  <div class="form-header">
+    <div class="form-ma1">FORM MA1</div>
+    <div class="cert-number">N° {{ marriageData.certificate_number }}</div>
+    <div class="republic">REPUBLIC OF KENYA</div>
+    <div class="act">THE MARRIAGE ACT, 2014</div>
+    <div class="cert-title">CERTIFICATE OF MARRIAGE</div>
+    <div class="cert-number">N° {{ marriageData.certificate_number }}</div>
+  </div>
+  
+  <div class="marriage-location">
+    Marriage solemnised at <u>{{ marriageData.submission_location }}</u> in 
+    <u>{{ marriageData.submission_sub_county }}</u> Sub-county 
+    <u>{{ marriageData.submission_county }}</u> County in the Republic of Kenya.
+  </div>
+  
+  <div class="marriage-info-row">
+    <div class="info-block">
+      <div class="info-label">Date of marriage:</div>
+      <div class="info-value"><u>{{ formatDate(marriageData.marriage_date) }}</u></div>
     </div>
-
-    <div class="certificate-body">
-        <div class="marriage-info">
-            <div class="field-group">
-                <div class="field-label">Marriage Date:</div>
-                <div class="field-value">{{ marriage_date }}</div>
-            </div>
-            <div class="field-group">
-                <div class="field-label">Entry No:</div>
-                <div class="field-value">{{ entry_no }}</div>
-            </div>
-
-            <div class="field-group span-2">
-                <div class="field-label">County:</div>
-                <div class="field-value">{{ county }}</div>
-            </div>
-
-            <div class="field-group span-2">
-                <div class="field-label">Sub-County:</div>
-                <div class="field-value">{{ sub_county }}</div>
-            </div>
-
-            <div class="field-group span-2-col">
-                <div class="field-label">Registrar/Certificate Issuer:</div>
-                <div class="field-value">{{ registrar }}</div>
-            </div>
-
-            <!-- <div class="field-group span-2">
-            <div class="field-label">Place of Marriage:</div>
-            <div class="field-value">{{ place_of_marriage }}</div>
-        </div> -->
-
-            <div class="field-group span-2-col">
-                <div class="field-label">Witnessed By:</div>
-                <div class="field-value">{{ witnessed_by }}</div>
-            </div>
-        </div>
-
-        <div class="field-group span-2 margin-top-3">
-            <div class="parties-title">
-                PARTIES TO MARRIAGE
-            </div>
-        </div>
-
-        <div class="parties-info">
-            <div class="field-group">
-                <div class="field-label">Bridegroom:</div>
-                <div class="field-value">{{ name1 }}</div>
-            </div>
-            <div class="field-group">
-                <div class="field-label">Bride:</div>
-                <div class="field-value">{{ name2 }}</div>
-            </div>
-            <div class="field-group">
-                <div class="field-label">Age:</div>
-                <div class="field-value">{{ age1 }}</div>
-            </div>
-            <div class="field-group">
-                <div class="field-label">Age:</div>
-                <div class="field-value">{{ age2 }}</div>
-            </div>
-            <div class="field-group">
-                <div class="field-label">Occupation:</div>
-                <div class="field-value">{{ occupation1 }}</div>
-            </div>
-            <div class="field-group">
-                <div class="field-label">Occupation:</div>
-                <div class="field-value">{{ occupation2 }}</div>
-            </div>
-            <div class="footer">
-                This is a condensed representation of Marriage Certificate №:
-                {{ marriage_certificate_no }} <br />{{ ref_number }}
-            </div>
-
-            <div class="seal">OFFICIAL<br />SEAL</div>
-        </div>
-        <!-- <div class="field-group">
-            <div class="field-label">Marital Status:</div>
-            <div class="field-value">{{ marital_status1 }}</div>
-        </div>
-        <div class="field-group">
-            <div class="field-label">Marital Status:</div>
-            <div class="field-value">{{ marital_status2 }}</div>
-        </div>
-
-        <div class="field-group">
-            <div class="field-label">Residence:</div>
-            <div class="field-value">{{ residence1 }}</div>
-        </div>
-        <div class="field-group">
-            <div class="field-label">Residence:</div>
-            <div class="field-value">{{ residence2 }}</div>
-        </div> -->
-
-
+    <div class="info-block">
+      <div class="info-label">Marriage Entry No:</div>
+      <div class="info-value"><u>{{ marriageData.marriage_entry_number }}</u></div>
     </div>
+  </div>
+  
+  <div class="parties-container">
+    <!-- Groom Section -->
+    <div class="party-section groom-section">
+      <div class="party-header"><strong>Bridegroom:</strong></div>
+      <div class="party-details">
+        <div class="detail-row">
+          <div class="field-label">Name:</div>
+          <div class="field-value"><u>{{ groom?.full_name }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">Age:</div>
+          <div class="field-value"><u>{{ groom?.age }}</u></div>
+          <div class="field-label">Marital status:</div>
+          <div class="field-value"><u>{{ groom?.marital_status }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">Residence at the time of marriage:</div>
+          <div class="field-value"><u>{{ groom?.residence_address }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">County:</div>
+          <div class="field-value"><u>{{ groom?.residence_county }}</u></div>
+          <div class="field-label">Sub-county:</div>
+          <div class="field-value"><u>{{ groom?.residence_sub_county }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">Occupation:</div>
+          <div class="field-value"><u>{{ groom?.occupation }}</u></div>
+        </div>
+        <div class="parents-header">Father's name & Mother's name:</div>
+        <div class="parents-section">
+          <div class="parent-column">
+            <div class="field-label">Father's name:</div>
+            <div class="field-value"><u>{{ groom?.father_name }}</u></div>
+            <div class="field-label">Occupation:</div>
+            <div class="field-value"><u>{{ groom?.father_occupation }}</u></div>
+            <div class="field-label">Residence:</div>
+            <div class="field-value"><u>{{ groom?.father_residence }}</u></div>
+          </div>
+          <div class="parent-column">
+            <div class="field-label">Mother's name:</div>
+            <div class="field-value"><u>{{ groom?.mother_name }}</u></div>
+            <div class="field-label">Occupation:</div>
+            <div class="field-value"><u>{{ groom?.mother_occupation }}</u></div>
+            <div class="field-label">Residence:</div>
+            <div class="field-value"><u>{{ groom?.mother_residence }}</u></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bride Section -->
+    <div class="party-section bride-section">
+      <div class="party-header"><strong>Bride:</strong></div>
+      <div class="party-details">
+        <div class="detail-row">
+          <div class="field-label">Name:</div>
+          <div class="field-value"><u>{{ bride?.full_name }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">Age:</div>
+          <div class="field-value"><u>{{ bride?.age }}</u></div>
+          <div class="field-label">Marital status:</div>
+          <div class="field-value"><u>{{ bride?.marital_status }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">Residence at the time of marriage:</div>
+          <div class="field-value"><u>{{ bride?.residence_address }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">County:</div>
+          <div class="field-value"><u>{{ bride?.residence_county }}</u></div>
+          <div class="field-label">Sub-county:</div>
+          <div class="field-value"><u>{{ bride?.residence_sub_county }}</u></div>
+        </div>
+        <div class="detail-row">
+          <div class="field-label">Occupation:</div>
+          <div class="field-value"><u>{{ bride?.occupation }}</u></div>
+        </div>
+        <div class="parents-header">Father's name & Mother's name:</div>
+        <div class="parents-section">
+          <div class="parent-column">
+            <div class="field-label">Father's name:</div>
+            <div class="field-value"><u>{{ bride?.father_name }}</u></div>
+            <div class="field-label">Occupation:</div>
+            <div class="field-value"><u>{{ bride?.father_occupation }}</u></div>
+            <div class="field-label">Residence:</div>
+            <div class="field-value"><u>{{ bride?.father_residence }}</u></div>
+          </div>
+          <div class="parent-column">
+            <div class="field-label">Mother's name:</div>
+            <div class="field-value"><u>{{ bride?.mother_name }}</u></div>
+            <div class="field-label">Occupation:</div>
+            <div class="field-value"><u>{{ bride?.mother_occupation }}</u></div>
+            <div class="field-label">Residence:</div>
+            <div class="field-value"><u>{{ bride?.mother_residence }}</u></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="official-section">
+    <div class="official-row">
+      <span class="official-label">Registrar/Minister:</span>
+      <span class="official-value"><u>{{ marriageData.conducted_by }}</u></span>
+    </div>
+    <div class="official-row">
+      <span class="official-label">By Registrar's Certificate/Special License No.:</span>
+      <span class="official-value"><u>{{ marriageData.special_license_number }}</u></span>
+    </div>
+    <div class="official-row">
+      <span class="official-label">This marriage was solemnized between</span>
+      <span class="official-value"><u>{{ groom?.full_name }}</u> and <u>{{ bride?.full_name }}</u></span>
+    </div>
+    <div class="official-row">
+      <span class="official-label">in the presence of</span>
+      <span class="official-value"><u>{{ marriageData.private_parties_names?.replace('\n', ' & ') }}</u></span>
+    </div>
+  </div>
+  
+  <div class="footer">GPR (L) 1100—2000Bks.—6/2023</div>
+</div>
 
-
+<div class="print-controls" *ngIf="marriageData">
+  <button class="print-button" (click)="printCertificate()">Print Certificate</button>
+  <div class="print-guide">Ensure A4 landscape paper size is selected in print settings</div>
 </div>

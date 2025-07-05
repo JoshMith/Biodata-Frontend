@@ -1,1 +1,10 @@
-<p>verify-email works!</p>
+<div class="verify-email-container">
+    <div class="verify-email-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Email Verified" class="verify-email-icon">
+        <h1>Email {{ state }}</h1>
+        <p>{{ successMessage }}</p>
+        <button (click)="navigate()">Go to {{ whereTo }}</button>
+    </div>
+</div>
+
+

@@ -82,6 +82,18 @@ body {
     background-color: #8d7f50;
 }
 
+.clear-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: fit-content;
+    margin-left: 10px;
+    transition: background-color 0.3s, transform 0.2s ease;
+}
+
 #christianName {
     font-size: 24px;
     font-weight: bold;
