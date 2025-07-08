@@ -248,11 +248,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchQuery = '';
     this.errorMessage = '';
     this.displayChristians();
-    this.selectedChristian = null;
+    this.clearSelectedChristian();
+    this.scrollToTop();
   }
 
   selectChristian(christian: Christian): void {
-    this.scrollToTop();
+    // Scroll to the specific Christian's element if it exists
+    setTimeout(() => {
+      const element = document.getElementById(`christian-${christian.id}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 0);
     this.clearErrorMessage();
 
     if (!christian) {
@@ -263,46 +270,56 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.selectedChristian = christian;
     this.storeSelectedChristian(christian);
 
+    // Only display the selected Christian in the list
+    this.christians = [christian];
+
     this.loadParishName(christian.parish_id);
     this.loadSacramentData(christian.id);
   }
 
-  searchChristianByName(): void {
+searchChristianByName(): void {
     if (!this.searchQuery.trim()) {
-      this.displayChristians(); // Show all when search is empty
-      return;
+        this.displayChristians();
+        return;
     }
 
     const query = this.searchQuery.toLowerCase().trim();
-
+    
+    // Split into individual terms
+    const terms = query.split(/[\s,;]+/).filter(t => t.length > 0);
+    
     this.apiService.getChristians().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (christians: Christian[]) => {
-        const found = christians.filter(c =>
-          `${c.first_name} ${c.last_name} ${c.middle_name} ${c.phone_number} ${c.email}`
-            .toLowerCase()
-            .includes(query)
-        );
-
-        if (found.length > 0) {
-          this.christians = found;
-          this.sortChristians();
-          this.selectedChristian = null; // Clear selection
-          this.errorMessage = ''
-        } else {
-          this.errorMessage = 'No matching Christians found';
-          this.christians = []; // Clear list
-        }
-      },
-      error: (error) => this.handleLoadError(error)
+        next: (christians: Christian[]) => {
+            // Start with all Christians
+            let results = [...christians];
+            
+            // Apply progressive filtering for each term
+            for (const term of terms) {
+                results = results.filter(c => {
+                    // Create a searchable string with all relevant fields
+                    const searchable = `${c.first_name} ${c.last_name} ${c.middle_name} ${c.phone_number} ${c.email}`.toLowerCase();
+                    
+                    // Check if any part matches the current term
+                    return searchable.includes(term);
+                });
+                
+                // Early exit if no results remain
+                if (results.length === 0) break;
+            }
+            
+            if (results.length > 0) {
+                this.christians = results;
+                this.selectedChristian = null;
+                this.errorMessage = '';
+            } else {
+                this.errorMessage = 'No matching Christians found';
+                this.christians = [];
+                this.selectedChristian = null;
+            }
+        },
+        error: (error) => this.handleLoadError(error)
     });
-  }
-
-  // private findChristianByName(christians: Christian[]): Christian | undefined {
-  //   return christians.find(christian => {
-  //     const searchText = `${christian.first_name} ${christian.last_name} ${christian.middle_name} ${christian.phone_number} ${christian.email}`.trim();
-  //     return searchText.toLowerCase().includes(this.searchQuery.toLowerCase().trim());
-  //   });
-  // }
+}
 
 
 

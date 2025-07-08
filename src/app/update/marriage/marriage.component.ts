@@ -1,432 +1,408 @@
-// import { Component, inject, OnInit } from '@angular/core';
-// import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-// import { Router } from '@angular/router';
-// import { ApiService } from '../../services/api.service';
-// import { NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
-// @Component({
-//   selector: 'app-marriage',
-//   imports: [ReactiveFormsModule, NgIf],
-//   templateUrl: './marriage.component.html',
-//   styleUrls: ['./marriage.component.css']
-// })
-// export class MarriageUpdateComponent implements OnInit {
-//   constructor(
-//     private router: Router,
-//     private marriageService: ApiService
-//   ) {}
+@Component({
+  selector: 'app-marriage',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './marriage.component.html',
+  styleUrl: './marriage.component.css'
+})
+export class MarriageUpdateComponent implements OnInit {
+  marriageForm: FormGroup;
+  countyOptions = ['Mombasa', 'Kwale', 'Kilifi', 'Tana River', 'Lamu', 'Taita/Taveta', 'Garissa', 'Wajir', 'Mandera', 'Marsabit', 'Isiolo', 'Meru', 'Tharaka-Nithi', 'Embu', 'Kitui', 'Machakos', 'Makueni', 'Nyandarua', 'Nyeri', 'Kirinyaga', 'Murang\'a', 'Kiambu', 'Turkana', 'West Pokot', 'Samburu', 'Trans Nzoia', 'Uasin Gishu', 'Elgeyo/Marakwet', 'Nandi', 'Baringo', 'Laikipia', 'Nakuru', 'Narok', 'Kajiado', 'Kericho', 'Bomet', 'Kakamega', 'Vihiga', 'Bungoma', 'Busia', 'Siaya', 'Kisumu', 'Homa Bay', 'Migori', 'Kisii', 'Nyamira', 'Nairobi'];
+  maritalStatusOptions = ['Single', 'Divorced', 'Widowed'];
+  showSuccess = false;
+  isSubmitting = false;
+  selectedFile: File | null = null;
+  uploadProgress: number | null = null;
+  userId: string | null = null;
+  existingMarriageId: number | null = null;
+  existingPartyIds: number[] = [];
 
-//   private fb = inject(FormBuilder);
+  constructor(
+    private fb: FormBuilder,
+    private apiService: ApiService,
+    private router: Router
+  ) {
+    this.marriageForm = this.fb.group({
+      certificateNumber: ['', Validators.required],
+      marriageDate: ['', Validators.required],
+      submissionLocation: ['', Validators.required],
+      submissionSubCounty: ['', Validators.required],
+      submissionCounty: ['', Validators.required],
+      marriageEntryNumber: ['', Validators.required],
+      registrarCertificationNumber: ['', Validators.required],
+      parties: this.fb.array([]),
+      conductedBy: ['', Validators.required],
+      specialLicenseNumber: [''],
+      privatePartiesCount: [''],
+      privatePartiesNames: [''],
+      marriageCertificateFile: [null, Validators.required]
+    });
+  }
 
-//   marriageForm = this.fb.group({
-//     marriage_certificate_no: ['', [Validators.required]],
-//     entry_no: ['', [Validators.required]],
-//     county: ['', [Validators.required]],
-//     subcounty: ['', [Validators.required]],
-//     place_of_marriage: ['', [Validators.required]],
-//     marriage_date: ['', [Validators.required]],
-//     first_name_groom: ['', [Validators.required]],
-//     last_name_groom: ['', [Validators.required]],
-//     age_groom: ['', [Validators.required, Validators.min(18), Validators.max(150)]],
-//     occupation_groom: ['', [Validators.required]],
-//     residence_groom: ['', [Validators.required]],
-//     first_name_bride: ['', [Validators.required]],
-//     last_name_bride: ['', [Validators.required]],
-//     age_bride: ['', [Validators.required, Validators.min(18), Validators.max(150)]],
-//     occupation_bride: ['', [Validators.required]],
-//     residence_bride: ['', [Validators.required]],
-//     first_name_witness1: ['', [Validators.required]],
-//     last_name_witness1: ['', [Validators.required]],
-//     first_name_witness2: [''], // Optional
-//     last_name_witness2: [''], // Optional
-//     registrar: ['', [Validators.required]],
-//     ref_number: ['', [Validators.required]],
-//     file_url: [''],
-//     user_id: ['']
-//   });
-
-//   errorMessage = '';
-//   successMessage = '';
-//   userId: any;
-//   selectedFile: File | null = null;
-//   isSubmitting = false;
-//   isUploading = false;
-//   uploadProgress = 0;
-
-//   ngOnInit(): void {
-//     console.log("Fill in the marriage form");
-
-//     const user = localStorage.getItem('userLoggedIn');
-//     if (!user) {
-//       setTimeout(() => {
-//         if (confirm('You are not logged in. Do you want to go to the login page?')) {
-//           this.router.navigate(['/login']);
-//         }
-//       }, 3000);
-//       return;
-//     }
-
-//     // Fixed: Changed from 'christianFormData' to 'marriageFormData'
-//     const storedFormData = sessionStorage.getItem('marriageFormData');
-//     if (storedFormData) {
-//       try {
-//         const formData = JSON.parse(storedFormData);
-//         this.marriageForm.patchValue(formData);
-//       } catch (error) {
-//         console.error('Error parsing stored form data:', error);
-//         sessionStorage.removeItem('marriageFormData');
-//       }
-//     }
-
-//     // Load user ID from localStorage
-//     const localStorageData = localStorage.getItem('selectedChristian');
-//     if (localStorageData) {
-//       try {
-//         const parsedData = JSON.parse(localStorageData);
-//         this.userId = parsedData?.id;
-//         if (this.userId) {
-//           this.marriageForm.patchValue({ user_id: this.userId });
-//         }
-//       } catch (error) {
-//         console.error('Error parsing user data:', error);
-//       }
-//     }
-//   }
-
-//   onSubmitMarriageForm(): void {
-//     // Fixed: Removed untouched condition that was preventing valid form submission
-//     // if (this.marriageForm.invalid) {
-//     //   this.errorMessage = 'Please fill in all required fields correctly.';
-//     //   this.markAllFieldsAsTouched();
-//     //   return;
-//     // }
-
-//     // Clear previous messages
-//     this.errorMessage = '';
-//     this.successMessage = '';
-//     this.isSubmitting = true;
-
-//     // Save form data to session storage before submission
-//     this.saveFormDataToSession();
-
-//     if (!this.userId) {
-//       const localStorageData = localStorage.getItem('selectedChristian');
-//       if (localStorageData) {
-//         try {
-//           const parsedData = JSON.parse(localStorageData);
-//           this.userId = parsedData?.id;
-//           this.marriageForm.patchValue({ user_id: this.userId });
-//         } catch (error) {
-//           console.error('Error parsing user data:', error);
-//           this.errorMessage = 'Error retrieving user information. Please try again.';
-//           this.isSubmitting = false;
-//           return;
-//         }
-//       } else {
-//         this.errorMessage = 'User information not found. Please log in again.';
-//         this.isSubmitting = false;
-//         return;
-//       }
-//     }
-
-//     if (this.selectedFile) {
-//       this.uploadFile().then((fileUrl) => {
-//         this.marriageForm.patchValue({ file_url: fileUrl });
-//         this.checkAndSaveMarriage();
-//         console.log('File uploaded successfully:', fileUrl);
-//       }).catch((error) => {
-//         console.error('Error uploading file:', error);
-//         this.errorMessage = 'Error uploading file. Please try again.';
-//         this.isSubmitting = false;
-//       });
-//     } else {
-//       this.checkAndSaveMarriage();
-//     }
-//   }
-
-//   private saveFormDataToSession(): void {
-//     try {
-//       const formData = this.marriageForm.value;
-//       sessionStorage.setItem('marriageFormData', JSON.stringify(formData));
-//     } catch (error) {
-//       console.error('Error saving form data to session:', error);
-//     }
-//   }
-
-//   private checkAndSaveMarriage(): void {
-//     this.marriageService.getMarriageByUserId(this.userId).subscribe({
-//       next: (existingRecord: any) => {
-//         if (existingRecord && existingRecord.length > 0) {
-//           this.updateMarriageRecord(existingRecord[0].marriage_id);
-//         } else {
-//           this.createMarriageRecord();
-//         }
-//       },
-//       error: (error: any) => {
-//         console.error('Error checking existing marriage record:', error);
-//         this.errorMessage = 'Failed to check existing marriage record. Please try again.';
-//         this.isSubmitting = false;
-//       }
-//     });
-//   }
-
-//   private createMarriageRecord(): void {
-//     const formData = this.prepareFormData();
-
-//     this.marriageService.createMarriage(formData).subscribe({
-//       next: (response) => {
-//         console.log('Marriage information added successfully:', response);
-//         this.successMessage = 'Marriage Information added successfully!';
-//         this.clearSessionData();
-//         this.navigateToDashboard();
-//         this.isSubmitting = false;
-//       },
-//       error: (error) => {
-//         console.error('Error adding marriage information:', error);
-//         this.errorMessage = this.getErrorMessage(error) || 'Failed to add marriage information. Please try again.';
-//         this.isSubmitting = false;
-//       }
-//     });
-//   }
-
-//   private updateMarriageRecord(marriageId: any): void {
-//     const formData = this.prepareFormData();
-
-//     this.marriageService.updateMarriage(marriageId, formData).subscribe({
-//       next: (response) => {
-//         console.log('Marriage information updated successfully:', response);
-//         this.successMessage = 'Marriage Information updated successfully!';
-//         this.clearSessionData();
-//         this.navigateToDashboard();
-//         this.isSubmitting = false;
-//       },
-//       error: (error: any) => {
-//         console.error('Error updating marriage information:', error);
-//         this.errorMessage = this.getErrorMessage(error) || 'Failed to update marriage information. Please try again.';
-//         this.isSubmitting = false;
-//       }
-//     });
-//   }
-
-//   private prepareFormData(): FormData {
-//     const formData = this.marriageForm.value as any;
-//     formData.user_id = this.userId; // Ensure user_id is included
+  ngOnInit(): void {
+    this.loadUserData();
     
-//     Object.keys(this.marriageForm.value).forEach(key => {
-//       const value = this.marriageForm.value[key as keyof typeof this.marriageForm.value];
-//       if (value !== null && value !== undefined && value !== '') {
-//         formData.append(key, value.toString());
-//       }
-//     });
+    // Initialize parties if creating new
+    if (this.parties.length === 0) {
+      this.parties.push(this.createPartyGroup('groom'));
+      this.parties.push(this.createPartyGroup('bride'));
+    }
+  }
 
-//     if (this.selectedFile) {
-//       formData.append('marriage_certificate', this.selectedFile);
-//       console.log('Selected file:', this.selectedFile.name);
-//     }
+  private loadUserData(): void {
+    // Get user ID from localStorage
+    const user = localStorage.getItem('userLoggedIn');
+    if (!user) {
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
+      return;
+    }
 
-//     return formData;
-//   }
+    const localStorageData = localStorage.getItem('selectedChristian');
+    if (localStorageData) {
+      try {
+        const parsedData = JSON.parse(localStorageData);
+        this.userId = parsedData?.id || null;
+        if (this.userId) {
+          this.loadExistingMarriageData();
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }
 
-//   private getErrorMessage(error: any): string {
-//     if (error?.error?.message) {
-//       return error.error.message;
-//     }
-//     if (error?.message) {
-//       return error.message;
-//     }
-//     return '';
-//   }
+  private loadExistingMarriageData() {
+    if (!this.userId) return;
 
-//   private clearSessionData(): void {
-//     try {
-//       sessionStorage.removeItem('marriageFormData');
-//     } catch (error) {
-//       console.error('Error clearing session data:', error);
-//     }
-//   }
+    this.apiService.getFullMarriageByUserId(this.userId).subscribe({
+      next: (data: any) => {
+        if (data && data.length > 0) {
+          this.existingMarriageId = data[0].marriage_id;
+          this.populateForm(data[0]);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching marriage data:', error);
+      }
+    });
+  }
 
-//   private markAllFieldsAsTouched(): void {
-//     Object.keys(this.marriageForm.controls).forEach(key => {
-//       this.marriageForm.get(key)?.markAsTouched();
-//     });
-//   }
+  private populateForm(marriageData: any) {
+    this.marriageForm.patchValue({
+      certificateNumber: marriageData.certificate_number,
+      marriageDate: this.formatDateForInput(marriageData.marriage_date),
+      submissionLocation: marriageData.submission_location,
+      submissionSubCounty: marriageData.submission_sub_county,
+      submissionCounty: marriageData.submission_county,
+      marriageEntryNumber: marriageData.marriage_entry_number,
+      registrarCertificationNumber: marriageData.registrar_certification_number,
+      conductedBy: marriageData.conducted_by,
+      specialLicenseNumber: marriageData.special_license_number,
+      privatePartiesCount: marriageData.private_parties_count,
+      privatePartiesNames: marriageData.private_parties_names
+    });
 
-//   navigateToDashboard(): void {
-//     // Save current form state before navigating
-//     this.saveFormDataToSession();
-//     // setTimeout(() => {
-//     //   this.router.navigate(['/dashboard']);
-//     // }, 1500);
-//   }
+    // Clear existing parties
+    while (this.parties.length) {
+      this.parties.removeAt(0);
+    }
 
-//   navigateToConfirmation(): void {
-//     // Save current form state before navigating
-//     this.saveFormDataToSession();
-//     setTimeout(() => {
-//       this.router.navigate(['/edit-confirmation']);
-//     }, 1000);
-//   }
+    // Add parties and collect existing party IDs
+    this.existingPartyIds = [];
+    if (marriageData.parties && marriageData.parties.length > 0) {
+      marriageData.parties.forEach((party: any) => {
+        this.existingPartyIds.push(party.party_id);
+        this.parties.push(this.fb.group({
+          partyId: [party.party_id],
+          partyType: [party.party_type, Validators.required],
+          fullName: [party.full_name, Validators.required],
+          age: [party.age, [Validators.required, Validators.min(18)]],
+          maritalStatus: [party.marital_status, Validators.required],
+          occupation: [party.occupation, Validators.required],
+          residenceAddress: [party.residence_address, Validators.required],
+          residenceCounty: [party.residence_county, Validators.required],
+          residenceSubCounty: [party.residence_sub_county, Validators.required],
+          fatherName: [party.father_name, Validators.required],
+          fatherOccupation: [party.father_occupation, Validators.required],
+          fatherResidence: [party.father_residence, Validators.required],
+          motherName: [party.mother_name, Validators.required],
+          motherOccupation: [party.mother_occupation, Validators.required],
+          motherResidence: [party.mother_residence, Validators.required]
+        }));
+      });
+    }
+  }
 
-//   onFileSelected(event: any): void {
-//     const file = event.target.files[0];
-//     if (file) {
-//       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-//       if (!allowedTypes.includes(file.type)) {
-//         this.errorMessage = 'Please select a valid file type (JPEG, PNG, or PDF).';
-//         this.clearFileInput();
-//         return;
-//       }
+  createPartyGroup(partyType: string, partyId: number | null = null): FormGroup {
+    return this.fb.group({
+      partyId: [partyId],
+      partyType: [partyType, Validators.required],
+      fullName: ['', Validators.required],
+      age: ['', [Validators.required, Validators.min(18)]],
+      maritalStatus: ['', Validators.required],
+      occupation: ['', Validators.required],
+      residenceAddress: ['', Validators.required],
+      residenceCounty: ['', Validators.required],
+      residenceSubCounty: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      fatherOccupation: ['', Validators.required],
+      fatherResidence: ['', Validators.required],
+      motherName: ['', Validators.required],
+      motherOccupation: ['', Validators.required],
+      motherResidence: ['', Validators.required]
+    });
+  }
 
-//       const maxSize = 5 * 1024 * 1024; // 5MB
-//       if (file.size > maxSize) {
-//         this.errorMessage = 'File size must be less than 5MB.';
-//         this.clearFileInput();
-//         return;
-//       }
+  get parties(): FormArray {
+    return this.marriageForm.get('parties') as FormArray;
+  }
 
-//       this.selectedFile = file;
-//       this.errorMessage = '';
-//       console.log('File selected:', file.name, 'Size:', this.getFileSize());
-//     }
-//   }
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+      if (!allowedTypes.includes(file.type)) {
+        this.clearFileInput();
+        return;
+      }
 
-//   private clearFileInput(): void {
-//     const fileInput = document.getElementById('file_upload') as HTMLInputElement;
-//     if (fileInput) {
-//       fileInput.value = '';
-//     }
-//     this.selectedFile = null;
-//   }
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        this.clearFileInput();
+        return;
+      }
 
-//   removeSelectedFile(): void {
-//     this.clearFileInput();
-//     console.log('File removed');
-//   }
+      this.selectedFile = file;
+      this.marriageForm.patchValue({ marriageCertificateFile: file });
+      this.marriageForm.get('marriageCertificateFile')?.updateValueAndValidity();
+    }
+  }
 
-//   getFileName(): string {
-//     return this.selectedFile ? this.selectedFile.name : '';
-//   }
+  private clearFileInput(): void {
+    const fileInput = document.getElementById('marriageCertificateFile') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+    this.selectedFile = null;
+  }
 
-//   getFileSize(): string {
-//     if (!this.selectedFile) return '';
-//     const size = this.selectedFile.size;
-//     if (size < 1024) return size + ' bytes';
-//     if (size < 1024 * 1024) return (size / 1024).toFixed(1) + ' KB';
-//     return (size / (1024 * 1024)).toFixed(1) + ' MB';
-//   }
+  hasFieldError(field: string): boolean {
+    const control = this.marriageForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
 
-//   private uploadFile(): Promise<string> {
-//     return new Promise<string>((resolve, reject) => {
-//       if (!this.selectedFile) {
-//         reject('No file selected');
-//         return;
-//       }
+  getFieldError(field: string): string {
+    const control = this.marriageForm.get(field);
+    if (control && control.errors) {
+      if (control.errors['required']) return 'This field is required';
+    }
+    return '';
+  }
 
-//       // Prepare form data with only the file
-//       const formData = new FormData();
-//       formData.append('marriage_certificate', this.selectedFile);
+  hasArrayFieldError(arrayName: string, index: number, field: string): boolean {
+    const array = this.marriageForm.get(arrayName) as FormArray;
+    const group = array.at(index) as FormGroup;
+    const control = group.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
 
-//       // Listen for file_url value change after update/create
-//       const fileUrlSubscription = this.marriageForm.get('file_url')?.valueChanges.subscribe((fileUrl) => {
-//         if (fileUrl) {
-//           fileUrlSubscription?.unsubscribe();
-//           this.isUploading = false;
-//           resolve(fileUrl);
-//         }
-//       });
+  getArrayFieldError(arrayName: string, index: number, field: string): string {
+    const array = this.marriageForm.get(arrayName) as FormArray;
+    const group = array.at(index) as FormGroup;
+    const control = group.get(field);
+    if (control && control.errors) {
+      if (control.errors['required']) return 'This field is required';
+      if (control.errors['min']) return `Minimum age is ${control.errors['min'].min}`;
+    }
+    return '';
+  }
 
-//       this.isUploading = true;
-//       this.uploadProgress = 100;
+  onSubmit(): void {
+    if (this.marriageForm.invalid || !this.selectedFile || !this.userId) {
+      this.marriageForm.markAllAsTouched();
+      return;
+    }
 
-//       this.marriageService.getMarriageByUserId(this.userId).subscribe({
-//         next: (existingRecord: any) => {
-//           const marriageId = existingRecord && existingRecord.length > 0 ? existingRecord[0].marriage_id : null;
-//           const apiCall = marriageId
-//             ? this.marriageService.updateMarriage(marriageId, formData)
-//             : this.marriageService.createMarriage(formData);
+    this.isSubmitting = true;
+    this.uploadProgress = 0;
+    this.showSuccess = false;
 
-//           apiCall.subscribe({
-//             next: () => {
-//               // Do nothing here, wait for valueChanges to resolve
-//             },
-//             error: (error: any) => {
-//               fileUrlSubscription?.unsubscribe();
-//               this.isUploading = false;
-//               reject(error);
-//             }
-//           });
-//         },
-//         error: (error: any) => {
-//           fileUrlSubscription?.unsubscribe();
-//           this.isUploading = false;
-//           reject(error);
-//         }
-//       });
-//     });
-//   }
+    const marriageData = {
+      certificate_number: this.marriageForm.value.certificateNumber,
+      marriage_date: this.marriageForm.value.marriageDate,
+      submission_location: this.marriageForm.value.submissionLocation,
+      submission_sub_county: this.marriageForm.value.submissionSubCounty,
+      submission_county: this.marriageForm.value.submissionCounty,
+      marriage_entry_number: this.marriageForm.value.marriageEntryNumber,
+      registrar_certification_number: this.marriageForm.value.registrarCertificationNumber,
+      conducted_by: this.marriageForm.value.conductedBy,
+      special_license_number: this.marriageForm.value.specialLicenseNumber,
+      private_parties_count: this.marriageForm.value.privatePartiesCount,
+      private_parties_names: this.marriageForm.value.privatePartiesNames
+    };
 
+    if (this.existingMarriageId) {
+      this.updateMarriage(marriageData);
+    } else {
+      this.createMarriage(marriageData);
+    }
+  }
 
-//   hasFieldError(fieldName: string): boolean {
-//     const field = this.marriageForm.get(fieldName);
-//     return !!(field && field.invalid && (field.dirty || field.touched));
-//   }
+  private createMarriage(marriageData: any) {
+    // Add user ID to marriage data
+    const fullMarriageData = { ...marriageData, user_id: this.userId };
 
-//   getFieldError(fieldName: string): string {
-//     const field = this.marriageForm.get(fieldName);
-//     if (field && field.errors && (field.dirty || field.touched)) {
-//       if (field.errors['required']) {
-//         return `${this.getFieldLabel(fieldName)} is required.`;
-//       }
-//       if (field.errors['min']) {
-//         return `${this.getFieldLabel(fieldName)} must be at least ${field.errors['min'].min}.`;
-//       }
-//       if (field.errors['max']) {
-//         return `${this.getFieldLabel(fieldName)} must not exceed ${field.errors['max'].max}.`;
-//       }
-//       if (field.errors['pattern']) {
-//         return `${this.getFieldLabel(fieldName)} format is invalid.`;
-//       }
-//     }
-//     return '';
-//   }
+    this.apiService.createMarriage(fullMarriageData).subscribe({
+      next: (marriageResponse) => {
+      const marriageId = marriageResponse.marriage_id;
+      this.createParties(marriageId)
+        .then(() => this.uploadDocument(marriageId))
+        .catch(err => {
+        console.error('Error creating parties or document:', err);
+        this.handleError('Error creating parties or document', err);
+        });
+      },
+      error: (err) => {
+      console.error('Error creating marriage record:', err);
+      this.handleError('Error creating marriage record', err);
+      }
+    });
+  }
 
-//   private getFieldLabel(fieldName: string): string {
-//     const labels: { [key: string]: string } = {
-//       'marriage_certificate_no': 'Marriage Certificate Number',
-//       'entry_no': 'Entry Number',
-//       'county': 'County',
-//       'subcounty': 'Sub County',
-//       'place_of_marriage': 'Place of Marriage',
-//       'marriage_date': 'Marriage Date',
-//       'first_name_groom': 'Groom First Name',
-//       'last_name_groom': 'Groom Last Name',
-//       'age_groom': 'Groom Age',
-//       'occupation_groom': 'Groom Occupation',
-//       'residence_groom': 'Groom Residence',
-//       'first_name_bride': 'Bride First Name',
-//       'last_name_bride': 'Bride Last Name',
-//       'age_bride': 'Bride Age',
-//       'occupation_bride': 'Bride Occupation',
-//       'residence_bride': 'Bride Residence',
-//       'first_name_witness1': 'First Witness First Name',
-//       'last_name_witness1': 'First Witness Last Name',
-//       'first_name_witness2': 'Second Witness First Name',
-//       'last_name_witness2': 'Second Witness Last Name',
-//       'registrar': 'Registrar',
-//       'ref_number': 'Reference Number'
-//     };
-//     return labels[fieldName] || fieldName;
-//   }
+  private updateMarriage(marriageData: any) {
+    if (!this.existingMarriageId) return;
 
-//   // Helper method to check if form is ready for submission
-//   isFormValid(): boolean {
-//     return this.marriageForm.valid && !this.isSubmitting && !this.isUploading;
-//   }
+    this.apiService.updateMarriage(this.existingMarriageId.toString(), marriageData).subscribe({
+      next: () => {
+      this.updateParties()
+        .then(() => this.uploadDocument(this.existingMarriageId!))
+        .catch(err => {
+        console.error('Error updating parties or document:', err);
+        this.handleError('Error updating parties or document', err);
+        });
+      },
+      error: (err) => {
+      console.error('Error updating marriage record:', err);
+      this.handleError('Error updating marriage record', err);
+      }
+    });
+  }
 
-//   // Helper method to get form submission button text
-//   getSubmitButtonText(): string {
-//     if (this.isUploading) return 'Uploading...';
-//     if (this.isSubmitting) return 'Submitting...';
-//     return 'Submit Form';
-//   }
-// }
+  private createParties(marriageId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const partyPromises = this.marriageForm.value.parties.map((party: any) => {
+        const partyData = {
+          marriage_id: marriageId,
+          party_type: party.partyType,
+          full_name: party.fullName,
+          age: party.age,
+          marital_status: party.maritalStatus,
+          residence_address: party.residenceAddress,
+          residence_county: party.residenceCounty,
+          residence_sub_county: party.residenceSubCounty,
+          occupation: party.occupation,
+          father_name: party.fatherName,
+          father_occupation: party.fatherOccupation,
+          father_residence: party.fatherResidence,
+          mother_name: party.motherName,
+          mother_occupation: party.motherOccupation,
+          mother_residence: party.motherResidence
+        };
+        return this.apiService.createMarriageParty(partyData).toPromise();
+      });
+
+      Promise.all(partyPromises)
+        .then(() => resolve())
+        .catch(err => {
+          console.error('Error creating parties:', err);
+          reject(err);
+        });
+    });
+  }
+
+  private updateParties(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // First delete existing parties
+      const deletePromises = this.existingPartyIds.map(id => 
+        this.apiService.deleteMarriageParty(id.toString()).toPromise()
+      );
+
+      Promise.all(deletePromises)
+        .then(() => {
+          // Then create new parties
+          if (this.existingMarriageId) {
+            this.createParties(this.existingMarriageId)
+              .then(() => resolve())
+              .catch(err => {
+              console.error('Error creating parties:', err);
+              reject(err);
+              });
+          } else {
+            resolve();
+          }
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  private uploadDocument(marriageId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.selectedFile) {
+        resolve();
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('marriage_id', marriageId.toString());
+      formData.append('document_type', 'Marriage Certificate');
+      formData.append('file', this.selectedFile);
+
+      this.apiService.createMarriageDocument(formData)
+        .pipe(
+          finalize(() => {
+            this.isSubmitting = false;
+            this.uploadProgress = null;
+          })
+        )
+        .subscribe({
+          next: (event: any) => {
+            if (event.type === 1 && event.loaded && event.total) {
+              this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+            }
+            if (event.type === 4) {
+              this.showSuccess = true;
+              setTimeout(() => {
+                this.router.navigate(['/dashboard']);
+              }, 3000);
+              resolve();
+            }
+          },
+          error: (err) => {
+            reject(err);
+          }
+        });
+    });
+  }
+
+  private handleError(context: string, error: any) {
+    console.error(`${context}:`, error);
+    this.isSubmitting = false;
+    this.uploadProgress = null;
+    alert(`${context}. Please try again.`);
+  }
+
+  private formatDateForInput(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  }
+}

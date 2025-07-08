@@ -16,6 +16,7 @@ import { PersonalInfoUpdateComponent } from "./update/personal-info/personal-inf
 import { MarriageCardComponent } from "./marriage-card/marriage-card.component";
 import { VerifyEmailComponent } from "./verify-email/verify-email.component";
 import { SearchComponent } from "./search/search.component";
+import { MarriageUpdateComponent } from "./update/marriage/marriage.component";
 
 
 
@@ -34,7 +35,7 @@ export const routes: Routes = [
     { path: 'edit-baptism', component: BaptismUpdateComponent },
     { path: 'edit-eucharist', component: EucharistUpdateComponent },
     { path: 'edit-confirmation', component: ConfirmationUpdateComponent },
-    // { path: 'edit-marriage', component: MarriageUpdateComponent },
+    { path: 'edit-marriage', component: MarriageUpdateComponent },
     { path: 'marriage-card', component: MarriageCardComponent },
     { path: 'verifyEmail', component: VerifyEmailComponent },
     { path: 'marriages', component: MarriagesComponent },

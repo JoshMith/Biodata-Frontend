@@ -94,6 +94,12 @@ body {
     transition: background-color 0.3s, transform 0.2s ease;
 }
 
+.clear-button:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 #christianName {
     font-size: 24px;
     font-weight: bold;
@@ -114,6 +120,7 @@ body {
 .christian-details {
     display: flex;
     flex-direction: column;
+    /* flex-wrap: wrap; */
     background-color: #fff;
     border: 2px solid #c2ae6d;
     border-radius: 12px;
@@ -146,6 +153,12 @@ body {
     margin-bottom: 15px;
 }
 
+.personal-details #email {
+    display: flex;
+    flex-wrap: wrap;
+    word-break: break-all;
+}
+
 .baptism-details,
 .eucharist-details,
 .confirmation-details,
@@ -154,6 +167,7 @@ body {
     border-left: none;
     border-top: 2px solid #c2ae6d;
     padding-top: 10px;
+    flex-wrap: wrap;
     padding-left: 0;
 }
 

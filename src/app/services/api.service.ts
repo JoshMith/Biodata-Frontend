@@ -167,6 +167,11 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/marriage-parties`, data, { withCredentials: true });
   }
 
+  deleteMarriageParty(id: string): Observable<any>{
+    return this.http.delete(`${this.baseUrl}/marriage-parties/${id}`, { withCredentials: true})
+  }
+
+
   // Marriage Documents
   createMarriageDocument(formData: FormData): Observable<HttpEvent<any>> {
     return this.http.post(`${this.baseUrl}/marriage-documents`, formData, { 

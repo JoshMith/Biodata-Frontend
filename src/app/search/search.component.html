@@ -12,7 +12,7 @@
         <input type="search" class="search-box" placeholder="Search by Name, Phone, or Email" 
                [(ngModel)]="searchQuery" (keyup.enter)="searchChristianByName()" />
         <button class="search-button" (click)="searchChristianByName()">Search</button>
-        <button class="clear-button" (click)="clearSearch()">Clear</button>
+        <button class="clear-button" (click)="clearSearch()">Clear/reset</button>
     </div>
 
     <!-- Error Message -->
@@ -36,7 +36,7 @@
                 <h3>Personal Details <span><a type="button" href="/edit-personal-info">Edit Personal Details</a></span>
                 </h3>
                 <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
-                <p><strong>Email:</strong> {{ selectedChristian.email }}</p>
+                <p id="email"><strong>Email:</strong> {{ selectedChristian.email }}</p>
                 <p><strong>Role:</strong> {{ selectedChristian.roles ? (selectedChristian.roles.charAt(0).toUpperCase()
                     + selectedChristian.roles.slice(1).toLowerCase()) : '' }}</p>
                 <p><strong>Parish:</strong> {{ parishName }}</p>
@@ -90,7 +90,7 @@
             </div>
             <div *ngIf="selectedMarriage" class="marriage-details">
                 <h3>Marriage Details
-                    <span><a type="button" [routerLink]="['/edit-marriage', selectedMarriage.marriage_id]">Edit
+                    <span><a type="button" [routerLink]="['/edit-marriage']">Edit
                             Marriage</a></span>
                     <span><a id="print-card" type="button"
                             [routerLink]="['/marriage-card']">Print Marriage
