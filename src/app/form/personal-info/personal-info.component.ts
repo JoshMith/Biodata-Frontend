@@ -147,10 +147,11 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     // Save form data to session storage in case of navigation issues
     sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.value));
 
-    // Submit to API - changed from addChristian to addUser
+    // Submit to API
     this.apiService.addChristian(this.userForm.value).subscribe({
       next: (response) => {
         this.handleSuccessfulSubmission(response);
+
       },
       error: (error) => {
         this.isSubmitting = false;
@@ -180,6 +181,11 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
 
       // Clear session storage since we've successfully saved
       sessionStorage.removeItem('userFormData');
+
+      // Clear local storage
+      setTimeout(() => {
+        localStorage.removeItem('addedUser');
+      }, 5000);
 
       // Navigate to next step
       this.navigateToBaptism();

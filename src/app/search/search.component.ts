@@ -277,49 +277,49 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.loadSacramentData(christian.id);
   }
 
-searchChristianByName(): void {
+  searchChristianByName(): void {
     if (!this.searchQuery.trim()) {
-        this.displayChristians();
-        return;
+      this.displayChristians();
+      return;
     }
 
     const query = this.searchQuery.toLowerCase().trim();
-    
+
     // Split into individual terms
     const terms = query.split(/[\s,;]+/).filter(t => t.length > 0);
-    
+
     this.apiService.getChristians().pipe(takeUntil(this.destroy$)).subscribe({
-        next: (christians: Christian[]) => {
-            // Start with all Christians
-            let results = [...christians];
-            
-            // Apply progressive filtering for each term
-            for (const term of terms) {
-                results = results.filter(c => {
-                    // Create a searchable string with all relevant fields
-                    const searchable = `${c.first_name} ${c.last_name} ${c.middle_name} ${c.phone_number} ${c.email}`.toLowerCase();
-                    
-                    // Check if any part matches the current term
-                    return searchable.includes(term);
-                });
-                
-                // Early exit if no results remain
-                if (results.length === 0) break;
-            }
-            
-            if (results.length > 0) {
-                this.christians = results;
-                this.selectedChristian = null;
-                this.errorMessage = '';
-            } else {
-                this.errorMessage = 'No matching Christians found';
-                this.christians = [];
-                this.selectedChristian = null;
-            }
-        },
-        error: (error) => this.handleLoadError(error)
+      next: (christians: Christian[]) => {
+        // Start with all Christians
+        let results = [...christians];
+
+        // Apply progressive filtering for each term
+        for (const term of terms) {
+          results = results.filter(c => {
+            // Create a searchable string with all relevant fields
+            const searchable = `${c.first_name} ${c.last_name} ${c.middle_name} ${c.phone_number} ${c.email}`.toLowerCase();
+
+            // Check if any part matches the current term
+            return searchable.includes(term);
+          });
+
+          // Early exit if no results remain
+          if (results.length === 0) break;
+        }
+
+        if (results.length > 0) {
+          this.christians = results;
+          this.selectedChristian = null;
+          this.errorMessage = '';
+        } else {
+          this.errorMessage = 'No matching Christians found';
+          this.christians = [];
+          this.selectedChristian = null;
+        }
+      },
+      error: (error) => this.handleLoadError(error)
     });
-}
+  }
 
 
 
@@ -465,7 +465,7 @@ searchChristianByName(): void {
         } else {
           this.selectedMarriage = sacramentData.marriage;
         }
-      
+
 
         console.log('Loaded sacrament data:', {
           baptism: this.selectedBaptism,
@@ -479,6 +479,94 @@ searchChristianByName(): void {
 
   getDocumentUrl(filePath: string): string {
     return this.apiService.getDocumentUrl(filePath);
+  }
+
+  downloadDocument(documentData: any): void {
+    if (!documentData || !documentData.file_path) {
+      this.errorMessage = 'Invalid document reference - missing file path';
+      console.error('Invalid document:', documentData);
+      return;
+    }
+
+    const downloadUrl = documentData.downloadUrl ||
+      `/marriage-documents/download/${encodeURIComponent(documentData.file_path)}`;
+
+    console.log('Attempting download from:', downloadUrl);
+
+    this.apiService.downloadMarriageDocument(downloadUrl)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => {
+          console.error('Download failed:', error);
+          this.errorMessage = `Download failed: ${error.status === 404 ? 'File not found' : error.message}`;
+          return EMPTY;
+        })
+      )
+      .subscribe({
+        next: (blob: Blob) => {
+          if (blob.size === 0) {
+            this.errorMessage = 'Received empty file';
+            return;
+          }
+          this.handleFileDownload(blob, documentData.file_name || documentData.file_path);
+        },
+        error: (error) => {
+          console.error('Download error:', error);
+          this.errorMessage = 'Failed to download document';
+        }
+      });
+  }
+
+  private handleFileDownload(blob: Blob, fileName: string): void {
+    let url: string | null = null; // Declare url outside try block
+
+    try {
+      // Create blob URL
+      url = window.URL.createObjectURL(blob);
+
+      // Create download link
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = url;
+      link.download = fileName;
+
+      // Append to body and trigger click
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      setTimeout(() => {
+        document.body.removeChild(link);
+        if (url) {
+          window.URL.revokeObjectURL(url);
+        }
+      }, 100);
+    } catch (error) {
+      console.error('Error creating download link:', error);
+      this.errorMessage = 'Failed to initiate download';
+
+      // Revoke URL if it was created
+      if (url) {
+        window.URL.revokeObjectURL(url);
+      }
+    }
+  }
+
+  loadMarriageDocuments(marriageId: string): void {
+    if (!marriageId) return;
+
+    this.apiService.getMarriageDocumentsList(marriageId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (documents) => {
+          if (this.selectedMarriage) {
+            this.selectedMarriage.documents = documents;
+          }
+        },
+        error: (error) => {
+          console.error('Error loading marriage documents:', error);
+        }
+      });
   }
 
 }

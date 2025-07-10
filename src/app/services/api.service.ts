@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { LoginResponse } from '../login/login.component';
 
 @Injectable({
@@ -150,7 +150,7 @@ export class ApiService {
   getFullMarriageByUserId(userId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/marriages/user/${userId}/full`, { withCredentials: true });
   }
-  
+
 
 
 
@@ -167,31 +167,67 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/marriage-parties`, data, { withCredentials: true });
   }
 
-  deleteMarriageParty(id: string): Observable<any>{
-    return this.http.delete(`${this.baseUrl}/marriage-parties/${id}`, { withCredentials: true})
+  deleteMarriageParty(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/marriage-parties/${id}`, { withCredentials: true })
   }
 
 
   // Marriage Documents
   createMarriageDocument(formData: FormData): Observable<HttpEvent<any>> {
-    return this.http.post(`${this.baseUrl}/marriage-documents`, formData, { 
+    return this.http.post(`${this.baseUrl}/marriage-documents`, formData, {
       withCredentials: true,
       reportProgress: true,
       observe: 'events'
     });
   }
 
+  // api.service.ts
   getDocumentUrl(filePath: string): string {
-    // Convert backslashes to forward slashes for proper URL formatting
-    const normalizedPath = filePath.replace(/\\/g, '/');
-    
-    // Check if the path already contains the base URL
-    if (normalizedPath.startsWith('http')) {
-        return normalizedPath;
+    if (!filePath) return '';
+
+    // Just use the filename (already extracted on server)
+    const filename = encodeURIComponent(filePath);
+    return `${this.baseUrl}/marriage-documents/download/${filename}`;
+  }
+
+  downloadMarriageDocument(downloadUrl: string): Observable<Blob> {
+    // Ensure URL is properly formatted
+    let finalUrl = downloadUrl;
+
+    if (!downloadUrl.startsWith('http') && !downloadUrl.startsWith('/')) {
+      finalUrl = `/marriage-documents/download/${downloadUrl}`;
     }
-    
-    // Prepend the base URL if it's a local path
-    return `${this.baseUrl}/${normalizedPath}`;
-}
+
+    if (!finalUrl.startsWith('http')) {
+      finalUrl = `${this.baseUrl}${finalUrl}`;
+    }
+
+    console.log('Final download URL:', finalUrl);
+
+    return this.http.get(finalUrl, {
+      responseType: 'blob',
+      withCredentials: true,
+      observe: 'response'
+    }).pipe(
+      map(response => {
+        if (!response.body) {
+          throw new Error('Empty response body');
+        }
+        return response.body;
+      }),
+      catchError(error => {
+        console.error('Download error:', error);
+        throw error;
+      })
+    );
+  }
+
+  getMarriageDocumentsList(marriageId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/marriage-documents/list/${marriageId}`, {
+      withCredentials: true
+    });
+  }
+
+
 
 }

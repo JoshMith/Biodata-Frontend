@@ -1,370 +1,443 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #fbf8ef;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #fbf8ef;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-.div-home{
-    
-    a {
-        text-decoration: none;
-        background: #6d5507;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 5px;
-        display: flex;
-        justify-content: flex-start;
-        width: fit-content;
-        margin-top: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
+.div-home {
+  a {
+    text-decoration: none;
+    background: #6d5507;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start;
+    width: fit-content;
+    margin-top: 10px;
+    text-align: center;
+    cursor: pointer;
+  }
 }
 
 .role-banner {
-    background-color: #ffe082;
-    color: #4a002a;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin: 20px auto 10px auto;
-    width: fit-content;
-    max-width: 90%;
-    font-size: 18px;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(74, 0, 42, 0.08);
-    text-align: center;
-    letter-spacing: 0.5px;
+  background-color: #ffe082;
+  color: #4a002a;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 20px auto 10px auto;
+  width: fit-content;
+  max-width: 90%;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(74, 0, 42, 0.08);
+  text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .header {
-    background-color: #4a002a;
-    padding: 20px;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
+  background-color: #4a002a;
+  padding: 20px;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .search-container {
-    margin: 20px auto;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    width: 90%;
-    max-width: 600px;
-    display: flex;
-    justify-content: center;
+  margin: 20px auto;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
 }
 
 .search-box {
-    padding: 0px 20px;
-    width: 70%;
-    border: 2px solid #c2ae6d;
-    border-radius: 20px 0 0 20px;
-    outline: none;
-    background-color: #c2ae6d;
-    color: #4a002a; /* Add text color for contrast */
+  padding: 0px 20px;
+  width: 70%;
+  border: 2px solid #c2ae6d;
+  border-radius: 20px 0 0 20px;
+  outline: none;
+  background-color: #c2ae6d;
+  color: #4a002a; /* Add text color for contrast */
 }
 
 .search-button {
-    background-color: #c2ae6d;
-    color: white;
-    border: none;
-    border-left: 2px solid #fff; /* Consistent border syntax */
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 0 20px 20px 0;
-    transition: background-color 0.3s; /* Add transition for hover */
+  background-color: #c2ae6d;
+  color: white;
+  border: none;
+  border-left: 2px solid #fff; /* Consistent border syntax */
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 0 20px 20px 0;
+  transition: background-color 0.3s; /* Add transition for hover */
 }
 
 .search-button:hover {
-    background-color: #8d7f50;
+  background-color: #8d7f50;
 }
 
 .clear-button {
-    background-color: #d9534f;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 20px;
-    width: fit-content;
-    margin-left: 10px;
-    transition: background-color 0.3s, transform 0.2s ease;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 20px;
+  width: fit-content;
+  margin-left: 10px;
+  transition: background-color 0.3s, transform 0.2s ease;
 }
 
 .clear-button:hover {
-    background-color: #c9302c;
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #c9302c;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 #christianName {
-    font-size: 24px;
-    font-weight: bold;
-    color: #4a002a;
-    text-align: center;
-    margin: 20px auto;
-    margin-bottom: 0px;
-    padding: 10px;
-    border: 2px solid #c2ae6d;
-    border-radius: 12px;
-    background-color: #fff2d6;
-    width: fit-content;
-    max-width: 90%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    word-wrap: break-word;
+  font-size: 24px;
+  font-weight: bold;
+  color: #4a002a;
+  text-align: center;
+  margin: 20px auto;
+  margin-bottom: 0px;
+  padding: 10px;
+  border: 2px solid #c2ae6d;
+  border-radius: 12px;
+  background-color: #fff2d6;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
 }
 
 .christian-details {
-    display: flex;
-    flex-direction: column;
-    /* flex-wrap: wrap; */
-    background-color: #fff;
-    border: 2px solid #c2ae6d;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin: 20px auto;
-    margin-top: 0px;
-    margin-bottom: 5px;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    text-align: left;
-    color: #333;
-    width: 90%;
-    max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  background-color: #fff;
+  border: 2px solid #c2ae6d;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin: 20px auto;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  text-align: left;
+  color: #333;
+  width: 90%;
+  max-width: 800px;
 }
 
 .christian-details h1 {
-    margin-top: 0;
-    color: #4a002a;
-    text-align: center;
+  margin-top: 0;
+  color: #4a002a;
+  text-align: center;
 }
 
 .christian-details h3 {
-    margin-top: 15px;
-    color: #4a002a;
-    border-bottom: 1px solid #c2ae6d;
-    padding-bottom: 5px;
+  margin-top: 15px;
+  color: #4a002a;
+  border-bottom: 1px solid #c2ae6d;
+  padding-bottom: 5px;
 }
 
 .personal-details {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .personal-details #email {
-    display: flex;
-    flex-wrap: wrap;
-    word-break: break-all;
+  display: flex;
+  flex-wrap: wrap;
+  word-break: break-all;
 }
 
 .baptism-details,
 .eucharist-details,
 .confirmation-details,
 .marriage-details {
-    margin-top: 10px;
-    border-left: none;
-    border-top: 2px solid #c2ae6d;
-    padding-top: 10px;
-    flex-wrap: wrap;
-    padding-left: 0;
+  margin-top: 10px;
+  border-left: none;
+  border-top: 2px solid #c2ae6d;
+  padding-top: 10px;
+  flex-wrap: wrap;
+  padding-left: 0;
 }
 
 span a {
-    text-decoration: none;
-    color: #4a002a;
-    font-weight:lighter;
-    font-size: 14px;
-    background-color: #c2ae6d;
-    padding: 5px 10px;
-    margin-right: 10px;
-    border-radius: 12px;
-    display: inline-block;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    cursor: pointer;
+  text-decoration: none;
+  color: #4a002a;
+  font-weight: lighter;
+  font-size: 14px;
+  background-color: #c2ae6d;
+  padding: 5px 10px;
+  margin-right: 10px;
+  border-radius: 12px;
+  display: inline-block;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
 span a:hover {
-    background-color: #8d7f50;
-    transform: scale(1.05);
+  background-color: #8d7f50;
+  transform: scale(1.05);
 }
 
 #print-card {
-    background-color: #4a002a;
-    color: #fffbe6;
-    border: 2px solid #c2ae6d;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(74, 0, 42, 0.10);
-    padding: 7px 12px;
-    margin: 10px auto;
-    width: 100px;
-    max-width: 120px;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+  background-color: #4a002a;
+  color: #fffbe6;
+  border: 2px solid #c2ae6d;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(74, 0, 42, 0.1);
+  padding: 7px 12px;
+  margin: 10px auto;
+  width: 100px;
+  max-width: 120px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
 }
-
-.error {
-    color: red;
-    margin-top: 10px;
-}
-
 
 .christian-actions {
-    display: flex;
-    flex-direction: column;
-    margin-top:auto;
-    /* justify-content: center; */
-    /* align-items: center; */
-
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 
-
 .update-button {
-    background-color: #c2ae6d;
-    background: linear-gradient(90deg, #b4aa89, #4e401a);
-    border: 1px solid #4a002a;
-    padding: 10px;
-    color: white;
-    cursor: pointer;
-    margin:auto;
-    border-radius: 5px;
-    margin-top: auto;
-    /* margin-bottom: 20px; */
-    width: 80%;
-    max-width: 300px;
+  background-color: #c2ae6d;
+  background: linear-gradient(90deg, #b4aa89, #4e401a);
+  border: 1px solid #4a002a;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  margin: auto;
+  border-radius: 5px;
+  margin-top: auto;
+  /* margin-bottom: 20px; */
+  width: 80%;
+  max-width: 300px;
 }
 
 .update-button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(90deg, #55233f, #b4aa89);
-    transition: all 0.3s ease-in-out;
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #55233f, #b4aa89);
+  transition: all 0.3s ease-in-out;
 }
 
 .delete-button {
-    background-color: #d9534f;
-    border: 1px solid #b71c1c;
-    padding: 10px 15px;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: auto;
-    margin-top: 5px;
-    width: fit-content;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #d9534f;
+  border: 1px solid #b71c1c;
+  padding: 10px 15px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: auto;
+  margin-top: 5px;
+  width: fit-content;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .delete-button:hover {
-    background-color: #c9302c;
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #c9302c;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+li {
+  word-wrap: break-word;
+}
+
+li button {
+  background-color: #c2ae6d;
+  color: white;
+  border: none;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .styled-christian-card {
-    background-color: #fff;
-    border: 2px solid #c2ae6d;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin: 10px auto;
-    width: 90%;
-    max-width: 300px;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    text-align: left;
-    color: #333;
-    display: inline-block;
-    vertical-align: top;
+  background-color: #fff;
+  border: 2px solid #c2ae6d;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin: 10px auto;
+  width: 90%;
+  max-width: 300px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  text-align: left;
+  color: #333;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .styled-christian-card:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #fff2d6, #c2ae6d);
-    border: 3px solid #4a002a;
-    transition: all 0.3s ease-in-out;
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #fff2d6, #c2ae6d);
+  border: 3px solid #4a002a;
+  transition: all 0.3s ease-in-out;
 }
 
 .styled-christian-card h2 {
-    margin-top: 0;
-    color: #4a002a;
-    font-size: 18px;
-    word-break: break-word;
+  margin-top: 0;
+  color: #4a002a;
+  font-size: 18px;
+  word-break: break-word;
 }
 
 .styled-christian-card p {
-    margin: 8px 0;
-    font-size: 14px;
-    word-break: break-word;
+  margin: 8px 0;
+  font-size: 14px;
+  word-break: break-word;
 }
 
 .highlighted {
-    border: 3px solid #4a002a;
-    background-color: #fff2d6;
-    box-shadow: 0 0 15px rgba(74, 0, 42, 0.5);
+  border: 3px solid #4a002a;
+  background-color: #fff2d6;
+  box-shadow: 0 0 15px rgba(74, 0, 42, 0.5);
 }
+
+.error {
+  background-color: #fff2d6; /* Matches your card background */
+  color: #da1600; /* Vibrant red for better visibility */
+  margin: 20px auto; /* Increased vertical spacing */
+  padding: 15px 25px; /* More padding for prominence */
+  border-radius: 8px;
+  font-size: 1.1rem; /* Slightly larger text */
+  font-weight: 600; /* Bolder weight */
+  border-left: 5px solid #da1600; /* Thicker border in matching red */
+  box-shadow: 0 4px 12px rgba(218, 22, 0, 0.15); /* More pronounced shadow */
+  width: 60%;
+  max-width: 600px; /* Slightly narrower for better focus */
+  text-align: center; /* Centered text */
+  position: relative;
+  animation: fadeIn 0.4s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px; /* Space between icon and text */
+}
+
+.error::before {
+  content: "⚠"; /* Warning emoji */
+  font-size: 1.5rem; /* Larger icon */
+  display: inline-block;
+  margin-right: 10px;
+  animation: fadeIn 0.4s ease-out, pulse 2s infinite;
+}
+
+/* Stronger animation for attention */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(218, 22, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(218, 22, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(218, 22, 0, 0);
+  }
+}
+
 
 /* Media Queries for Responsive Design */
 @media screen and (min-width: 768px) {
-    .christian-details {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 25px;
-    }
-    
-    .baptism-details,
-    .eucharist-details,
-    .confirmation-details,
-    .marriage-details {
-        margin-top: 49px;
-        border-left: 2px solid #c2ae6d;
-        border-top: none;
-        padding-left: 15px;
-        padding-top: 0;
-    }
-    
-    .styled-christian-card {
-        width: 30%;
-        margin: 10px;
-    }
-    
-    #christianName {
-        font-size: 28px;
-    }
+  .christian-details {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 25px;
+  }
+
+  .baptism-details,
+  .eucharist-details,
+  .confirmation-details,
+  .marriage-details {
+    margin-top: 49px;
+    border-left: 2px solid #c2ae6d;
+    border-top: none;
+    padding-left: 15px;
+    padding-top: 0;
+  }
+
+  .styled-christian-card {
+    width: 30%;
+    margin: 10px;
+  }
+
+  #christianName {
+    font-size: 28px;
+  }
 }
 
 @media screen and (max-width: 480px) {
-    .search-container {
-        width: 95%;
-    }
-    
-    .search-box {
-        width: 65%;
-    }
-    
-    .search-button {
-        padding: 10px 15px;
-    }
-    
-    .christian-details {
-        padding: 10px;
-    }
-    
-    .styled-christian-card {
-        width: 85%;
-    }
-    
-    .christian-details p {
-        font-size: 14px;
-    }
-    
-    #christianName {
-        font-size: 20px;
-        padding: 8px;
-    }
+  .search-container {
+    width: 95%;
+  }
+
+  .search-box {
+    width: 65%;
+  }
+
+  .search-button {
+    padding: 10px 15px;
+  }
+
+  .christian-details {
+    padding: 10px;
+  }
+
+  .styled-christian-card {
+    width: 85%;
+  }
+
+  .christian-details p {
+    font-size: 14px;
+  }
+
+  #christianName {
+    font-size: 20px;
+    padding: 8px;
+  }
+
+  .error {
+    width: 90%;
+    padding: 10px 15px;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .error::before {
+    margin: 0 0 8px 0;
+  }
 }
 
 /* Add viewport meta tag in index.html */

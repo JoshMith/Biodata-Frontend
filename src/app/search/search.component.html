@@ -9,8 +9,8 @@
     </div>
 
     <div class="search-container">
-        <input type="search" class="search-box" placeholder="Search by Name, Phone, or Email" 
-               [(ngModel)]="searchQuery" (keyup.enter)="searchChristianByName()" />
+        <input type="search" class="search-box" placeholder="Search by Name, Phone, or Email" [(ngModel)]="searchQuery"
+            (keyup.enter)="searchChristianByName()" />
         <button class="search-button" (click)="searchChristianByName()">Search</button>
         <button class="clear-button" (click)="clearSearch()">Clear/reset</button>
     </div>
@@ -20,8 +20,7 @@
 
     <!-- Christians List (Always Visible) -->
     <div class="christians-list">
-        <div *ngFor="let christian of christians" class="styled-christian-card" 
-             (click)="selectChristian(christian)">
+        <div *ngFor="let christian of christians" class="styled-christian-card" (click)="selectChristian(christian)">
             <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
             <p><strong>Email:</strong> {{ christian.email }}</p>
             <p><strong>Phone:</strong> {{ christian.phone_number }}</p>
@@ -92,8 +91,7 @@
                 <h3>Marriage Details
                     <span><a type="button" [routerLink]="['/edit-marriage']">Edit
                             Marriage</a></span>
-                    <span><a id="print-card" type="button"
-                            [routerLink]="['/marriage-card']">Print Marriage
+                    <span><a id="print-card" type="button" [routerLink]="['/marriage-card']">Print Marriage
                             Card</a></span>
                 </h3>
                 <p><strong>Marriage Certificate No:</strong> {{ selectedMarriage.certificate_number }}</p>
@@ -128,13 +126,11 @@
                 <p><strong>Reference Number:</strong> {{ selectedMarriage.registrar_certification_number }}</p>
                 <p><strong>Date:</strong> {{ selectedMarriage.marriage_date | date:'yyyy-MM-dd' }}</p>
                 <div *ngIf="selectedMarriage.documents && selectedMarriage.documents.length">
-                    <h4>Marriage Documents</h4>
+                    <h3>Marriage Documents</h3>
                     <ul>
                         <li *ngFor="let doc of selectedMarriage.documents">
-                            <a [href]="getDocumentUrl(doc.file_path)" download="{{ doc.file_name }}">
-                                {{ doc.file_name }}
-                            </a>
-                            <span>({{ doc.document_type }})</span>
+                            {{ doc.file_name }}
+                            <button (click)="downloadDocument(doc)">Download</button>
                         </li>
                     </ul>
                 </div>
