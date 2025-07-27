@@ -1,0 +1,142 @@
+/* Base Styles */
+.sacrament-card {
+  font-family: 'Times New Roman', serif;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  color: black;
+}
+
+.card-page {
+  padding: 20px;
+  min-height: 11in;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.card-header h1 {
+  font-size: 24px;
+  text-decoration: underline;
+  margin: 0;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column {
+  width: 48%;
+}
+
+.field {
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.label {
+  font-weight: bold;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.value {
+  flex-grow: 1;
+  border-bottom: 1px dotted black;
+  padding-left: 10px;
+}
+
+.sacrament-group {
+  margin-bottom: 20px;
+}
+
+.sacrament-group h3 {
+  text-decoration: underline;
+  margin: 15px 0 10px 0;
+}
+
+/* Page 1 Styles */
+.page1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.notes-section {
+  text-align: center;
+  width: 100%;
+}
+
+.notes-section h3 {
+  text-decoration: underline;
+  margin-bottom: 30px;
+}
+
+.church-info {
+  margin-bottom: 30px;
+}
+
+.church-info h4 {
+  margin: 5px 0;
+}
+
+.divider {
+  border-top: 1px solid black;
+  margin: 15px auto;
+  width: 80%;
+}
+
+.bible-verse {
+  font-style: italic;
+  margin: 30px 0;
+}
+
+.registration-numbers {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.print-button {
+  background-color: #4a002a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 20px auto;
+  display: block;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Print Styles */
+@media print {
+  .print-controls {
+    display: none;
+  }
+
+  body {
+    background: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sacrament-card {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .card-page {
+    page-break-after: always;
+    height: 11in;
+  }
+
+  .card-page:last-child {
+    page-break-after: auto;
+  }
+}

@@ -80,23 +80,40 @@ input.error:focus {
     box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
 }
 
-.error-message {
-    color: #dc3545;
-    font-size: 12px;
-    margin-top: 2px;
-    display: block;
-    font-weight: normal;
-}
+
 
 .success-message {
-    color: #28a745;
+    color: #2e7d32;
     font-weight: bold;
     text-align: center;
-    padding: 10px;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    border-radius: 5px;
     margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+}
+
+.error-alert {
+    color: #d32f2f;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #d85b5b;
+    border-radius: 5px;
+}
+
+
+.warning-message {
+    color: #a19f0aff;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #b1ae21ff;
+    border-radius: 5px;
 }
 
 .form-actions{
@@ -138,7 +155,13 @@ button:disabled {
     margin-bottom: 20px;
 }
 
-.div-home a {
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; 
+}
+
+.nav-buttons a {
     text-decoration: none;
     background: #6d5507;
     color: white;
@@ -148,11 +171,16 @@ button:disabled {
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    flex: 1; /* Make buttons equal width */
+    max-width: 120px; /* Limit maximum width */
 }
 
-.div-home a:hover {
+.nav-buttons a:hover {
     background: #C2AE6D;
+    transform: translateY(-2px); /* Add slight lift effect */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add shadow on hover */
 }
+
 
 .section {
     margin-bottom: 30px;

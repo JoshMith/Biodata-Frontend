@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './personal-info.component.html',
   styleUrl: './personal-info.component.css'
 })
-export class PersonalInfoComponent implements OnInit, AfterViewInit {
+export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   // Form group
   userForm: FormGroup;
 
@@ -81,7 +81,29 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // Any additional setup can be done here
+    const userData = localStorage.getItem('userLoggedIn');
+    if (userData) {
+      const user = JSON.parse(userData);
+      const role = user.roles;
+
+      if (role === 'superuser') {
+        this.getFieldLabel('roles');
+      }
+      else {
+        this.getFieldLabel('roles');
+        this.userForm.get('roles')?.disable(); // Disable the roles field for non-superusers
+        this.userForm.get('roles')?.setValue('member'); // Set default role to 'member'
+        this.userForm.get('roles')?.markAsTouched();
+      }
+    }
+
   }
+
+  ngOnDestroy(): void {
+    // remove added user from localStorage
+    
+  }
+
 
   // Load deaneries from API
   private loadDeaneries(): void {
@@ -182,10 +204,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
       // Clear session storage since we've successfully saved
       sessionStorage.removeItem('userFormData');
 
-      // Clear local storage
-      setTimeout(() => {
-        localStorage.removeItem('addedUser');
-      }, 5000);
+      
 
       // Navigate to next step
       this.navigateToBaptism();
@@ -238,9 +257,12 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
   }
 
   navigateToBaptism(): void {
-    setTimeout(() => {
+        // Save form data before navigating away
+    if (this.userForm.dirty) {
+      sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.value));
+    }
+
       this.router.navigate(['/baptism']);
-    }, 1500);
   }
 
   navigateToDashboard(): void {

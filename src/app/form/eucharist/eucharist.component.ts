@@ -30,6 +30,13 @@ export class EucharistComponent {
     // this.onSubmitEucharistForm();
     console.log("Fill in the eucharist form");
 
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('eucharistFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.eucharistForm.patchValue(formData);
+    }
+
     // Check if user is logged in
     const user = localStorage.getItem('userLoggedIn');
     if (!user) {
@@ -39,13 +46,6 @@ export class EucharistComponent {
         }
       }, 3000);
       return;
-    }
-
-    // Check if form data exists in session storage
-    const storedFormData = sessionStorage.getItem('christianFormData');
-    if (storedFormData) {
-      const formData = JSON.parse(storedFormData);
-      this.eucharistForm.patchValue(formData);
     }
   }
 
@@ -70,9 +70,16 @@ export class EucharistComponent {
         console.log(this.eucharistForm); // Log the form data
         this.successMessage = 'Eucharist Information Added successfully! Redirecting to next page...'; // Set success message
         this.navigateToConfirmation(); // Navigate to the login page after a delay
-      })
+        // Clear session storage since we've successfully saved
+        sessionStorage.removeItem('userFormData');
+      },
+      (error) => {
+        console.error('Error adding eucharist information:', error); // Log any error
+        this.errorMessage = error.error?.message || 'Failed to add eucharist information. Fill in all the fields to continue...';
+      });
     }
   }
+
 
     // Helper method to check if a field has errors and is touched
 hasFieldError(fieldName: string): boolean {
@@ -100,15 +107,19 @@ private getFieldLabel(fieldName: string): string {
 }
 
   navigateToConfirmation() {
-    setTimeout(() => {
+    // Save form data before navigating away
+    if (this.eucharistForm.dirty) {
+      sessionStorage.setItem('eucharistFormData', JSON.stringify(this.eucharistForm.value));
+    }
       this.router.navigate(['/confirmation']); // Navigate to the confirmation page
-    }, 1500); // Delay of 2 seconds before navigation
   }
 
   navigateToBaptism() {
-    setTimeout(() => {
+    // Save form data before navigating away
+    if (this.eucharistForm.dirty) {
+      sessionStorage.setItem('eucharistFormData', JSON.stringify(this.eucharistForm.value));
+    }
       this.router.navigate(['/baptism']); // Navigate to the personal info page
-    }, 1000); // Delay of 2 seconds before navigation
   }
 
 

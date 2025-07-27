@@ -6,117 +6,144 @@ import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-eucharist',
+  standalone: true,
   imports: [ReactiveFormsModule, NgIf],
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })
 export class EucharistUpdateComponent implements OnInit {
-  constructor(
-    private router: Router, // Inject Router for navigation
-    private eucharistService: ApiService // Inject ApiService for API calls
-  ) { }
+  private router = inject(Router);
+  private eucharistService = inject(ApiService);
+  private fb = inject(FormBuilder);
 
-  private fb = inject(FormBuilder) // Inject FormBuilder for form creation
-  eucharistForm = this.fb.group({ // Create a form group for the eucharist form
-    eucharist_place: [''],
-    eucharist_date: [''],
-    user_id: [''],
+  eucharistForm = this.fb.group({
+    eucharist_place: ['', Validators.required],
+    eucharist_date: ['', Validators.required],
+    user_id: ['']
   });
 
   errorMessage = '';
   successMessage = '';
-  userId: any; // Variable to store the user ID
+  existingEucharistId: string | null = null;
+  noEucharist = false;
 
-  ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
-    console.log("Fill in the eucharist form");
+  ngOnInit(): void {
+    console.log("Initializing eucharist form");
 
-    // Check if user is logged in
-    const user = localStorage.getItem('userLoggedIn');
-    if (!user) {
-      setTimeout(() => {
-        if (confirm('You are not logged in. Do you want to go to the login page?')) {
-          this.router.navigate(['/login']);
-        }
-      }, 3000);
+    // Check authentication
+    if (!localStorage.getItem('userLoggedIn')) {
+      if (confirm('You are not logged in. Go to login page?')) {
+        this.router.navigate(['/login']);
+      }
       return;
     }
 
-    // Check if form data exists in session storage
-    const storedFormData = sessionStorage.getItem('christianFormData');
-    if (storedFormData) {
-      const formData = JSON.parse(storedFormData);
-      this.eucharistForm.patchValue(formData);
-    }
+    // Load existing data
+    this.loadExistingData();
   }
+
+  private loadExistingData(): void {
+  const christianId = this.getSelectedChristianId();
+  if (!christianId) {
+    this.errorMessage = 'No Christian selected';
+    return;
+  }
+
+  this.eucharistService.getEucharistByUserId(christianId).subscribe({
+    next: (data: any) => {
+      if (data && data.length > 0) {
+        this.existingEucharistId = data[0].eucharist_id;
+        this.eucharistForm.patchValue({
+          eucharist_place: data[0].eucharist_place,
+          eucharist_date: this.formatDateForInput(data[0].eucharist_date),
+          user_id: christianId
+        });
+      } else {
+        // Initialize with user_id if no existing data
+        this.eucharistForm.patchValue({ user_id: christianId });
+        this.noEucharist = true;
+      }
+    },
+    error: (error) => {
+      console.error('Error loading eucharist data:', error);
+      this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
+    }
+  });
+}
+
+// Add this helper method to your component
+private formatDateForInput(dateString: string): string | null {
+  if (!dateString) return null;
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      console.error('Invalid date string:', dateString);
+      return null;
+    }
+    
+    // Convert to local date string in YYYY-MM-DD format
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  } catch (e) {
+    console.error('Error formatting date:', e);
+    return null;
+  }
+}
 
   onSubmitEucharistForm(): void {
-    if (this.eucharistForm.untouched) {
-      this.errorMessage = 'Please fill in all required fields.';
-      console.log('Please fill in all required fields.');
-      return;
-    }
     if (this.eucharistForm.invalid) {
-      this.errorMessage = 'Please fill in all required fields.';
+      this.errorMessage = 'Please fill in all required fields';
       return;
     }
 
-    const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
-    if (localStorageData) {
-      const parsedData = JSON.parse(localStorageData);
-      this.userId = parsedData?.id;
+    const formData = this.eucharistForm.value;
+    const christianId = this.getSelectedChristianId();
+    if (!christianId) {
+      this.errorMessage = 'No Christian selected';
+      return;
+    }
 
-      this.eucharistForm.patchValue({ user_id: this.userId }); // Assign userId from local storage to the form data
+    const request = this.existingEucharistId
+      ? this.eucharistService.updateEucharist(this.existingEucharistId, formData)
+      : this.eucharistService.createEucharist(formData);
 
-      // Check if the record already exists
-      this.eucharistService.getEucharistByUserId(this.userId).subscribe(
-        (existingRecord: any) => {
-          if (existingRecord.length > 0) {
-            // If record exists, update it
-            console.log("This is the fetched existing record: ", existingRecord);
-            const eucharistId = existingRecord[0].eucharist_id;
-            this.eucharistService.updateEucharist(eucharistId, this.eucharistForm.value).subscribe(
-              (response) => {
-                console.log('Eucharist information updated successfully:', response); // Log the successful update response
-                this.successMessage = 'Eucharist Information updated successfully!'; // Set success message
-                this.navigateToConfirmation(); // Navigate to the next page after a delay
-              },
-              (error: any) => {
-                console.error('Error updating eucharist information:', error); // Log any error
-                this.errorMessage = 'Failed to update eucharist information. Please try again.';
-              }
-            );
-          } else {
-            // If record does not exist, create a new one
-            this.eucharistService.createEucharist(this.eucharistForm.value).subscribe(
-              (response) => {
-                console.log('Eucharist information added successfully:', response); // Log the successful creation response
-                this.successMessage = 'Eucharist Information added successfully!'; // Set success message
-                this.navigateToConfirmation(); // Navigate to the next page after a delay
-              },
-              (error) => {
-                console.error('Error adding eucharist information:', error); // Log any error
-                this.errorMessage = 'Failed to add eucharist information. Fill in all the fields to continue...';
-              }
-            );
-          }
-        },
-        (error: any) => {
-          console.error('Error checking existing eucharist record:', error); // Log any error
-          this.errorMessage = 'Failed to check existing eucharist record. Please try again.';
-        }
-      );
+    request.subscribe({
+      next: (response) => {
+        this.successMessage = 'Eucharist saved successfully!';
+        setTimeout(() => {
+          this.navigateToConfirmation();
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Error saving eucharist:', error);
+        this.errorMessage = error.error?.message || 'Failed to save eucharist';
+      }
+    });
+  }
+
+  private getSelectedChristianId(): string | null {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    return selectedChristian ? JSON.parse(selectedChristian).id : null;
+  }
+
+  navigateToConfirmation(): void {
+    const christianId = this.getSelectedChristianId();
+    if (christianId) {
+      this.router.navigate(['/edit-confirmation'], { 
+        queryParams: { id: christianId } 
+      });
     }
   }
 
-  navigateToConfirmation() {
-    setTimeout(() => {
-      this.router.navigate(['/edit-confirmation']); // Navigate to the confirmation page
-    }, 1500); // Delay of 5 seconds before navigation
-  }
-
-  navigateToBaptism() {
-    setTimeout(() => {
-      this.router.navigate(['/edit-baptism']); // Navigate to the baptism page
-    }, 1000); // Delay of 2 seconds before navigation
+  navigateToBaptism(): void {
+    const christianId = this.getSelectedChristianId();
+    if (christianId) {
+      this.router.navigate(['/edit-baptism'], { 
+        queryParams: { id: christianId } 
+      });
+    }
   }
 }

@@ -6,20 +6,19 @@ import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-confirmation',
+  standalone: true,
   imports: [ReactiveFormsModule, NgIf],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
 export class ConfirmationUpdateComponent implements OnInit {
-  constructor(
-    private router: Router, // Inject Router for navigation
-    private confirmationService: ApiService // Inject ApiService for API calls
-  ) { }
+  private router = inject(Router);
+  private confirmationService = inject(ApiService);
+  private fb = inject(FormBuilder);
 
-  private fb = inject(FormBuilder); // Inject FormBuilder for form creation
-  confirmationForm = this.fb.group({ // Create a form group for the confirmation form
-    confirmation_place: [''],
-    confirmation_date: [''],
+  confirmationForm = this.fb.group({
+    confirmation_place: ['', Validators.required],
+    confirmation_date: ['', Validators.required],
     minister: [''],
     confirmation_no: [''],
     user_id: ['']
@@ -27,98 +26,124 @@ export class ConfirmationUpdateComponent implements OnInit {
 
   errorMessage = '';
   successMessage = '';
-  userId: any; // Variable to store the user ID
+  existingConfirmationId: string | null = null;
+  noConfirmation = false;
 
-  ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
-    console.log("Fill in the confirmation form");
+  ngOnInit(): void {
+    console.log("Initializing confirmation form");
 
-    // Check if user is logged in
-    const user = localStorage.getItem('userLoggedIn');
-    if (!user) {
-      setTimeout(() => {
-        if (confirm('You are not logged in. Do you want to go to the login page?')) {
-          this.router.navigate(['/login']);
-        }
-      }, 3000);
+    // Check authentication
+    if (!localStorage.getItem('userLoggedIn')) {
+      if (confirm('You are not logged in. Go to login page?')) {
+        this.router.navigate(['/login']);
+      }
       return;
     }
 
-    // Check if form data exists in session storage
-    const storedFormData = sessionStorage.getItem('christianFormData');
-    if (storedFormData) {
-      const formData = JSON.parse(storedFormData);
-      this.confirmationForm.patchValue(formData);
-    }
+    // Load existing data
+    this.loadExistingData();
   }
 
+  private loadExistingData(): void {
+  const christianId = this.getSelectedChristianId();
+  if (!christianId) {
+    this.errorMessage = 'No Christian selected';
+    return;
+  }
+
+  this.confirmationService.getConfirmationByUserId(christianId).subscribe({
+    next: (data: any) => {
+      if (data?.length > 0) {
+        const confirmationData = data[0];
+        this.existingConfirmationId = confirmationData.confirmation_id;
+        
+        this.confirmationForm.patchValue({
+          confirmation_place: confirmationData.confirmation_place,
+          confirmation_date: this.formatDateForInput(confirmationData.confirmation_date),
+          minister: confirmationData.minister,
+          confirmation_no: confirmationData.confirmation_no,
+          user_id: christianId
+        });
+      } else {
+        this.confirmationForm.patchValue({ user_id: christianId });
+        this.noConfirmation = true;
+      }
+    },
+    error: (error) => {
+      console.error('Error loading confirmation data:', error);
+      this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
+    }
+  });
+}
+
+// Add this helper method to your component
+private formatDateForInput(dateString: string): string | null {
+  if (!dateString) return null;
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return null; // Check for invalid dates
+    
+    // Convert to local date and format as YYYY-MM-DD
+    const offset = date.getTimezoneOffset() * 60000; // Handle timezone offset
+    const localDate = new Date(date.getTime() - offset);
+    return localDate.toISOString().split('T')[0];
+  } catch (e) {
+    console.error('Error formatting date:', e);
+    return null;
+  }
+}
   onSubmitConfirmationForm(): void {
-    if (this.confirmationForm.untouched) {
-      this.errorMessage = 'Please fill in all required fields.';
-      console.log('Please fill in all required fields.');
-      return;
-    }
     if (this.confirmationForm.invalid) {
-      this.errorMessage = 'Please fill in all required fields.';
+      this.errorMessage = 'Please fill in all required fields';
       return;
     }
 
-    const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
-    if (localStorageData) {
-      const parsedData = JSON.parse(localStorageData);
-      this.userId = parsedData?.id;
+    const formData = this.confirmationForm.value;
+    const christianId = this.getSelectedChristianId();
+    if (!christianId) {
+      this.errorMessage = 'No Christian selected';
+      return;
+    }
 
-      this.confirmationForm.patchValue({ user_id: this.userId }); // Assign userId from local storage to the form data
+    const request = this.existingConfirmationId
+      ? this.confirmationService.updateConfirmation(this.existingConfirmationId, formData)
+      : this.confirmationService.createConfirmation(formData);
 
-      // Check if the record already exists
-      this.confirmationService.getConfirmationByUserId(this.userId).subscribe(
-        (existingRecord: any) => {
-          if (existingRecord.length > 0) {
-            // If record exists, update it
-            console.log("This is the fetched existing record: ", existingRecord);
-            const confirmationId = existingRecord[0].confirmation_id;
-            this.confirmationService.updateConfirmation(confirmationId, this.confirmationForm.value).subscribe(
-              (response) => {
-                console.log('Confirmation information updated successfully:', response); // Log the successful update response
-                this.successMessage = 'Confirmation Information updated successfully!'; // Set success message
-                this.navigateToMarriage(); // Navigate to the next page after a delay
-              },
-              (error: any) => {
-                console.error('Error updating confirmation information:', error); // Log any error
-                this.errorMessage = 'Failed to update confirmation information. Please try again.';
-              }
-            );
-          } else {
-            // If record does not exist, create a new one
-            this.confirmationService.createConfirmation(this.confirmationForm.value).subscribe(
-              (response) => {
-                console.log('Confirmation information added successfully:', response); // Log the successful creation response
-                this.successMessage = 'Confirmation Information added successfully!'; // Set success message
-                this.navigateToMarriage(); // Navigate to the next page after a delay
-              },
-              (error) => {
-                console.error('Error adding confirmation information:', error); // Log any error
-                this.errorMessage = 'Failed to add confirmation information. Fill in all the fields to continue...';
-              }
-            );
-          }
-        },
-        (error: any) => {
-          console.error('Error checking existing confirmation record:', error); // Log any error
-          this.errorMessage = 'Failed to check existing confirmation record. Please try again.';
-        }
-      );
+    request.subscribe({
+      next: (response) => {
+        this.successMessage = 'Confirmation saved successfully!';
+        setTimeout(() => {
+          this.navigateToMarriage();
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Error saving confirmation:', error);
+        this.errorMessage = error.error?.message || 'Failed to save confirmation';
+      }
+    });
+  }
+
+  private getSelectedChristianId(): string | null {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    return selectedChristian ? JSON.parse(selectedChristian).id : null;
+  }
+
+  navigateToMarriage(): void {
+    const christianId = this.getSelectedChristianId();
+    if (christianId) {
+      this.router.navigate(['/edit-marriage'], { 
+        queryParams: { id: christianId } 
+      });
     }
   }
 
-  navigateToMarriage() {
-    setTimeout(() => {
-      this.router.navigate(['/edit-marriage']); // Navigate to the marriage page
-    }, 1500); // Delay of 5 seconds before navigation
-  }
-
-  navigateToEucharist() {
-    setTimeout(() => {
-      this.router.navigate(['/edit-eucharist']); // Navigate to the eucharist page
-    }, 1000); // Delay of 1 second before navigation
+  navigateToEucharist(): void {
+    const christianId = this.getSelectedChristianId();
+    if (christianId) {
+      this.router.navigate(['/edit-eucharist'], { 
+        queryParams: { id: christianId } 
+      });
+    }
   }
 }

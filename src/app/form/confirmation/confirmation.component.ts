@@ -33,6 +33,13 @@ export class ConfirmationComponent {
     // this.onSubmitConfirmationForm();
     console.log("Fill in the confirmation form");
 
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('confirmationFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.confirmationForm.patchValue(formData);
+    }
+
     // Check if user is logged in
     const user = localStorage.getItem('userLoggedIn');
     if (!user) {
@@ -42,13 +49,6 @@ export class ConfirmationComponent {
         }
       }, 3000);
       return;
-    }
-
-    // Check if form data exists in session storage
-    const storedFormData = sessionStorage.getItem('christianFormData');
-    if (storedFormData) {
-      const formData = JSON.parse(storedFormData);
-      this.confirmationForm.patchValue(formData);
     }
   }
 
@@ -77,10 +77,13 @@ export class ConfirmationComponent {
           console.log(this.confirmationForm); // Log the form data
           this.successMessage = 'Confirmation Information Added successfully! Redirecting to next page...'; // Set success message
           this.navigateToMarriage(); // Navigate to the marriage page after a delay
+          // Clear session storage since we've successfully saved
+          sessionStorage.removeItem('userFormData');
+
         },
         (error) => {
           console.error('Error adding confirmation information:', error);
-          this.errorMessage = 'Failed to add confirmation information. Please try again.';
+          this.errorMessage = error.error?.message || 'Failed to add confirmation information. Please try again.';
         }
       )
     }
@@ -114,14 +117,18 @@ private getFieldLabel(fieldName: string): string {
 }
 
   navigateToMarriage() {
-    setTimeout(() => {
-      this.router.navigate(['/marriage']); // Navigate to the marriage page
-    }, 1500); // Delay of 1.5 seconds before navigation
+    // Save form data before navigating away
+    if (this.confirmationForm.dirty) {
+      sessionStorage.setItem('confirmationFormData', JSON.stringify(this.confirmationForm.value));
+    }
+      this.router.navigate(['/marriage']);
   }
 
   navigateToEucharist() {
-    setTimeout(() => {
-      this.router.navigate(['/eucharist']); // Navigate to the eucharist page
-    }, 1000); // Delay of 1 second before navigation
+    // Save form data before navigating away
+    if (this.confirmationForm.dirty) {
+      sessionStorage.setItem('confirmationFormData', JSON.stringify(this.confirmationForm.value));
+    }
+      this.router.navigate(['/eucharist']);
   }
 }

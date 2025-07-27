@@ -34,6 +34,13 @@ export class BaptismComponent {
   ngOnInit(): void {
     console.log("Fill in the baptism form");
 
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('baptismFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.baptismForm.patchValue(formData);
+    }
+
     // Check if user is logged in
     const user = localStorage.getItem('userLoggedIn');
     if (!user) {
@@ -50,13 +57,6 @@ export class BaptismComponent {
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
       this.userId = parsedData?.id;
-    }
-
-    // Check if form data exists in session storage
-    const storedFormData = sessionStorage.getItem('baptismFormData');
-    if (storedFormData) {
-      const formData = JSON.parse(storedFormData);
-      this.baptismForm.patchValue(formData);
     }
   }
 
@@ -90,9 +90,11 @@ export class BaptismComponent {
       next: (response) => {
         console.log('Baptism information added successfully:', response);
         this.successMessage = 'Baptism Information Added successfully! Redirecting to next page...';
+        
+        this.navigateToEucharist();
+
         // Clear the stored form data on success
         sessionStorage.removeItem('baptismFormData');
-        this.navigateToEucharist();
       },
       error: (error) => {
         console.error('Error creating baptism record:', error);
@@ -133,14 +135,18 @@ export class BaptismComponent {
   }
 
   navigateToEucharist() {
-    setTimeout(() => {
+    // Save form data before navigating away
+    if (this.baptismForm.dirty) {
+      sessionStorage.setItem('baptismFormData', JSON.stringify(this.baptismForm.value));
+    }
       this.router.navigate(['/eucharist']);
-    }, 1500);
   }
 
   navigateToPersonalInfo() {
-    setTimeout(() => {
+    // Save form data before navigating away
+    if (this.baptismForm.dirty) {
+      sessionStorage.setItem('baptismFormData', JSON.stringify(this.baptismForm.value));
+    }
       this.router.navigate(['/personal-info']);
-    }, 1000);
   }
 }

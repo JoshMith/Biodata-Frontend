@@ -2,6 +2,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
+    background-color: rgb(255, 255, 255);
 }
 
 /* Sidebar styling */
@@ -13,7 +14,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2); */
+    box-shadow: 
+        2px 0 8px rgba(12, 0, 4, 0.15),
+        4px 0 16px rgba(12, 0, 4, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid rgba(12, 0, 4, 0.1);
+}
+
+/* Hover effect for smoother interaction */
+.sidebar:hover {
+    box-shadow: 
+        3px 0 12px rgba(12, 0, 4, 0.2),
+        6px 0 24px rgba(12, 0, 4, 0.15);
+    transform: translateX(2px);
 }
 
 .sidebar h2 {
@@ -87,3 +100,52 @@ body {
     margin-top: 100px;
     color: white;
 }
+
+.footer {
+    background-color: #4A002A;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: auto;
+    border-radius: 0 0 10px 10px;
+
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+    }
+
+    .sidebar h2 {
+        font-size: 24px;
+    }
+
+    .sidebar button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .role-banner {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .dashboard h1 {
+        font-size: 32px;
+    }
+
+    .total-christians {
+        font-size: 20px;
+        padding: 15px;
+    }
+}
+

@@ -2,9 +2,8 @@ import { Routes } from "@angular/router";
 
 import { LoginComponent } from "./login/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-// import { MarriageComponent } from "./form/marriage/marriage.component";
+import { MarriageComponent } from "./form/marriage/marriage.component";
 import { RegisterComponent } from "./register/register.component";
-import { MarriagesComponent } from "./form/marriages/marriages.component";
 import { PersonalInfoComponent } from "./form/personal-info/personal-info.component";
 import { BaptismComponent } from "./form/baptism/baptism.component";
 import { EucharistComponent } from "./form/eucharist/eucharist.component";
@@ -17,6 +16,7 @@ import { MarriageCardComponent } from "./marriage-card/marriage-card.component";
 import { VerifyEmailComponent } from "./verify-email/verify-email.component";
 import { SearchComponent } from "./search/search.component";
 import { MarriageUpdateComponent } from "./update/marriage/marriage.component";
+import { SacramentCardComponent } from "./sacrament-card/sacrament-card.component";
 
 
 
@@ -30,7 +30,7 @@ export const routes: Routes = [
     { path: 'baptism', component: BaptismComponent },
     { path: 'eucharist', component: EucharistComponent },
     { path: 'confirmation', component: ConfirmationComponent },
-    // { path: 'marriage', component: MarriageComponent },
+    { path: 'marriage', component: MarriageComponent },
     { path: 'edit-personal-info', component: PersonalInfoUpdateComponent },
     { path: 'edit-baptism', component: BaptismUpdateComponent },
     { path: 'edit-eucharist', component: EucharistUpdateComponent },
@@ -38,6 +38,6 @@ export const routes: Routes = [
     { path: 'edit-marriage', component: MarriageUpdateComponent },
     { path: 'marriage-card', component: MarriageCardComponent },
     { path: 'verifyEmail', component: VerifyEmailComponent },
-    { path: 'marriages', component: MarriagesComponent },
+    { path: 'sacrament-card', component: SacramentCardComponent },    
 
 ]

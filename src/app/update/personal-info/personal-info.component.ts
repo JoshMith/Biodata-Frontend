@@ -1,26 +1,22 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-personal-info',
+  standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  standalone: true, // Indicates that this component is a standalone component
   templateUrl: './personal-info.component.html',
-  styleUrl: './personal-info.component.css'
+  styleUrls: ['./personal-info.component.css']
 })
 export class PersonalInfoUpdateComponent implements OnInit {
+  private apiService = inject(ApiService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
 
-  constructor(
-    private apiService: ApiService, // Inject the ApiService for API calls
-    private router: Router, // Inject the Router for navigation
-  ) { } // Constructor for the component
-
-  private fb = inject(FormBuilder) // Inject FormBuilder for form creation
-
-  christianForm = this.fb.group({ // Create a form group for the personal information form
+  christianForm = this.fb.group({
     email: [''],
     password: [''],
     roles: [''],
@@ -28,7 +24,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     first_name: [''],
     last_name: [''],
     middle_name: [''],
-    deanery: [''], 
+    deanery: [''],
     parish_id: [''],
     father: [''],
     mother: [''],
@@ -38,205 +34,304 @@ export class PersonalInfoUpdateComponent implements OnInit {
     birth_date: [''],
     subcounty: [''],
     residence: [''],
-  })
-
+  });
 
   errorMessage = '';
   successMessage = '';
-  isSubmitting = false; // Flag to indicate if the form is being submitted
-  userId: any // Variable to store the user ID
-  localStorageData: string | null = null; // Variable to store local storage data
+  isSubmitting = false;
+  userId: string | null = null;
+  parishes: any[] = [];
+  deaneries: any[] = [];
+  noRecord = false;
 
-  parishes: any[] = []; // Array to hold the list of parishes
-  deaneries: any[] = []; // Array to hold the list of deaneries
-
-
-
-
-  ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
-
-    // Check if user is logged in
-    const user = localStorage.getItem('userLoggedIn');
-    if (!user) {
-      setTimeout(() => {
-        if (confirm('You are not logged in. Do you want to go to the login page?')) {
-          this.router.navigate(['/login']);
-        }
-      }, 3000);
-      return;
-    }
-
-
-
-    // Check if user is logged in
-    this.localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
-    if (this.localStorageData) {
-      const parsedData = JSON.parse(this.localStorageData);
-      this.userId = parsedData?.id;
-
-
-      // Populate the form fields with the data from localStorage
-      this.christianForm.patchValue({
-        email: parsedData?.email,
-        roles: parsedData?.roles,
-        phone_number: parsedData?.phone_number,
-        first_name: parsedData?.first_name,
-        last_name: parsedData?.last_name,
-        middle_name: parsedData?.middle_name,
-      });
-    }
-
-    // Load parishes and deaneries
+  ngOnInit(): void {
+    this.checkAuthentication();
+    this.loadInitialData();
     this.loadDeaneries();
-    this.loadParishesByDeanery();
+    this.setupParishListener();
+  }
 
-    // Check if form data exists in session storage
-    const storedFormData = sessionStorage.getItem('christianFormData');
-    if (storedFormData) {
-      const formData = JSON.parse(storedFormData);
-      this.christianForm.patchValue(formData);
+  private checkAuthentication(): void {
+    if (!localStorage.getItem('userLoggedIn')) {
+      if (confirm('You are not logged in. Go to login page?')) {
+        this.router.navigate(['/login']);
+      }
     }
   }
 
-  ngAfterViewInit(): void {
-    // Any additional setup can be done here
+  private loadInitialData(): void {
+    const christianId = this.getSelectedChristianId();
+    if (!christianId) return;
+
+    this.userId = christianId;
+    this.loadExistingData(christianId);
+    this.checkSessionStorage();
   }
 
-  // Load deaneries from API
-  private loadDeaneries(): void {
-    this.apiService.getParishes().subscribe({
+  private loadExistingData(id: string): void {
+    this.apiService.getChristianById(id).subscribe({
       next: (data) => {
-        // Remove duplicate deaneries by name
-        const seen = new Set<string>();
-        this.deaneries = data.filter((item: any) => {
-          if (seen.has(item.deanery)) {
-            return false;
-          }
-          seen.add(item.deanery);
-          return true;
-        });
+        // Format dates before patching the form
+        const formattedData = {
+          ...data,
+          birth_date: this.formatDateForInput(data.birth_date)
+        };
+
+        this.christianForm.patchValue(formattedData);
+        this.handleRolePermissions();
       },
       error: (error) => {
-        console.error('Error loading deaneries:', error);
-        this.errorMessage = 'Failed to load deaneries. Please refresh the page.';
+        console.error('Error loading Christian data:', error);
+        this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
+
       }
     });
   }
 
-  //Load parishes from API
-  private loadParishesByDeanery(): void {
-    this.christianForm.get('deanery')?.valueChanges.subscribe(deanery => {
-      if (deanery) {
-        this.apiService.getParishByDeanery(deanery).subscribe({
-          next: (parishes) => {
-            this.parishes = parishes;
-          },
-          error: (error) => {
-            console.error('Error loading parishes:', error);
-            this.errorMessage = 'Failed to load parishes for the selected deanery. Please try again.';
+  // Helper method to format dates for HTML input
+  private formatDateForInput(dateString: string): string | null {
+    if (!dateString) return null;
+
+    try {
+      const date = new Date(dateString);
+      return date.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
+    } catch (e) {
+      console.error('Error formatting date:', e);
+      return null;
+    }
+  }
+
+  private handleRolePermissions(): void {
+    const userData = localStorage.getItem('userLoggedIn');
+    if (userData) {
+      const user = JSON.parse(userData);
+      if (user.roles !== 'superuser') {
+        this.christianForm.get('roles')?.disable();
+      }
+    }
+  }
+
+  private checkSessionStorage(): void {
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      this.christianForm.patchValue(JSON.parse(storedFormData));
+    }
+  }
+
+  private loadDeaneries(): void {
+  console.log('Loading deaneries...'); // Debug log
+  
+  this.apiService.getParishes().subscribe({
+    next: (data) => {
+      
+      try {
+        // Check if data exists and is an array
+        if (!data) {
+          throw new Error('No data received from server');
+        }
+        
+        if (!Array.isArray(data)) {
+          // If data is wrapped in an object, try to extract the array
+          if (data && typeof data === 'object' && data.data && Array.isArray(data.data)) {
+            data = data.data;
+          } else if (data && typeof data === 'object' && data.parishes && Array.isArray(data.parishes)) {
+            data = data.parishes;
+          } else {
+            throw new Error('Invalid data format received from server');
+          }
+        }
+
+        // Extract unique deaneries with better validation
+        const deanerySet = new Set<string>();
+        
+        data.forEach((item: any, index: number) => {
+          if (!item || typeof item !== 'object') {
+            console.warn(`Invalid parish data at index ${index}:`, item);
+            return;
+          }
+          
+          // Check if deanery field exists and is valid
+          if (item.deanery && typeof item.deanery === 'string' && item.deanery.trim()) {
+            deanerySet.add(item.deanery.trim());
           }
         });
+
+        // Convert Set to Array and sort
+        this.deaneries = Array.from(deanerySet).sort();
+        
+        console.log('Extracted deaneries:', this.deaneries); // Debug log
+
+        if (this.deaneries.length === 0) {
+          this.errorMessage = 'No deaneries found in the data';
+          console.warn('No valid deaneries found in parish data');
+        } else {
+          // Clear any previous error messages
+          this.errorMessage = '';
+        }
+        
+      } catch (error : any) {
+        console.error('Error processing deaneries:', error);
+        this.errorMessage = `Failed to process deanery data: ${error.error?.message}`;
+        this.deaneries = []; // Clear the list on error
+      }
+    },
+    error: (error) => {
+      console.error('API Error loading deaneries:', error);
+      
+      // More specific error handling
+      if (error.status === 0) {
+        this.errorMessage = 'Cannot connect to server. Please check your internet connection.';
+      } else if (error.status === 404) {
+        this.errorMessage = 'Parishes endpoint not found. Please contact support.';
+      } else if (error.status === 500) {
+        this.errorMessage = 'Server error occurred. Please try again later.';
       } else {
+        this.errorMessage = error.error?.message || `Failed to load deaneries (Error ${error.status})`;
+      }
+      
+      this.deaneries = []; // Clear the list on error
+    }
+  });
+}
+
+private setupParishListener(): void {
+  this.christianForm.get('deanery')?.valueChanges.subscribe(deanery => {
+    console.log('Deanery changed to:', deanery); // Debug log
+    
+    // Clear previous parishes first
+    this.parishes = [];
+    
+    // Clear any previous error messages related to parish loading
+    if (this.errorMessage && this.errorMessage.includes('Failed to load parishes')) {
+      this.errorMessage = '';
+    }
+    
+    // Validate deanery value
+    if (!deanery || typeof deanery !== 'string' || !deanery.trim()) {
+      console.log('No valid deanery selected, clearing parishes');
+      return;
+    }
+    
+    const trimmedDeanery = deanery.trim();
+    console.log('Loading parishes for deanery:', trimmedDeanery);
+    
+    this.apiService.getParishByDeanery(trimmedDeanery).subscribe({
+      next: (parishes) => {
+        console.log('Loaded parishes for deanery:', parishes);
+        
+        // Validate the response
+        if (!parishes) {
+          console.warn('No parish data received');
+          this.parishes = [];
+          return;
+        }
+        
+        // Handle different response formats
+        let parishArray = parishes;
+        if (!Array.isArray(parishes)) {
+          if (parishes.data && Array.isArray(parishes.data)) {
+            parishArray = parishes.data;
+          } else if (parishes.parishes && Array.isArray(parishes.parishes)) {
+            parishArray = parishes.parishes;
+          } else {
+            console.warn('Invalid parish data format:', parishes);
+            this.parishes = [];
+            return;
+          }
+        }
+        
+        this.parishes = parishArray;
+        
+        if (this.parishes.length === 0) {
+          console.warn('No parishes found for deanery:', trimmedDeanery);
+          // Optionally show a user-friendly message
+          // this.errorMessage = `No parishes found for ${trimmedDeanery}`;
+        } else {
+          console.log(`Found ${this.parishes.length} parishes for ${trimmedDeanery}`);
+        }
+      },
+      error: (error) => {
+        console.error('Error loading parishes for deanery:', trimmedDeanery, error);
+        
+        // More specific error handling
+        if (error.status === 404) {
+          this.errorMessage = `No parishes found for deanery: ${trimmedDeanery}`;
+        } else if (error.status === 0) {
+          this.errorMessage = 'Cannot connect to server. Please check your internet connection.';
+        } else {
+          this.errorMessage = `Failed to load parishes for ${trimmedDeanery}`;
+        }
+        
         this.parishes = [];
       }
     });
-  }
-
+  });
+}
 
   onSubmitChristianForm(): void {
     if (this.christianForm.invalid) {
-      this.errorMessage = 'Please fill in all required fields.';
-      console.log('Please fill in all required fields.');
+      this.markFormAsTouched();
+      this.errorMessage = 'Please fill in all required fields';
+      return;
+    }
+
+    if (!this.userId) {
+      this.errorMessage = 'No Christian selected';
       return;
     }
 
     this.isSubmitting = true;
-    this.errorMessage = '';
-    this.successMessage = 'Submitting your information...';
-
-    // Mark all fields as touched to trigger validation messages
-    Object.keys(this.christianForm.controls).forEach(key => {
-      const control = this.christianForm.get(key);
-      control?.markAsTouched();
-    });
-
-    // Save form data to session storage in case of navigation issues
     sessionStorage.setItem('christianFormData', JSON.stringify(this.christianForm.value));
 
-    // Submit to API - changed from addChristian to addUser
     this.apiService.updateChristian(this.userId, this.christianForm.value).subscribe({
       next: (response) => {
-        this.handleSuccessfulSubmission(response);
+        this.handleSuccess(response);
       },
       error: (error) => {
-        this.isSubmitting = false;
-        this.successMessage = '';
-        this.errorMessage = error.error?.message || 'An error occurred. Please try again.';
-        console.error('Error adding user:', error);
+        this.handleError(error);
       }
     });
   }
 
-   // Handle successful form submission
-  private handleSuccessfulSubmission(response: any): void {
-    if (response && response.user) {
-      this.userId = response.user.id;
-
-      // Store user info in localStorage
-      localStorage.setItem('selectedChristian', JSON.stringify({
-        id: response.user.id,
-        email: response.user.email,
-        role: response.user.role,
-        first_name: response.user.first_name,
-        last_name: response.user.last_name
-      }));
-
-      this.successMessage = 'Personal information saved successfully! Redirecting...';
-      this.isSubmitting = false;
-
-      // Clear session storage since we've successfully saved
-      sessionStorage.removeItem('christianFormData');
-
-      // Navigate to next step
+  private handleSuccess(response: any): void {
+    this.isSubmitting = false;
+    this.successMessage = 'Personal information saved successfully!';
+    sessionStorage.removeItem('christianFormData');
+    setTimeout(() => {
       this.navigateToBaptism();
-    } else {
-      this.isSubmitting = false;
-      this.errorMessage = 'Unexpected response format from server.';
-    }
+    },2000);
   }
 
-    // Utility to mark all controls in a form group as touched
-  private markFormGroupTouched(formGroup: FormGroup): void {
-    Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      control?.markAsTouched();
+  private handleError(error: any): void {
+    this.isSubmitting = false;
+    this.errorMessage = error.error?.message || 'An error occurred';
+    console.error('Error updating Christian:', error);
+  }
+
+  private markFormAsTouched(): void {
+    Object.values(this.christianForm.controls).forEach(control => {
+      control.markAsTouched();
     });
   }
 
-  // Helper method to check if a field has errors and is touched
   hasFieldError(fieldName: string): boolean {
     const field = this.christianForm.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
 
-  // Helper method to get field error message
   getFieldError(fieldName: string): string {
     const field = this.christianForm.get(fieldName);
-    if (field && field.errors && field.touched) {
-      if (field.errors['required']) {
-        return `${this.getFieldLabel(fieldName)} is required.`;
-      }
-    }
-    return '';
+    return field?.errors?.['required'] && field.touched
+      ? `${this.getFieldLabel(fieldName)} is required`
+      : '';
   }
 
   private getFieldLabel(fieldName: string): string {
-    const labels: { [key: string]: string } = {
+    const labels: Record<string, string> = {
       'first_name': 'First Name',
       'last_name': 'Last Name',
       'middle_name': 'Middle Name',
       'email': 'Email',
-      'password': 'Password',
       'phone_number': 'Phone Number',
       'birth_date': 'Birth Date',
       'birth_place': 'Birth Place',
@@ -247,17 +342,21 @@ export class PersonalInfoUpdateComponent implements OnInit {
     return labels[fieldName] || fieldName;
   }
 
-  navigateToBaptism() {
-    setTimeout(() => {
-      this.router.navigate(['/edit-baptism']); // Navigate to the baptism page
+  private getSelectedChristianId(): string | null {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    return selectedChristian ? JSON.parse(selectedChristian).id : null;
+  }
+
+  navigateToBaptism(): void {
+    const christianId = this.getSelectedChristianId();
+    if (christianId) {
+      this.router.navigate(['/edit-baptism'], {
+        queryParams: { id: christianId }
+      });
     }
-      , 1500);
-  } // End of navigateToBaptism method
+  }
 
-  navigateToDashboard() {
-    setTimeout(() => {
-      this.router.navigate(['/dashboard']); // Navigate to the dashboard page
-    }, 1000); // Delay of 2 seconds before navigation
-  } // End of navigateToDashboard method
-
+  navigateToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }

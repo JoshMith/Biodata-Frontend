@@ -214,6 +214,27 @@ span a:hover {
   /* align-items: center; */
 }
 
+.print-button {
+   background-color: #c2ae6d;
+  background: linear-gradient(90deg, #b4aa89, #4e401a);
+  border: 1px solid #4a002a;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  margin: auto;
+  border-radius: 5px;
+  margin-top: auto;
+  /* margin-bottom: 20px; */
+  width: 80%;
+  max-width: 300px;
+}
+
+.print-button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #55233f, #b4aa89);
+  transition: all 0.3s ease-in-out;
+}
+
 .update-button {
   background-color: #c2ae6d;
   background: linear-gradient(90deg, #b4aa89, #4e401a);
@@ -223,7 +244,7 @@ span a:hover {
   cursor: pointer;
   margin: auto;
   border-radius: 5px;
-  margin-top: auto;
+  margin-top: 5px;
   /* margin-bottom: 20px; */
   width: 80%;
   max-width: 300px;

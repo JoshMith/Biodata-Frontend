@@ -1,9 +1,20 @@
 <body>
     <div class="container">
-        <div class="div-home">
-            <a type="button" href="/dashboard">Home</a>
-        </div>
+        <div class="nav-buttons">
+      <a type="button" href="/dashboard">
+          <i class="fas fa-home"></i> Home
+      </a>
+      <a type="button" href="/search">
+          <i class="fas fa-search"></i> Search
+      </a>
+    </div>
         <h2>Eucharist Form</h2>
+        <div class="error-alert" *ngIf="noEucharist">
+            This Christian has not Received Eucharist! Add Eucharist Record
+        </div>
+        <div class="success-message" *ngIf="!noEucharist">
+            Edit Eucharist Record!
+        </div>
         <form [formGroup]="eucharistForm" (ngSubmit)="onSubmitEucharistForm()" class="formContainer">
             <div class="section">
                 <h3>Eucharist Information</h3>
@@ -13,8 +24,15 @@
                 <label for="eucharist_date">Date:</label>
                 <input type="date" id="eucharist_date" formControlName="eucharist_date">
 
-                <p *ngIf="successMessage">{{ successMessage }}</p>
-                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+                <!-- Feedback Messages -->
+                <div class="feedback-messages">
+                    <div *ngIf="successMessage" class="success-message">
+                        <i class="fa fa-check-circle"></i> {{ successMessage }}
+                    </div>
+                    <div *ngIf="errorMessage" class="error-alert">
+                        <i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}
+                    </div>
+                </div>
             </div>
 
             <div class="div-btns">

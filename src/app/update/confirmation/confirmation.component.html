@@ -1,9 +1,20 @@
 <body>
     <div class="container">
-        <div class="div-home">
-            <a type="button" href="/dashboard">Home</a>
-        </div>
+        <div class="nav-buttons">
+      <a type="button" href="/dashboard">
+          <i class="fas fa-home"></i> Home
+      </a>
+      <a type="button" href="/search">
+          <i class="fas fa-search"></i> Search
+      </a>
+    </div>
         <h2>Confirmation Form</h2>
+        <div class="error-alert" *ngIf="noConfirmation">
+            This Christian is not Confirmed! Add Confirmation Record
+        </div>
+        <div class="success-message" *ngIf="!noConfirmation">
+            Edit Confirmation Record!
+        </div>
         <form [formGroup]="confirmationForm" (ngSubmit)="onSubmitConfirmationForm()" class="formContainer">
             <div class="section">
                 <h3>Confirmation Information</h3>
@@ -19,8 +30,15 @@
                 <label for="confirmation_no">Confirmation No:</label>
                 <input type="text" id="confirmation_no" formControlName="confirmation_no">
 
-                <p *ngIf="successMessage">{{ successMessage }}</p>
-                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+                <!-- Feedback Messages -->
+                <div class="feedback-messages">
+                    <div *ngIf="successMessage" class="success-message">
+                        <i class="fa fa-check-circle"></i> {{ successMessage }}
+                    </div>
+                    <div *ngIf="errorMessage" class="error-alert">
+                        <i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}
+                    </div>
+                </div>
             </div>
 
 

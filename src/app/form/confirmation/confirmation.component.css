@@ -78,6 +78,17 @@ input.error {
     border-radius: 5px;
 }
 
+.error-alert {
+    color: #d32f2f;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #d85b5b;
+    border-radius: 5px;
+}
+
 button {
     background: #6d5507;
     color: white;

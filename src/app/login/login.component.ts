@@ -58,6 +58,11 @@ export class LoginComponent {
         // Set loading state to true
         // this.isLoading = true;
         this.navigateToDashboard();
+        // Remove userLoggedIn after 1 hour
+        setTimeout(() => {
+          localStorage.removeItem('userLoggedIn');
+        }, 3600000); // 1 hour in milliseconds
+
       },
       (error: any) => {
         this.loginMessage = '';

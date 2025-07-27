@@ -307,6 +307,7 @@
 
       <!-- Submit Button -->
       <div class="div-btns">
+        <button type="button" (click)="navigateToConfirmation()">Back</button>
         <button type="submit" [disabled]="isSubmitting">
           {{ isSubmitting ? 'Submitting...' : 'Submit Marriage Certificate' }}
         </button>

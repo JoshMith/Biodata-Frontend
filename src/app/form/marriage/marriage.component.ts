@@ -6,12 +6,12 @@ import { finalize } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-marriages',
+  selector: 'app-marriage',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './marriages.component.html',
-  styleUrl: './marriages.component.css'
+  templateUrl: './marriage.component.html',
+  styleUrl: './marriage.component.css'
 })
-export class MarriagesComponent implements OnInit {
+export class MarriageComponent implements OnInit {
   marriageForm: FormGroup;
   countyOptions = ['Mombasa', 'Kwale', 'Kilifi', 'Tana River', 'Lamu', 'Taita/Taveta', 'Garissa', 'Wajir', 'Mandera', 'Marsabit', 'Isiolo', 'Meru', 'Tharaka-Nithi', 'Embu', 'Kitui', 'Machakos', 'Makueni', 'Nyandarua', 'Nyeri', 'Kirinyaga', 'Murang\'a', 'Kiambu', 'Turkana', 'West Pokot', 'Samburu', 'Trans Nzoia', 'Uasin Gishu', 'Elgeyo/Marakwet', 'Nandi', 'Baringo', 'Laikipia', 'Nakuru', 'Narok', 'Kajiado', 'Kericho', 'Bomet', 'Kakamega', 'Vihiga', 'Bungoma', 'Busia', 'Siaya', 'Kisumu', 'Homa Bay', 'Migori', 'Kisii', 'Nyamira', 'Nairobi'];
   maritalStatusOptions = ['Single', 'Divorced', 'Widowed'];
@@ -45,7 +45,14 @@ export class MarriagesComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('marriageFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.marriageForm.patchValue(formData);
+    }
+  }
 
   createPartyGroup(partyType: string): FormGroup {
     return this.fb.group({
@@ -118,6 +125,16 @@ export class MarriagesComponent implements OnInit {
     }
     return '';
   }
+
+  navigateToConfirmation() {
+    // Save form data before navigating away
+    if (this.marriageForm.dirty) {
+      sessionStorage.setItem('marriageFormData', JSON.stringify(this.marriageForm.value));
+    }
+      this.router.navigate(['/confirmation']); // Navigate to the eucharist page
+  }
+
+
 
   onSubmit(): void {
     if (this.marriageForm.invalid || !this.selectedFile) {
@@ -217,6 +234,8 @@ export class MarriagesComponent implements OnInit {
                   setTimeout(() => {
                     this.router.navigate(['/dashboard']);
                   }, 3000);
+                  // Clear session storage since we've successfully saved
+                  sessionStorage.removeItem('marriageFormData');
                 }
               },
               error: (err) => {

@@ -1,14 +1,19 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="div-home">
+            <div class="nav-buttons">
                 <a type="button" href="/dashboard">
-                    <i class="fa fa-home"></i> Home
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a type="button" href="/search">
+                    <i class="fas fa-search"></i> Search
                 </a>
             </div>
             <h2>Personal Information Form</h2>
         </div>
-
+        <div class="success-message" *ngIf="!noRecord">
+            Edit Biodata Information!
+        </div>
         <form [formGroup]="christianForm" (ngSubmit)="onSubmitChristianForm()" class="formContainer">
             <div class="section">
                 <h3>Personal Information</h3>
@@ -17,7 +22,7 @@
                 <div class="required-fields">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="first_name">First Name <span class="required-asterisk">*</span></label>
+                            <label for="first_name">First Name <span class="required-asterisk"></span></label>
                             <input type="text" id="first_name" formControlName="first_name"
                                 placeholder="Enter your first name" [class.error]="hasFieldError('first_name')">
                             <span *ngIf="hasFieldError('first_name')" class="error-message">
@@ -26,7 +31,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="last_name">Last Name <span class="required-asterisk">*</span></label>
+                            <label for="last_name">Last Name <span class="required-asterisk"></span></label>
                             <input type="text" id="last_name" formControlName="last_name"
                                 placeholder="Enter your last name" [class.error]="hasFieldError('last_name')">
                             <span *ngIf="hasFieldError('last_name')" class="error-message">
@@ -43,7 +48,7 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="email">Email <span class="required-asterisk">*</span></label>
+                            <label for="email">Email <span class="required-asterisk"></span></label>
                             <input type="email" id="email" formControlName="email" placeholder="example@gmail.com"
                                 [class.error]="hasFieldError('email')">
                             <span *ngIf="hasFieldError('email')" class="error-message">
@@ -59,7 +64,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password <span class="required-asterisk">*</span></label>
+                        <label for="password">Password <span class="required-asterisk"></span></label>
                         <input type="password" id="password" formControlName="password"
                             placeholder="Include special characters for security"
                             [class.error]="hasFieldError('password')">
@@ -72,7 +77,7 @@
                 <!-- Church Information Section -->
                 <div class="church-info">
                     <div class="form-group">
-                        <label for="roles">Role <span class="required-asterisk">*</span></label>
+                        <label for="roles">Role <span class="required-asterisk"></span></label>
                         <select id="roles" formControlName="roles">
                             <option value="" disabled>Select your role</option>
                             <option value="superuser">Super User</option>
@@ -86,20 +91,22 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="deanery">Deanery <span class="required-asterisk">*</span></label>
+                        <label for="deanery">Deanery <span class="required-asterisk"></span></label>
                         <select id="deanery" formControlName="deanery">
                             <option value="" disabled selected>Select your deanery</option>
-                            <option *ngFor="let deanery of deaneries" [value]="deanery.deanery">
-                                {{ deanery.deanery }}
+                            <!-- FIXED: Changed [value]="deanery.deanery" to [value]="deanery" -->
+                            <option *ngFor="let deanery of deaneries" [value]="deanery">
+                                {{ deanery }}
                             </option>
                         </select>
                         <span *ngIf="hasFieldError('deanery')" class="error-message">
                             {{ getFieldError('deanery') }}
                         </span>
                     </div>
-                    
+
+                    <!-- Parish dropdown remains the same -->
                     <div class="form-group">
-                        <label for="parish_id">Parish <span class="required-asterisk">*</span></label>
+                        <label for="parish_id">Parish <span class="required-asterisk"></span></label>
                         <select id="parish_id" formControlName="parish_id">
                             <option value="" disabled selected>Select your parish</option>
                             <option *ngFor="let parish of parishes" [value]="parish.parish_id">
@@ -110,89 +117,90 @@
                             {{ getFieldError('parish_id') }}
                         </span>
                     </div>
+
+                    <!-- Optional Personal Details Section -->
+                    <div class="optional-fields">
+                        <h4>Additional Information</h4>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="father">Father's Name</label>
+                                <input type="text" id="father" formControlName="father" placeholder="Father's name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mother">Mother's Name</label>
+                                <input type="text" id="mother" formControlName="mother" placeholder="Mother's name">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tribe">Tribe</label>
+                                <input type="text" id="tribe" formControlName="tribe" placeholder="Your tribe">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="clan">Clan</label>
+                                <input type="text" id="clan" formControlName="clan" placeholder="Your clan">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="birth_place">Place of Birth</label>
+                                <input type="text" id="birth_place" formControlName="birth_place"
+                                    placeholder="Where you were born">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birth_date">Date of Birth</label>
+                                <input type="date" id="birth_date" formControlName="birth_date"
+                                    placeholder="Your date of birth" [class.error]="hasFieldError('birth_date')">
+                                <span *ngIf="hasFieldError('birth_date')" class="error-message">
+                                    {{ getFieldError('birth_date') }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="subcounty">Subcounty</label>
+                                <input type="text" id="subcounty" formControlName="subcounty"
+                                    placeholder="Your subcounty">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="residence">Residence</label>
+                                <input type="text" id="residence" formControlName="residence"
+                                    placeholder="Current residence">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Messages -->
+                    <div class="feedback-messages">
+                        <div *ngIf="successMessage" class="success-message">
+                            <i class="fa fa-check-circle"></i> {{ successMessage }}
+                        </div>
+                        <div *ngIf="errorMessage" class="error-alert">
+                            <i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Optional Personal Details Section -->
-                <div class="optional-fields">
-                    <h4>Additional Information</h4>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="father">Father's Name</label>
-                            <input type="text" id="father" formControlName="father" placeholder="Father's name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="mother">Mother's Name</label>
-                            <input type="text" id="mother" formControlName="mother" placeholder="Mother's name">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="tribe">Tribe</label>
-                            <input type="text" id="tribe" formControlName="tribe" placeholder="Your tribe">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="clan">Clan</label>
-                            <input type="text" id="clan" formControlName="clan" placeholder="Your clan">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="birth_place">Place of Birth</label>
-                            <input type="text" id="birth_place" formControlName="birth_place"
-                                placeholder="Where you were born">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="birth_date">Date of Birth</label>
-                            <input type="date" id="birth_date" formControlName="birth_date" placeholder="Your date of birth" 
-                                [class.error]="hasFieldError('birth_date')">
-                            <span *ngIf="hasFieldError('birth_date')" class="error-message">
-                                {{ getFieldError('birth_date') }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="subcounty">Subcounty</label>
-                            <input type="text" id="subcounty" formControlName="subcounty" placeholder="Your subcounty">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="residence">Residence</label>
-                            <input type="text" id="residence" formControlName="residence"
-                                placeholder="Current residence">
-                        </div>
-                    </div>
+                <!-- Form Navigation Buttons -->
+                <div class="div-btns">
+                    <button type="button" (click)="navigateToDashboard()">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </button>
+                    <button type="submit" [disabled]="christianForm.invalid || isSubmitting">
+                        <i class="fa fa-save"></i> {{ isSubmitting ? 'Saving...' : 'Save' }}
+                    </button>
+                    <button type="button" (click)="navigateToBaptism()">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </button>
                 </div>
-
-                <!-- Feedback Messages -->
-                <div class="feedback-messages">
-                    <div *ngIf="successMessage" class="success-message">
-                        <i class="fa fa-check-circle"></i> {{ successMessage }}
-                    </div>
-                    <div *ngIf="errorMessage" class="error-alert">
-                        <i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Form Navigation Buttons -->
-            <div class="div-btns">
-                <button type="button" (click)="navigateToDashboard()">
-                    <i class="fa fa-arrow-left"></i> Back
-                </button>
-                <button type="submit" [disabled]="christianForm.invalid || isSubmitting">
-                    <i class="fa fa-save"></i> {{ isSubmitting ? 'Saving...' : 'Save' }}
-                </button>
-                <button type="button" (click)="navigateToBaptism()">
-                    Next <i class="fa fa-arrow-right"></i>
-                </button>
             </div>
         </form>
     </div>

@@ -1,9 +1,20 @@
 <body>
     <div class="container">
-        <div class="div-home">
-            <a type="button" href="/dashboard">Home</a>
+        <div class="nav-buttons">
+        <a type="button" href="/dashboard">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a type="button" href="/search">
+            <i class="fas fa-search"></i> Search
+        </a>
         </div>
         <h2>Baptism Form</h2>
+        <div class="error-alert" *ngIf="noBaptism">
+            This Christian is not Baptized! Add Baptism Record
+        </div>
+        <div class="success-message" *ngIf="!noBaptism">
+            Edit Baptism Record!
+        </div>
         <form [formGroup]="baptismForm" (ngSubmit)="onSubmitBaptismForm()" class="formContainer">
             <div class="section">
                 <h3>Baptism Information</h3>
@@ -19,8 +30,15 @@
                 <label for="sponsor">Sponsor:</label>
                 <input type="text" id="sponsor" formControlName="sponsor">
 
-                <p *ngIf="successMessage">{{ successMessage }}</p>
-                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+                <!-- Feedback Messages -->
+                <div class="feedback-messages">
+                    <div *ngIf="successMessage" class="success-message">
+                        <i class="fa fa-check-circle"></i> {{ successMessage }}
+                    </div>
+                    <div *ngIf="errorMessage" class="error-alert">
+                        <i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}
+                    </div>
+                </div>
             </div>
             <div class="div-btns">
                 <button type="button" (click)="navigateToPersonalInfo()">Back</button>

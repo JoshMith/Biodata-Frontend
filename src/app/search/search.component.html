@@ -4,9 +4,6 @@
         <a type="button" routerLink="/dashboard">Home</a>
     </div>
 
-    <div *ngIf="showBanner" class="role-banner">
-        {{ bannerMessage }}
-    </div>
 
     <div class="search-container">
         <input type="search" class="search-box" placeholder="Search by Name, Phone, or Email" [(ngModel)]="searchQuery"
@@ -32,7 +29,7 @@
         <h1 id="christianName">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</h1>
         <div class="christian-details" [ngClass]="{'highlighted': selectedChristian.id === selectedChristian.id}">
             <div class="personal-details">
-                <h3>Personal Details <span><a type="button" href="/edit-personal-info">Edit Personal Details</a></span>
+                <h3>Personal Details <span><a type="button" [routerLink]="['/edit-personal-info']" [queryParams]="{id: selectedChristian.id}">Edit Personal Details</a></span>
                 </h3>
                 <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
                 <p id="email"><strong>Email:</strong> {{ selectedChristian.email }}</p>
@@ -50,21 +47,21 @@
                 <p><strong>Residence:</strong> {{ selectedChristian.residence }}</p>
                 <p><strong>Phone Number:</strong> {{ selectedChristian.phone_number }}</p>
                 <p *ngIf="!selectedBaptism" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is not yet baptised <span><a href="/edit-baptism">Add
+                    selectedChristian.last_name }} is not yet baptised <span><a [routerLink]="['/edit-baptism']" [queryParams]="{id: selectedChristian.id}">Add
                             Baptism</a></span></p>
                 <p *ngIf="!selectedEucharist" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is yet to receive eucharist <span><a href="/edit-eucharist">Add
+                    selectedChristian.last_name }} is yet to receive eucharist <span><a [routerLink]="['/edit-eucharist']" [queryParams]="{id: selectedChristian.id}">Add
                             Eucharist</a></span></p>
                 <p *ngIf="!selectedConfirmation" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is not yet confirmed <span><a href="/edit-confirmation">Add
+                    selectedChristian.last_name }} is not yet confirmed <span><a [routerLink]="['/edit-confirmation']" [queryParams]="{id: selectedChristian.id}">Add
                             Confirmation</a></span></p>
                 <p *ngIf="!selectedMarriage" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is not yet married <span><a href="/edit-marriage">Add
+                    selectedChristian.last_name }} is not yet married <span><a [routerLink]="['/edit-marriage']" [queryParams]="{id: selectedChristian.id}">Add
                             Marriage</a></span></p>
             </div>
 
             <div *ngIf="selectedBaptism" class="baptism-details">
-                <h3>Baptism Details <span><a type="button" href="/edit-baptism">Edit Baptism</a></span></h3>
+                <h3>Baptism Details <span><a type="button" [routerLink]="['/edit-baptism']" [queryParams]="{id: selectedChristian.id}">Edit Baptism</a></span></h3>
                 <p><strong>Parish:</strong> {{ selectedBaptism.parish }}</p>
                 <p><strong>Date:</strong> {{ selectedBaptism.baptism_date ? (selectedBaptism.baptism_date |
                     date:'yyyy-MM-dd') : '' }}</p>
@@ -73,14 +70,14 @@
             </div>
 
             <div *ngIf="selectedEucharist" class="eucharist-details">
-                <h3>Eucharist Details <span><a type="button" href="/edit-eucharist">Edit Eucharist</a></span></h3>
+                <h3>Eucharist Details <span><a type="button" [routerLink]="['/edit-eucharist']" [queryParams]="{id: selectedChristian.id}">Edit Eucharist</a></span></h3>
                 <p><strong>Place:</strong> {{ selectedEucharist.eucharist_place }}</p>
                 <p><strong>Date:</strong> {{ selectedEucharist.eucharist_date ? (selectedEucharist.eucharist_date |
                     date:'yyyy-MM-dd') : '' }}</p>
             </div>
 
             <div *ngIf="selectedConfirmation" class="confirmation-details">
-                <h3>Confirmation Details <span><a type="button" href="/edit-confirmation">Edit Confirmation</a></span>
+                <h3>Confirmation Details <span><a type="button" [routerLink]="['/edit-confirmation']" [queryParams]="{id: selectedChristian.id}">Edit Confirmation</a></span>
                 </h3>
                 <p><strong>Place:</strong> {{ selectedConfirmation.confirmation_place }}</p>
                 <p><strong>Date:</strong> {{ selectedConfirmation.confirmation_date ?
@@ -89,9 +86,9 @@
             </div>
             <div *ngIf="selectedMarriage" class="marriage-details">
                 <h3>Marriage Details
-                    <span><a type="button" [routerLink]="['/edit-marriage']">Edit
+                    <span><a type="button" [routerLink]="['/edit-marriage']" [queryParams]="{id: selectedChristian.id}">Edit
                             Marriage</a></span>
-                    <span><a id="print-card" type="button" [routerLink]="['/marriage-card']">Print Marriage
+                    <span><a id="print-card" type="button" [routerLink]="['/marriage-card']" [queryParams]="{id: selectedChristian.id}">Print Marriage
                             Card</a></span>
                 </h3>
                 <p><strong>Marriage Certificate No:</strong> {{ selectedMarriage.certificate_number }}</p>
@@ -137,28 +134,21 @@
             </div>
 
             <div class="christian-actions">
+                <button class="print-button" (click)="redirectToPrintDetails()">
+                    <strong>Print Details</strong>
+                </button>
+
                 <button class="update-button" (click)="redirectToUpdateChristian()">
-                    <strong>Edit {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</strong>
+                    <strong>Edit Details</strong>
                 </button>
                 <button class="delete-button" (click)="deleteChristian()">
                     <strong>Delete {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</strong>
                 </button>
             </div>
+            
         </div>
-
-        <!-- Error Message -->
-        <!-- <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div> -->
-
-        <!-- Christians List -->
-        <!-- <div>
-            <div type="but
-            ton" *ngFor="let christian of christians" class="styled-christian-card"
-                (click)="selectChristian(christian)">
-                <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
-                <p><strong>Email:</strong> {{ christian.email }}</p>
-                <p><strong>Role:</strong> {{ christian.roles ? (christian.roles.charAt(0).toUpperCase() +
-                    christian.roles.slice(1).toLowerCase()) : '' }}</p>
-            </div>
-        </div> -->
+    </div>
+    <div *ngIf="showBanner" class="role-banner">
+        {{ bannerMessage }}
     </div>
 </body>

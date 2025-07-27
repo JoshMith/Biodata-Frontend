@@ -43,7 +43,9 @@ export class RegisterComponent implements OnInit {
   deaneries: any[] = [];
 
   ngAfterViewInit(): void {
-
+    // One can only register as a member
+    this.form.get('roles')?.disable();
+    this.form.get('roles')?.setValue('member');
   }
 
 

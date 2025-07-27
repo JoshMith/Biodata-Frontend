@@ -11,7 +11,10 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  constructor(private router: Router, private apiService: ApiService) { }
+  constructor(
+    private router: Router, 
+    private apiService: ApiService,
+  ) { }
   christianCount: number = 0; // Added to store the count value
 
   showBanner: boolean = false; // Added to control banner visibility
@@ -19,7 +22,7 @@ export class DashboardComponent {
 
 
   ngOnInit(): void {
-
+    localStorage.removeItem('selectedChristian')
 
     this.loadUserCount();
 
@@ -37,6 +40,19 @@ export class DashboardComponent {
       } else if (role === 'viewer') {
         this.showBanner = true;
         this.bannerMessage = `You are logged in as VIEWER. You only have view access.`;
+      }
+      else if (role === 'member') {
+        this.showBanner = true;
+        this.bannerMessage = `You are logged in as MEMBER. You can only view your own personal information.`;
+      }
+      else {
+        this.showBanner = true;
+        this.bannerMessage = 'You are not logged in. Go to login page.';
+        setTimeout(() => {
+          if (confirm('You are not logged in. Do you want to go to the login page?')) {
+            this.router.navigate(['/login']);
+          }
+        }, 3000);
       }
     }
     else {
@@ -59,21 +75,25 @@ export class DashboardComponent {
       },
       (error) => {
         console.error('Error fetching user count:', error);
+        this.bannerMessage = 'You are not logged in. Go to login page.';
+        localStorage.removeItem('userLoggedIn');
+        setTimeout(() => {
+        this.showBanner = true;
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
       }
     );
   }
 
 
   navigateToSearch() {
-    setTimeout(() => {
       this.router.navigate(['/search'])
-    }, 1500);
   }
 
   navigateToForm() {
-    setTimeout(() => {
       this.router.navigate(['/personal-info'])
-    }, 1500);
   }
 
   logoutChristian() {

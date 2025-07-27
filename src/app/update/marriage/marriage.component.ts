@@ -17,6 +17,7 @@ export class MarriageUpdateComponent implements OnInit {
   countyOptions = ['Mombasa', 'Kwale', 'Kilifi', 'Tana River', 'Lamu', 'Taita/Taveta', 'Garissa', 'Wajir', 'Mandera', 'Marsabit', 'Isiolo', 'Meru', 'Tharaka-Nithi', 'Embu', 'Kitui', 'Machakos', 'Makueni', 'Nyandarua', 'Nyeri', 'Kirinyaga', 'Murang\'a', 'Kiambu', 'Turkana', 'West Pokot', 'Samburu', 'Trans Nzoia', 'Uasin Gishu', 'Elgeyo/Marakwet', 'Nandi', 'Baringo', 'Laikipia', 'Nakuru', 'Narok', 'Kajiado', 'Kericho', 'Bomet', 'Kakamega', 'Vihiga', 'Bungoma', 'Busia', 'Siaya', 'Kisumu', 'Homa Bay', 'Migori', 'Kisii', 'Nyamira', 'Nairobi'];
   maritalStatusOptions = ['Single', 'Divorced', 'Widowed'];
   showSuccess = false;
+  noMarriage = false;
   isSubmitting = false;
   selectedFile: File | null = null;
   uploadProgress: number | null = null;
@@ -47,6 +48,7 @@ export class MarriageUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("Edit the Marriage Form")
     this.loadUserData();
     
     // Initialize parties if creating new
@@ -94,6 +96,7 @@ export class MarriageUpdateComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching marriage data:', error);
+        this.noMarriage = true;
       }
     });
   }
@@ -405,4 +408,21 @@ export class MarriageUpdateComponent implements OnInit {
     const date = new Date(dateString);
     return date.toISOString().split('T')[0];
   }
+
+  // Get id from localStorage
+  getSelectedChristianId(): string | null {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    if (selectedChristian) {
+      const parsedData = JSON.parse(selectedChristian);
+      return parsedData.id && parsedData.first_name && parsedData.last_name && parsedData.middle_name || null;
+    }
+    return null;
+  }
+
+  navigateToConfirmation() {
+      this.router.navigate(['/edit-confirmation'], {
+        queryParams: { id: this.getSelectedChristianId() }
+      });
+  }
+
 }

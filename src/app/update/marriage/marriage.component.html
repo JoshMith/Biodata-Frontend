@@ -1,13 +1,25 @@
 <body>
   <div class="container">
-    <div class="div-home">
-      <a type="button" href="/dashboard">Home</a>
+    <div class="nav-buttons">
+      <a type="button" href="/dashboard">
+          <i class="fas fa-home"></i> Home
+      </a>
+      <a type="button" href="/search">
+          <i class="fas fa-search"></i> Search
+      </a>
     </div>
     <h2>Marriage Certificate Registration</h2>
 
     <!-- Success Message -->
     <div class="success-message" *ngIf="showSuccess">
       Marriage certificate submitted successfully!
+    </div>
+
+    <div class="error-alert" *ngIf="noMarriage">
+      This Christian is not Married! Add Marriage Record
+    </div>
+    <div class="success-message" *ngIf="!noMarriage">
+        Edit Marriage Record!
     </div>
 
     <form [formGroup]="marriageForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
@@ -307,6 +319,7 @@
 
       <!-- Submit Button -->
       <div class="div-btns">
+        <button type="button" (click)="navigateToConfirmation()">Back</button>
         <button type="submit" [disabled]="isSubmitting">
           {{ isSubmitting ? 'Submitting...' : 'Submit Marriage Certificate' }}
         </button>

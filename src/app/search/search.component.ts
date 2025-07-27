@@ -88,6 +88,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!userSession) {
       console.log('No userSession found');
       this.handleUnauthenticatedUser();
+      // Don't load Christians if no user session is available
+      this.christians = [];
+      this.selectedChristian = null;
+      localStorage.removeItem('selectedChristian')
+      this.showBanner = true;
+      this.bannerMessage = 'You are not logged in. Go to login page.';
       return;
     }
 
@@ -114,6 +120,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       return parsedData;
     } catch (error) {
       console.error('Error parsing userLoggedIn from localStorage:', error);
+      this.handleUnauthenticatedUser();
       return null;
     }
   }
@@ -145,7 +152,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('User role:', roles, 'Parish ID:', parishId);
+    // console.log('User role:', roles, 'Parish ID:', parishId);
 
     this.apiService.getChristians()
       .pipe(takeUntil(this.destroy$))
@@ -182,6 +189,13 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
         return christians.filter(c => c.parish_id === parishId);
       case 'member':
+        // Member can only view their own personal information
+        const userData = this.getUserSession();
+        if (!userData || !userData.id) {
+          console.warn('No user data found for member role');
+        }
+        return christians.filter(c => c.id === userData.id)
+
       default:
         return [];
     }
@@ -193,7 +207,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       superuser: 'You are logged in as SUPERUSER. You have full access to view and manage all Christians in the system.',
       editor: 'You are logged in as EDITOR. You can view and manage Christians from your own parish only.',
       viewer: 'You are logged in as VIEWER. You can only view Christians in the system.',
-      member: 'You are logged in as MEMBER. You can only view your own personal information and not other Christians in the system.'
+      member: 'You are logged in as MEMBER. You can only view your own personal information.'
     };
 
     this.bannerMessage = messages[role as keyof typeof messages] || '';
@@ -204,7 +218,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.errorMessage = error.error?.message || 'Something went wrong while fetching Christians. Try again.';
     this.showBanner = true;
     this.bannerMessage = 'You are not logged in. Go to login page.';
-
+    localStorage.removeItem('userLoggedIn');
     setTimeout(() => {
       if (confirm('You are not logged in. Do you want to go to the login page?')) {
         this.router.navigate(['/login']);
@@ -245,9 +259,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   clearSearch(): void {
+    // Filter christians by role and parish
+    const userSession = this.getUserSession();
+    if (userSession) {
+      this.loadChristians(userSession);
+    } else {
+      this.handleUnauthenticatedUser();
+    }
+
     this.searchQuery = '';
     this.errorMessage = '';
-    this.displayChristians();
+    // this.displayChristians();
     this.clearSelectedChristian();
     this.scrollToTop();
   }
@@ -362,6 +384,20 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
+    redirectToPrintDetails(): void {
+    const selectedChristianData = this.getStoredSelectedChristian();
+
+    if (selectedChristianData) {
+      setTimeout(() => {
+        this.router.navigate(['/sacrament-card'], {
+          queryParams: { id: selectedChristianData.id }
+        })
+      }, 1000);
+    } else {
+      console.error('No Christian selected for redirection.');
+    }
+  }
+
   // Helper methods
   private scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -467,12 +503,12 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
 
 
-        console.log('Loaded sacrament data:', {
-          baptism: this.selectedBaptism,
-          eucharist: this.selectedEucharist,
-          confirmation: this.selectedConfirmation,
-          marriage: this.selectedMarriage
-        });
+        // console.log('Loaded sacrament data:', {
+        //   baptism: this.selectedBaptism,
+        //   eucharist: this.selectedEucharist,
+        //   confirmation: this.selectedConfirmation,
+        //   marriage: this.selectedMarriage
+        // });
         this.sortChristians();
       });
   }

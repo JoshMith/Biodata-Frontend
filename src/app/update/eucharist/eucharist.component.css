@@ -59,18 +59,32 @@ button:hover {
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.div-home{
-    a {
-        text-decoration: none;
-        background: #6d5507;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 5px;
-        display: inline-block;
-        text-align: center;
-        cursor: pointer;
-    }
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; 
 }
+
+.nav-buttons a {
+    text-decoration: none;
+    background: #6d5507;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1; /* Make buttons equal width */
+    max-width: 120px; /* Limit maximum width */
+}
+
+.nav-buttons a:hover {
+    background: #C2AE6D;
+    transform: translateY(-2px); /* Add slight lift effect */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add shadow on hover */
+}
+
 button:disabled{
     background-color: #d3d3d3; /* Light gray */
     color: #a9a9a9; /* Darker gray for text */
@@ -83,3 +97,27 @@ button:disabled{
     border-radius: 5px;
     background: #C2AE6D;
 }
+
+.success-message {
+    color: #2e7d32;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+}
+
+.error-alert {
+    color: #d32f2f;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #d85b5b;
+    border-radius: 5px;
+}
+
+
