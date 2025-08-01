@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { forkJoin } from 'rxjs';
-import { CommonModule } from '@angular/common'; // Add this import
+import { CommonModule, DatePipe } from '@angular/common'; // Add this import
 
 @Component({
   selector: 'sacrament-card',
   standalone: true,
-  imports: [CommonModule], // Add CommonModule here
+  imports: [CommonModule, DatePipe], // Add CommonModule here
   templateUrl: './sacrament-card.component.html',
   styleUrls: ['./sacrament-card.component.css']
 })

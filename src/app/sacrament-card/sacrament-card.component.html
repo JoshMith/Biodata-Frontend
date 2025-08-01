@@ -1,165 +1,162 @@
-<div class="sacrament-card">
+<body>
+    <div class="sacrament-card">
+        <!-- Page 1 - Cover -->
+        <div class="card-page page1">
+            <div class="notes-section">
+                <div class="church-info">
+                    <h4>ARCHDIOCESE OF NYERI</h4>
+                    <h4>SACRAMENT OFFICE</h4>
+                    <div class="divider"></div>
+                    <h3>OUR LADY OF CONSOLATA</h3>
+                    <h4>GIAKAIBII CATHOLIC CHURCH</h4>
+                    <p>P.O. Box 1216 KARATINA</p>
+                </div>
+                <div class="bible-verse">
+                    <p>"By this everyone will know that you are my disciples, if you love one another." (John 13:35)</p>
+                </div>
+                <div class="registration-numbers">
+                    <div class="field">
+                        <span class="label">Reg. No:</span>
+                        <span class="value">{{ christian?.registration_number || 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Bapt. No:</span>
+                        <span class="value">{{ baptism?.baptism_number || 'N/A' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <!-- Page 1 -->
-  <div class="card-page page1">
-    <div class="notes-section">
-      <div class="church-info">
-        <h4>ARCHDIOCESE OF NYERI</h4>
-        <h4>SACRAMENT OFFICE</h4>
-        <div class="divider"></div>
-        <h3>OUR LADY OF CONSOLATA</h3>
-        <h4>GIAKAIBII CATHOLIC CHURCH</h4>
-        <p>P.O. Box 1216 KARATINA</p>
-      </div>
-      <div class="bible-verse">
-        <p>"By this everyone will know that you are my disciples, if you love one another." (John 13:35)</p>
-      </div>
-      <div class="registration-numbers">
-        <div class="field">
-          <span class="label">Reg. No:</span>
-          <span class="value">{{ christian?.registration_number }}</span>
+        <!-- Page 2 - Main Content -->
+        <div class="card-page page2">
+            <div class="card-header">
+                <h1>BAPTISMAL CARD</h1>
+            </div>
+
+            <div class="card-content">
+                <!-- Left Column - Personal Info -->
+                <div class="column personal-info">
+                    <div class="field">
+                        <span class="label">Name:</span>
+                        <span class="value">{{ christian?.first_name }} {{ christian?.last_name }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Father:</span>
+                        <span class="value">{{ christian?.father || 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Mother:</span>
+                        <span class="value">{{ christian?.mother || 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Tribe:</span>
+                        <span class="value">{{ christian?.tribe || 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Clan:</span>
+                        <span class="value">{{ christian?.clan || 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Place of Birth:</span>
+                        <span class="value">{{ christian?.birth_place || 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Sub-County:</span>
+                        <span class="value">{{ christian?.subcounty || 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Date of Birth:</span>
+                        <span class="value">{{ christian?.birth_date ? (christian.birth_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Residence:</span>
+                        <span class="value">{{ christian?.residence || 'N/A' }}</span>
+                    </div>
+                </div>
+
+                <!-- Right Column - Sacraments -->
+                <div class="column sacraments">
+                    <!-- Baptism -->
+                    <div class="sacrament-group" *ngIf="baptism">
+                        <h3>BAPTISM</h3>
+                        <div class="field">
+                            <span class="label">Parish:</span>
+                            <span class="value">{{ baptism?.parish || 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Date:</span>
+                            <span class="value">{{ baptism?.baptism_date ? (baptism.baptism_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Minister:</span>
+                            <span class="value">{{ baptism?.minister || 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Sponsor:</span>
+                            <span class="value">{{ baptism?.sponsor || 'N/A' }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Eucharist -->
+                    <div class="sacrament-group" *ngIf="eucharist">
+                        <h3>EUCHARIST</h3>
+                        <div class="field">
+                            <span class="label">Place:</span>
+                            <span class="value">{{ eucharist?.eucharist_place || 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Date:</span>
+                            <span class="value">{{ eucharist?.eucharist_date ? (eucharist.eucharist_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation -->
+                    <div class="sacrament-group" *ngIf="confirmation">
+                        <h3>CONFIRMATION</h3>
+                        <div class="field">
+                            <span class="label">Place:</span>
+                            <span class="value">{{ confirmation?.confirmation_place || 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Date:</span>
+                            <span class="value">{{ confirmation?.confirmation_date ? (confirmation.confirmation_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Conf. No:</span>
+                            <span class="value">{{ confirmation?.confirmation_no || 'N/A' }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Marriage -->
+                    <div class="sacrament-group" *ngIf="marriage">
+                        <h3>MARRIAGE</h3>
+                        <div class="field">
+                            <span class="label">Spouse:</span>
+                            <span class="value">{{ getSpouseName() || 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Parish:</span>
+                            <span class="value">{{ marriage?.submission_location || 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Date:</span>
+                            <span class="value">{{ marriage?.marriage_date ? (marriage.marriage_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Reg. No:</span>
+                            <span class="value">{{ marriage?.marriage_entry_number || 'N/A' }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="label">Marr. No:</span>
+                            <span class="value">{{ marriage?.certificate_number || 'N/A' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="field">
-          <span class="label">Bapt. No:</span>
-          <span class="value">{{ baptism?.baptism_number }}</span>
+
+        <div class="print-controls">
+            <button class="print-button" (click)="printCard()">Print Card</button>
         </div>
-      </div>
     </div>
-  </div>
-
-    <!-- Page 2 -->
-  <div class="card-page page2">
-    <div class="card-header">
-      <h1>BAPTISMAL CARD</h1>
-    </div>
-
-    <div class="card-content">
-      <!-- Left Column - Personal Info -->
-      <div class="column personal-info">
-        <div class="field">
-          <span class="label">Name:</span>
-          <span class="value">{{ christian?.first_name }} {{ christian?.middle_name }} {{ christian?.last_name }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Father:</span>
-          <span class="value">{{ christian?.father }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Mother:</span>
-          <span class="value">{{ christian?.mother }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Tribe:</span>
-          <span class="value">{{ christian?.tribe }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Clan:</span>
-          <span class="value">{{ christian?.clan }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Place of Birth:</span>
-          <span class="value">{{ christian?.birth_place }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Sub-County:</span>
-          <span class="value">{{ christian?.subcounty }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Date of Birth:</span>
-          <span class="value">{{ christian?.birth_date | date:'yyyy-MM-dd' }}</span>
-        </div>
-        <div class="field">
-          <span class="label">Residence:</span>
-          <span class="value">{{ christian?.residence }}</span>
-        </div>
-      </div>
-
-      <!-- Right Column - Sacraments -->
-      <div class="column sacraments">
-        <!-- Eucharist -->
-        <div class="sacrament-group">
-          <h3>EUCHARIST</h3>
-          <div class="field">
-            <span class="label">Place:</span>
-            <span class="value">{{ eucharist?.eucharist_place || 'Not received' }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Date:</span>
-            <span class="value">{{ eucharist?.eucharist_date | date:'yyyy-MM-dd' }}</span>
-          </div>
-        </div>
-
-        <!-- Confirmation -->
-        <div class="sacrament-group">
-          <h3>CONFIRMATION</h3>
-          <div class="field">
-            <span class="label">Place:</span>
-            <span class="value">{{ confirmation?.confirmation_place || 'Not confirmed' }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Date:</span>
-            <span class="value">{{ confirmation?.confirmation_date | date:'yyyy-MM-dd' }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Reg. No:</span>
-            <span class="value">{{ confirmation?.registration_number }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Conf. No:</span>
-            <span class="value">{{ confirmation?.confirmation_no }}</span>
-          </div>
-        </div>
-
-        <!-- Baptism -->
-        <div class="sacrament-group">
-          <h3>BAPTISM</h3>
-          <div class="field">
-            <span class="label">Parish:</span>
-            <span class="value">{{ baptism?.parish || 'Not baptized' }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Date:</span>
-            <span class="value">{{ baptism?.baptism_date | date:'yyyy-MM-dd' }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Minister:</span>
-            <span class="value">{{ baptism?.minister }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Sponsor:</span>
-            <span class="value">{{ baptism?.sponsor }}</span>
-          </div>
-        </div>
-
-        <!-- Marriage -->
-        <div class="sacrament-group">
-          <h3>MARRIAGE</h3>
-          <div class="field">
-            <span class="label">Spouse:</span>
-            <span class="value">{{ getSpouseName() || 'Not married' }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Parish:</span>
-            <span class="value">{{ marriage?.submission_location }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Date:</span>
-            <span class="value">{{ marriage?.marriage_date | date:'yyyy-MM-dd' }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Reg. No:</span>
-            <span class="value">{{ marriage?.registration_number }}</span>
-          </div>
-          <div class="field">
-            <span class="label">Marr. No:</span>
-            <span class="value">{{ marriage?.certificate_number }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="print-controls">
-    <button class="print-button" (click)="printCard()">Print Card</button>
-  </div>
-</div>
+</body>

@@ -22,6 +22,7 @@ export class BaptismComponent {
   baptismForm = this.fb.group({
     parish: ['', Validators.required], // Changed from baptism_place
     baptism_date: ['', Validators.required],
+    baptism_number: ['', Validators.required], // New field for baptism number
     minister: ['', Validators.required], // Changed from baptised_by
     sponsor: ['', Validators.required], // Changed from administrator
     user_id: [''] // This will be set programmatically
@@ -128,6 +129,7 @@ export class BaptismComponent {
     const labels: { [key: string]: string } = {
       'parish': 'Parish',
       'baptism_date': 'Baptism Date',
+      'baptism_number': 'Baptism Number',
       'minister': 'Minister',
       'sponsor': 'Sponsor'
     };

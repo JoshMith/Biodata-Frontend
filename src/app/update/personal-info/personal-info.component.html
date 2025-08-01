@@ -40,10 +40,17 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="middle_name">Middle Name</label>
-                        <input type="text" id="middle_name" formControlName="middle_name"
-                            placeholder="Enter your middle name (optional)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="middle_name">Middle Name</label>
+                            <input type="text" id="middle_name" formControlName="middle_name"
+                                placeholder="Enter your middle name (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="tel" id="phone_number" formControlName="phone_number"
+                                placeholder="+256700000000">
+                        </div>
                     </div>
 
                     <div class="form-row">
@@ -57,65 +64,71 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="phone_number">Phone Number</label>
-                            <input type="tel" id="phone_number" formControlName="phone_number"
-                                placeholder="+256700000000">
+                            <label for="password">Password <span class="required-asterisk"></span></label>
+                            <input type="password" id="password" formControlName="password"
+                                placeholder="Include special characters for security"
+                                [class.error]="hasFieldError('password')">
+                            <span *ngIf="hasFieldError('password')" class="error-message">
+                                {{ getFieldError('password') }}
+                            </span>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="password">Password <span class="required-asterisk"></span></label>
-                        <input type="password" id="password" formControlName="password"
-                            placeholder="Include special characters for security"
-                            [class.error]="hasFieldError('password')">
-                        <span *ngIf="hasFieldError('password')" class="error-message">
-                            {{ getFieldError('password') }}
-                        </span>
-                    </div>
+
                 </div>
 
                 <!-- Church Information Section -->
                 <div class="church-info">
-                    <div class="form-group">
-                        <label for="roles">Role <span class="required-asterisk"></span></label>
-                        <select id="roles" formControlName="roles">
-                            <option value="" disabled>Select your role</option>
-                            <option value="superuser">Super User</option>
-                            <option value="editor">Editor</option>
-                            <option value="viewer">Viewer</option>
-                            <option value="member">Member</option>
-                        </select>
-                        <span *ngIf="hasFieldError('roles')" class="error-message">
-                            {{ getFieldError('role') }}
-                        </span>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="roles">Role <span class="required-asterisk"></span></label>
+                            <select id="roles" formControlName="roles">
+                                <option value="" disabled>Select your role</option>
+                                <option value="superuser">Super User</option>
+                                <option value="editor">Editor</option>
+                                <option value="viewer">Viewer</option>
+                                <option value="member">Member</option>
+                            </select>
+                            <span *ngIf="hasFieldError('roles')" class="error-message">
+                                {{ getFieldError('role') }}
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registration_number">Registration Number</label>
+                            <input type="text" id="registration_number" formControlName="registration_number"
+                                placeholder="REG123">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="deanery">Deanery <span class="required-asterisk"></span></label>
-                        <select id="deanery" formControlName="deanery">
-                            <option value="" disabled selected>Select your deanery</option>
-                            <!-- FIXED: Changed [value]="deanery.deanery" to [value]="deanery" -->
-                            <option *ngFor="let deanery of deaneries" [value]="deanery">
-                                {{ deanery }}
-                            </option>
-                        </select>
-                        <span *ngIf="hasFieldError('deanery')" class="error-message">
-                            {{ getFieldError('deanery') }}
-                        </span>
-                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="deanery">Deanery <span class="required-asterisk"></span></label>
+                            <select id="deanery" formControlName="deanery">
+                                <option value="" disabled selected>Select your deanery</option>
+                                <!-- FIXED: Changed [value]="deanery.deanery" to [value]="deanery" -->
+                                <option *ngFor="let deanery of deaneries" [value]="deanery">
+                                    {{ deanery }}
+                                </option>
+                            </select>
+                            <span *ngIf="hasFieldError('deanery')" class="error-message">
+                                {{ getFieldError('deanery') }}
+                            </span>
+                        </div>
 
-                    <!-- Parish dropdown remains the same -->
-                    <div class="form-group">
-                        <label for="parish_id">Parish <span class="required-asterisk"></span></label>
-                        <select id="parish_id" formControlName="parish_id">
-                            <option value="" disabled selected>Select your parish</option>
-                            <option *ngFor="let parish of parishes" [value]="parish.parish_id">
-                                {{ parish.parish_name }}
-                            </option>
-                        </select>
-                        <span *ngIf="hasFieldError('parish_id')" class="error-message">
-                            {{ getFieldError('parish_id') }}
-                        </span>
+                        <!-- Parish dropdown remains the same -->
+                        <div class="form-group">
+                            <label for="parish_id">Parish <span class="required-asterisk"></span></label>
+                            <select id="parish_id" formControlName="parish_id">
+                                <option value="" disabled selected>Select your parish</option>
+                                <option *ngFor="let parish of parishes" [value]="parish.parish_id">
+                                    {{ parish.parish_name }}
+                                </option>
+                            </select>
+                            <span *ngIf="hasFieldError('parish_id')" class="error-message">
+                                {{ getFieldError('parish_id') }}
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Optional Personal Details Section -->

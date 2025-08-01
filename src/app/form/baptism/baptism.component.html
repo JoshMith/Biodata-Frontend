@@ -29,6 +29,16 @@
                     {{ getFieldError('baptism_date') }}
                 </div>
 
+                <label for="baptism_number">Date of Baptism:</label>
+                <input 
+                    type="text" 
+                    id="baptism_number" 
+                    formControlName="baptism_number"
+                    [class.error]="hasFieldError('baptism_number')">
+                <div class="error-message" *ngIf="hasFieldError('baptism_number')">
+                    {{ getFieldError('baptism_number') }}
+                </div>
+
                 <label for="minister">Minister:</label>
                 <input 
                     type="text" 

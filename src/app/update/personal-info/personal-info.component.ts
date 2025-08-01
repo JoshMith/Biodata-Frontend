@@ -21,6 +21,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     password: [''],
     roles: [''],
     phone_number: [''],
+    registration_number: [''],
     first_name: [''],
     last_name: [''],
     middle_name: [''],

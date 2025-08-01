@@ -13,6 +13,7 @@ interface Christian {
   password_hash: string;
   roles: string;
   phone_number: string;
+  registration_number: string;
   first_name: string;
   last_name: string;
   middle_name: string;

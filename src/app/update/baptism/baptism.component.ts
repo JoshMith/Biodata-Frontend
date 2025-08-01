@@ -19,6 +19,7 @@ export class BaptismUpdateComponent implements OnInit {
   baptismForm = this.fb.group({
     parish: ['', Validators.required],
     baptism_date: ['', Validators.required],
+    baptism_number: ['', Validators.required],
     minister: ['', Validators.required],
     sponsor: ['', Validators.required],
     user_id: ['']
@@ -58,6 +59,7 @@ export class BaptismUpdateComponent implements OnInit {
         this.baptismForm.patchValue({
           parish: data[0].parish,
           baptism_date: this.formatDateForInput(data[0].baptism_date),
+          baptism_number: data[0].baptism_number,
           minister: data[0].minister,
           sponsor: data[0].sponsor,
           user_id: christianId
