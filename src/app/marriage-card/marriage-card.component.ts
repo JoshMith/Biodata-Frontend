@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { catchError, of } from 'rxjs';
 import { NgIf } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-marriage-card',
@@ -20,10 +20,22 @@ export class MarriageCardComponent implements OnInit {
 
   constructor(
     private marriageService: ApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    // Check if user is logged in
+    const user = localStorage.getItem('userLoggedIn');
+    if (!user) {
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
+      return;
+    }
+
     const selectedChristian = localStorage.getItem('selectedChristian') || this.route.snapshot.queryParams['id'];
     let userId = '';
 

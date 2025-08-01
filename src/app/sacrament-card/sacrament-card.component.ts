@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { forkJoin } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common'; // Add this import
@@ -23,10 +23,22 @@ export class SacramentCardComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    // Check if user is logged in
+    const user = localStorage.getItem('userLoggedIn');
+    if (!user) {
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
+      return;
+    }
+
     const christianId = this.route.snapshot.queryParams['id'] ||
       JSON.parse(localStorage.getItem('selectedChristian') || '{}')?.id;
 

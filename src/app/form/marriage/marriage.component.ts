@@ -46,6 +46,18 @@ export class MarriageComponent implements OnInit {
   }
 
   ngOnInit(): void { 
+
+    // Check if user is logged in
+    const user = localStorage.getItem('userLoggedIn');
+    if (!user) {
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
+      return;
+    }
+
     // Check if form data exists in session storage
     const storedFormData = sessionStorage.getItem('marriageFormData');
     if (storedFormData) {
