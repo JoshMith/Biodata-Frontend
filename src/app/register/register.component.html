@@ -81,9 +81,9 @@
                 </p>
             </div>
 
-            <p *ngIf="registerMessage">{{ registerMessage }}</p>
-            <p *ngIf="successMessage">{{ successMessage }}</p>
-            <p *ngIf="errorMessage">{{ errorMessage }}</p>
+            <p style="color: black;" *ngIf="successMessage">{{ successMessage }}</p>
+            <p style="color: red" *ngIf="errorMessage">{{ errorMessage }}</p>
+            <p style="color: black" *ngIf="registerMessage">{{ registerMessage }}</p>
             
 
             <button type="submit" [disabled]="form.invalid">Register</button>

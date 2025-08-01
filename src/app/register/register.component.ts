@@ -86,6 +86,7 @@ export class RegisterComponent implements OnInit {
             console.error('Error loading parishes:', error);
             this.errorMessage = 'Failed to load parishes for the selected deanery. Please try again.';
           }
+          
         });
       } else {
         // console.error("Deanery not found")
@@ -93,6 +94,7 @@ export class RegisterComponent implements OnInit {
         // this.form.get('parish_id')?.setValue(0);
       }
     });
+    // Continue with the next code
   }
 
 
