@@ -39,7 +39,7 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.form.invalid && this.form.touched) {
+    if (this.form.invalid) {
       this.loginMessage = 'Please fill in all required fields.';
       return;
     }

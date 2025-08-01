@@ -31,7 +31,6 @@
             <p style="color: black" *ngIf="loginMessage">{{ loginMessage }}</p>
 
             <button type="submit" [disabled]="form.invalid">Login</button>
-            <p *ngIf="!form.valid && form.touched && errorMessage" class="error-message">{{ errorMessage }}</p>
             <p style="color: black;" >Don't have an account? <a routerLink="/register">Register</a></p>
         </form>
 

@@ -99,7 +99,7 @@ export class RegisterComponent implements OnInit {
 
 
   onSubmitForm(): void {
-    if (this.form.invalid && this.form.touched) {
+    if (this.form.invalid) {
       this.registerMessage = 'Please fill in all required fields.';
       return;
     }
