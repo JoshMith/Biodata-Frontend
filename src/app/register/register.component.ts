@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading deaneries:', error);
-        this.errorMessage = 'Failed to load deaneries. Please refresh the page.';
+        this.errorMessage = 'Failed to load deaneries. Please check connection.';
       }
     });
   }
@@ -99,6 +99,10 @@ export class RegisterComponent implements OnInit {
 
 
   onSubmitForm(): void {
+    if (this.form.invalid && this.form.touched) {
+      this.registerMessage = 'Please fill in all required fields.';
+      return;
+    }
     this.registerMessage = 'Registering...';
     this.errorMessage = '';
     this.register.registerChristian(this.form.value).subscribe(
@@ -136,6 +140,7 @@ export class RegisterComponent implements OnInit {
       (error: any) => {
         this.registerMessage = '';
         this.successMessage = '';
+        this.errorMessage = '';
         console.error('Registration failed:', error);
         this.errorMessage = error.error.message || "Registration Failed!";
       }

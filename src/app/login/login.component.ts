@@ -35,14 +35,14 @@ export class LoginComponent {
   })
 
   ngOnInit(): void {
-    if (this.form.invalid && this.form.touched) {
-      this.loginMessage = 'Please fill in all required fields.';
-      return;
-    }
     // this.onSubmit();
   }
 
   onSubmit(): void {
+    if (this.form.invalid && this.form.touched) {
+      this.loginMessage = 'Please fill in all required fields.';
+      return;
+    }
     this.loginMessage = 'Logging in...';
     this.errorMessage = '';
     this.login.loginChristian(this.form.value).subscribe(
