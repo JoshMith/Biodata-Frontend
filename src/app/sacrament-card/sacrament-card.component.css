@@ -1,244 +1,286 @@
 /* Base Styles - Matching Marriage Certificate */
 .sacrament-card {
-    font-family: Arial, sans-serif;
-    max-width: 210mm; /* Portrait A4 width */
-    margin: 10mm auto;
-    background-color: #F1E9E9; /* Matching marriage cert background */
-    color: #4A002A; /* Matching marriage cert text color */
-    border: 1px solid #4A002A;
-    box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  max-width: 210mm; /* Portrait A4 width */
+  margin: 10mm auto;
+  background-color: #f1e9e9; /* Matching marriage cert background */
+  color: #4a002a; /* Matching marriage cert text color */
+  border: 1px solid #4a002a;
+  box-sizing: border-box;
 }
 
 .card-page {
-    padding: 15mm;
-    min-height: 297mm; /* Portrait A4 height */
-    box-sizing: border-box;
-    position: relative;
-    font-size: 10pt;
-    line-height: 1.4;
+  padding: 15mm;
+  min-height: 297mm; /* Portrait A4 height */
+  box-sizing: border-box;
+  position: relative;
+  font-size: 10pt;
+  line-height: 1.4;
 }
 
 /* Page 1 Styles - Cover Page */
 .page1 {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .church-info {
-    margin-bottom: 30px;
-    color: #4A002A;
+  margin-bottom: 30px;
+  color: #4a002a;
 }
 
 .church-info h4 {
-    margin: 3mm 0;
-    font-size: 12pt;
-    font-weight: bold;
+  margin: 3mm 0;
+  font-size: 12pt;
+  font-weight: bold;
 }
 
 .church-info h3 {
-    margin: 5mm 0;
-    font-size: 14pt;
-    font-weight: bold;
-    text-decoration: underline;
+  margin: 5mm 0;
+  font-size: 14pt;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .church-info p {
-    margin: 2mm 0;
-    font-size: 10pt;
+  margin: 2mm 0;
+  font-size: 10pt;
 }
 
 .divider {
-    border-top: 2px solid #4A002A;
-    margin: 15mm auto;
-    width: 80%;
+  border-top: 2px solid #4a002a;
+  margin: 15mm auto;
+  width: 80%;
 }
 
 .bible-verse {
-    font-style: italic;
-    margin: 20mm 0;
-    font-size: 11pt;
-    color: #6d5507; /* Matching the footer color from marriage cert */
+  font-style: italic;
+  margin: 20mm 0;
+  font-size: 11pt;
+  color: #6d5507; /* Matching the footer color from marriage cert */
 }
 
 .registration-numbers {
-    margin-top: 30mm;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
+  margin-top: 30mm;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .registration-numbers .field {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .registration-numbers .label {
-    font-weight: bold;
-    margin-bottom: 5mm;
-    font-size: 11pt;
+  font-weight: bold;
+  margin-bottom: 5mm;
+  font-size: 11pt;
 }
 
 .registration-numbers .value {
-    border-bottom: 2px solid #4A002A;
-    padding: 2mm 10mm;
-    min-width: 40mm;
-    text-align: center;
-    font-size: 12pt;
-    font-weight: bold;
+  border-bottom: 2px solid #4a002a;
+  padding: 2mm 10mm;
+  min-width: 40mm;
+  text-align: center;
+  font-size: 12pt;
+  font-weight: bold;
 }
 
 /* Page 2 Styles - Main Card */
 .page2 {
-    background-color: #F1E9E9;
+  background-color: #f1e9e9;
 }
 
 .card-header {
-    text-align: center;
-    margin-bottom: 20mm;
-    border-bottom: 2px solid #4A002A;
-    padding-bottom: 5mm;
+  text-align: center;
+  margin-bottom: 20mm;
+  border-bottom: 2px solid #4a002a;
+  padding-bottom: 5mm;
 }
 
 .card-header h1 {
-    font-size: 16pt;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0;
-    color: #4A002A;
+  font-size: 16pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  color: #4a002a;
 }
 
 .card-content {
-    display: flex;
-    justify-content: space-between;
-    gap: 10mm;
+  display: flex;
+  justify-content: space-between;
+  gap: 10mm;
 }
 
 .column {
-    flex: 1;
+  flex: 1;
 }
 
 .personal-info {
-    border-right: 1px solid #4A002A;
-    padding-right: 5mm;
+  border-right: 1px solid #4a002a;
+  padding-right: 5mm;
 }
 
 .sacraments {
-    padding-left: 5mm;
+  padding-left: 5mm;
 }
 
 .field {
-    margin-bottom: 3mm;
-    display: flex;
-    align-items: baseline;
-    gap: 2mm;
+  margin-bottom: 3mm;
+  display: flex;
+  align-items: baseline;
+  gap: 2mm;
 }
 
 .label {
-    font-weight: bold;
-    min-width: 35mm;
-    font-size: 9pt;
-    white-space: nowrap;
+  font-weight: bold;
+  min-width: 35mm;
+  font-size: 9pt;
+  white-space: nowrap;
 }
 
 .value {
-    flex-grow: 1;
-    border-bottom: 1px solid #4A002A;
-    padding: 1mm 2mm;
-    min-height: 4mm;
-    font-size: 10pt;
+  flex-grow: 1;
+  border-bottom: 1px solid #4a002a;
+  padding: 1mm 2mm;
+  min-height: 4mm;
+  font-size: 10pt;
 }
 
 .sacrament-group {
-    margin-bottom: 15mm;
-    border: 1px solid #4A002A;
-    padding: 5mm;
-    background-color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 15mm;
+  border: 1px solid #4a002a;
+  padding: 5mm;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .sacrament-group h3 {
-    font-size: 11pt;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin: 0 0 5mm 0;
-    color: #4A002A;
-    text-align: center;
-    border-bottom: 1px solid #4A002A;
-    padding-bottom: 2mm;
-    letter-spacing: 0.5px;
+  font-size: 11pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 0 5mm 0;
+  color: #4a002a;
+  text-align: center;
+  border-bottom: 1px solid #4a002a;
+  padding-bottom: 2mm;
+  letter-spacing: 0.5px;
 }
 
 /* Print Controls */
 .print-controls {
-    text-align: center;
-    margin: 10mm 0;
+  text-align: center;
+  margin: 10mm 0;
 }
 
 .print-button {
-    background-color: #6d5507; /* Matching marriage cert button color */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 4px;
+  background-color: #6d5507; /* Matching marriage cert button color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px;
 }
 
 .print-button:hover {
-    background-color: #C2AE6D;
-    color: #4A002A;
+  background-color: #c2ae6d;
+  color: #4a002a;
+}
+
+/* Loading and error styles */
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #4a002a;
+}
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.error p {
+  text-align: center;
+  padding: 50px;
+  font-size: 15px;
+  color: #d9534f;
+  padding: auto;
+  background-color: #ffffff;
+  padding: 8px 15px;
+  border: solid 2px #6d5507;
+  border-radius: 4px;
+}
+
+.error button {
+  margin-top: auto;
+  padding: 8px 15px;
+  background: #6d5507;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.error button:hover {
+  background: #c2ae6d;
+  color: #4a002a;
 }
 
 /* Print Styles */
 @media print {
-    body * {
-        visibility: hidden !important;
-    }
-    .sacrament-card,
-    .sacrament-card * {
-        visibility: visible !important;
-    }
-    .sacrament-card {
-        position: absolute;
-        left: 0;
-        top: 0;
-        margin: 0 !important;
-        padding: 0 !important;
-        box-shadow: none !important;
-        width: 210mm !important;
-        background: #F1E9E9 !important;
-        border: 1px solid #4A002A !important;
-    }
-    
-    .print-controls {
-        display: none !important;
-    }
-    
-    .card-page {
-        page-break-after: always;
-        height: 297mm !important;
-        padding: 10mm !important;
-    }
-    
-    .card-page:last-child {
-        page-break-after: auto;
-    }
-    
-    html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: none !important;
-    }
-    
-    @page {
-        size: portrait;
-        margin: 5mm;
-    }
+  body * {
+    visibility: hidden !important;
+  }
+  .sacrament-card,
+  .sacrament-card * {
+    visibility: visible !important;
+  }
+  .sacrament-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    width: 210mm !important;
+    background: #f1e9e9 !important;
+    border: 1px solid #4a002a !important;
+  }
+
+  .print-controls {
+    display: none !important;
+  }
+
+  .card-page {
+    page-break-after: always;
+    height: 297mm !important;
+    padding: 10mm !important;
+  }
+
+  .card-page:last-child {
+    page-break-after: auto;
+  }
+
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+  }
+
+  @page {
+    size: portrait;
+    margin: 5mm;
+  }
 }

@@ -1,5 +1,11 @@
 <body>
-    <div class="sacrament-card">
+    <div *ngIf="isLoading" class="loading">Loading Sacrament Card...</div>
+
+    <div *ngIf="errorMessage" class="error">
+        <p>{{ errorMessage }}</p>
+        <button (click)="loadChristianData(christian)">Retry</button>
+    </div>
+    <div *ngIf="christian && !isLoading !errorMessage" class="sacrament-card">
         <!-- Page 1 - Cover -->
         <div class="card-page page1">
             <div class="notes-section">
@@ -66,7 +72,8 @@
                     </div>
                     <div class="field">
                         <span class="label">Date of Birth:</span>
-                        <span class="value">{{ christian?.birth_date ? (christian.birth_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                        <span class="value">{{ christian?.birth_date ? (christian.birth_date | date:'yyyy-MM-dd') :
+                            'N/A' }}</span>
                     </div>
                     <div class="field">
                         <span class="label">Residence:</span>
@@ -77,7 +84,7 @@
                 <!-- Right Column - Sacraments -->
                 <div class="column sacraments">
                     <!-- Baptism -->
-                    <div class="sacrament-group" *ngIf="baptism">
+                    <div class="sacrament-group" >
                         <h3>BAPTISM</h3>
                         <div class="field">
                             <span class="label">Parish:</span>
@@ -85,7 +92,8 @@
                         </div>
                         <div class="field">
                             <span class="label">Date:</span>
-                            <span class="value">{{ baptism?.baptism_date ? (baptism.baptism_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                            <span class="value">{{ baptism?.baptism_date ? (baptism.baptism_date | date:'yyyy-MM-dd') :
+                                'N/A' }}</span>
                         </div>
                         <div class="field">
                             <span class="label">Minister:</span>
@@ -98,7 +106,7 @@
                     </div>
 
                     <!-- Eucharist -->
-                    <div class="sacrament-group" *ngIf="eucharist">
+                    <div class="sacrament-group">
                         <h3>EUCHARIST</h3>
                         <div class="field">
                             <span class="label">Place:</span>
@@ -106,12 +114,13 @@
                         </div>
                         <div class="field">
                             <span class="label">Date:</span>
-                            <span class="value">{{ eucharist?.eucharist_date ? (eucharist.eucharist_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                            <span class="value">{{ eucharist?.eucharist_date ? (eucharist.eucharist_date |
+                                date:'yyyy-MM-dd') : 'N/A' }}</span>
                         </div>
                     </div>
 
                     <!-- Confirmation -->
-                    <div class="sacrament-group" *ngIf="confirmation">
+                    <div class="sacrament-group">
                         <h3>CONFIRMATION</h3>
                         <div class="field">
                             <span class="label">Place:</span>
@@ -119,7 +128,8 @@
                         </div>
                         <div class="field">
                             <span class="label">Date:</span>
-                            <span class="value">{{ confirmation?.confirmation_date ? (confirmation.confirmation_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                            <span class="value">{{ confirmation?.confirmation_date ? (confirmation.confirmation_date |
+                                date:'yyyy-MM-dd') : 'N/A' }}</span>
                         </div>
                         <div class="field">
                             <span class="label">Conf. No:</span>
@@ -128,7 +138,7 @@
                     </div>
 
                     <!-- Marriage -->
-                    <div class="sacrament-group" *ngIf="marriage">
+                    <div class="sacrament-group">
                         <h3>MARRIAGE</h3>
                         <div class="field">
                             <span class="label">Spouse:</span>
@@ -140,10 +150,11 @@
                         </div>
                         <div class="field">
                             <span class="label">Date:</span>
-                            <span class="value">{{ marriage?.marriage_date ? (marriage.marriage_date | date:'yyyy-MM-dd') : 'N/A' }}</span>
+                            <span class="value">{{ marriage?.marriage_date ? (marriage.marriage_date |
+                                date:'yyyy-MM-dd') : 'N/A' }}</span>
                         </div>
                         <div class="field">
-                            <span class="label">Reg. No:</span>
+                            <span class="label">Entry No:</span>
                             <span class="value">{{ marriage?.marriage_entry_number || 'N/A' }}</span>
                         </div>
                         <div class="field">

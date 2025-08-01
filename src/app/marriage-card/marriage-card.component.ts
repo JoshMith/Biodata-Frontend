@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { catchError, of } from 'rxjs';
 import { NgIf } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-marriage-card',
@@ -17,29 +18,33 @@ export class MarriageCardComponent implements OnInit {
   isLoading: boolean = true;
   errorMessage: string = '';
 
-  constructor(private marriageService: ApiService) {}
+  constructor(
+    private marriageService: ApiService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    this.fetchMarriageData();
-  }
-
-  fetchMarriageData() {
-    const selectedChristian = localStorage.getItem('selectedChristian');
+    const selectedChristian = localStorage.getItem('selectedChristian') || this.route.snapshot.queryParams['id'];
     let userId = '';
 
     if (selectedChristian) {
       userId = JSON.parse(selectedChristian).id;
+      if (!userId) {
+        this.isLoading = false;
+        this.errorMessage = 'No Christian ID provided';
+        console.error('No Christian ID provided');
+        return;
+      }
+      this.fetchMarriageData(userId);
     }
+  }
 
-    if (!userId) {
-      this.isLoading = false;
-      this.errorMessage = 'User ID not found in localStorage';
-      return;
-    }
 
+  fetchMarriageData(userId: string) {
     this.marriageService.getFullMarriageByUserId(userId)
       .pipe(
         catchError(error => {
+          console.error('Error loading marriage:', error);
           this.isLoading = false;
           this.errorMessage = 'Failed to fetch marriage data';
           return of(null);
@@ -51,7 +56,7 @@ export class MarriageCardComponent implements OnInit {
           this.marriageData = data[0];
           this.processPartiesData();
         } else {
-          this.errorMessage = 'No marriage certificate found for this user';
+          this.errorMessage = 'Failed to fetch marriage data';
         }
       });
   }

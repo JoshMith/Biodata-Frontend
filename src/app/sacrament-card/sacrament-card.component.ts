@@ -18,6 +18,8 @@ export class SacramentCardComponent implements OnInit {
   eucharist: any = null;
   confirmation: any = null;
   marriage: any = null;
+  isLoading: boolean = true;
+  errorMessage: string = '';
 
   constructor(
     private apiService: ApiService,
@@ -32,6 +34,9 @@ export class SacramentCardComponent implements OnInit {
       this.loadChristianData(christianId);
     } else {
       console.error('No Christian ID provided');
+      this.isLoading = false;
+      this.errorMessage = 'No Christian ID provided';
+      return;
     }
   }
 
@@ -41,7 +46,11 @@ export class SacramentCardComponent implements OnInit {
         this.christian = data;
         this.loadSacramentData(christianId);
       },
-      error: (err) => console.error('Error loading Christian:', err)
+      error: (err) => {
+        console.error('Error loading Christian:', err);
+        this.isLoading = false;
+        this.errorMessage = 'Failed to fetch Christian data';
+      }
     });
   }
 
@@ -53,12 +62,16 @@ export class SacramentCardComponent implements OnInit {
       this.apiService.getFullMarriageByUserId(christianId)
     ]).subscribe({
       next: ([baptism, eucharist, confirmation, marriage]) => {
-        this.baptism = baptism.length > 0 ? baptism[0] : null;
-        this.eucharist = eucharist.length > 0 ? eucharist[0] : null;
-        this.confirmation = confirmation.length > 0 ? confirmation[0] : null;
-        this.marriage = marriage.length > 0 ? marriage[0] : null;
+        this.isLoading = false;
+        this.baptism = baptism.length > 0 ? baptism[0] : this.errorMessage = 'No baptism record found for this user', null;
+        this.eucharist = eucharist.length > 0 ? eucharist[0] : this.errorMessage = 'No baptism record found for this user', null;
+        this.confirmation = confirmation.length > 0 ? confirmation[0] : this.errorMessage = 'No baptism record found for this user', null;
+        this.marriage = marriage.length > 0 ? marriage[0] : this.errorMessage = 'No baptism record found for this user', null;
       },
-      error: (err) => console.error('Error loading sacrament data:', err)
+      error: (err) => {
+        console.error('Error loading sacrament data:', err);
+        this.isLoading = false;
+      }
     });
   }
 
