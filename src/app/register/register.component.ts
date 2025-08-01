@@ -35,8 +35,10 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     // Initialize any data if needed
-    this.loadDeaneries();
-    this.loadParishesByDeanery();
+    setTimeout(() => {
+      this.loadDeaneries();
+      this.loadParishesByDeanery();
+    }, 3000);
   }
 
   parishes: any[] = [];
@@ -86,7 +88,7 @@ export class RegisterComponent implements OnInit {
             console.error('Error loading parishes:', error);
             this.errorMessage = 'Failed to load parishes for the selected deanery. Please try again.';
           }
-          
+
         });
       } else {
         // console.error("Deanery not found")
@@ -102,7 +104,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmitForm(): void {
     if (this.form.invalid) {
-      this.registerMessage = 'Please fill in all required fields.';
+      this.errorMessage = 'Please fill in all required fields.';
       return;
     }
     this.registerMessage = 'Registering...';

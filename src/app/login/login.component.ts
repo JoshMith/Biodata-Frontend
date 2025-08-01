@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,7 @@ export interface LoginResponse {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnChanges {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -36,6 +36,10 @@ export class LoginComponent {
 
   ngOnInit(): void {
     // this.onSubmit();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+      this.errorMessage = ''
   }
 
   onSubmit(): void {
