@@ -29,7 +29,7 @@ export class DashboardComponent {
     const userData = localStorage.getItem('userLoggedIn');
     if (userData) {
       const user = JSON.parse(userData);
-      const role = user.roles;
+      const role = user.role;
 
       if (role === 'superuser') {
         this.showBanner = true;
@@ -43,7 +43,7 @@ export class DashboardComponent {
       }
       else if (role === 'member') {
         this.showBanner = true;
-        this.bannerMessage = `You are logged in as MEMBER. You can only view your own personal information.`;
+        this.bannerMessage = `You are logged in as MEMBER. You can only view and edit own personal details.`;
       }
       else {
         this.showBanner = true;

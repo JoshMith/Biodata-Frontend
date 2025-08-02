@@ -21,7 +21,7 @@
             <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
             <p><strong>Email:</strong> {{ christian.email }}</p>
             <p><strong>Phone:</strong> {{ christian.phone_number }}</p>
-            <p><strong>Role:</strong> {{ christian.roles | titlecase }}</p>
+            <p><strong>Role:</strong> {{ christian.role | titlecase }}</p>
         </div>
     </div>
     <!-- Christian Details -->
@@ -34,8 +34,8 @@
                 </h3>
                 <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
                 <p id="email"><strong>Email:</strong> {{ selectedChristian.email }}</p>
-                <p><strong>Role:</strong> {{ selectedChristian.roles ? (selectedChristian.roles.charAt(0).toUpperCase()
-                    + selectedChristian.roles.slice(1).toLowerCase()) : '' }}</p>
+                <p><strong>Role:</strong> {{ selectedChristian.role ? (selectedChristian.role.charAt(0).toUpperCase()
+                    + selectedChristian.role.slice(1).toLowerCase()) : '' }}</p>
                 <p><strong>Phone Number:</strong> {{ selectedChristian.phone_number }}</p>
                 <p><strong>Reg. No:</strong> {{selectedChristian.registration_number}}</p>
                 <p><strong>Parish:</strong> {{ parishName }}</p>

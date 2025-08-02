@@ -11,7 +11,7 @@ interface Christian {
   id: string; // Changed from 'id: number' to match database UUID
   email: string;
   password_hash: string;
-  roles: string;
+  role: string;
   phone_number: string;
   registration_number: string;
   first_name: string;
@@ -99,7 +99,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     // Check if userSession has the expected structure
-    if (!userSession.parishId && !userSession.roles) {
+    if (!userSession.parishId && !userSession.role) {
       console.log('UserSession does not have expected structure:', userSession);
       this.handleUnauthenticatedUser();
       return;
@@ -136,16 +136,16 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private loadChristians(userSession: any): void {
     // Handle different possible structures of userSession
-    let roles: string;
+    let role: string;
     let parishId: string;
 
     if (userSession) {
       // Structure: { user: { role: '', parishId: '' } }
-      roles = userSession.roles;
+      role = userSession.role;
       parishId = userSession.parishId;
-    } else if (userSession.roles) {
+    } else if (userSession.role) {
       // Structure: { role: '', parishId: '' } or { role: '', parish_id: '' }
-      roles = userSession.roles;
+      role = userSession.role;
       parishId = userSession.parishId || userSession.parish_id;
     } else {
       console.error('Cannot determine user role from session:', userSession);
@@ -153,15 +153,15 @@ export class SearchComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // console.log('User role:', roles, 'Parish ID:', parishId);
+    // console.log('User role:', role, 'Parish ID:', parishId);
 
     this.apiService.getChristians()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Christian[]) => {
-          this.christians = this.filterChristiansByRole(data, roles, parishId);
+          this.christians = this.filterChristiansByRole(data, role, parishId);
           this.sortChristians();
-          this.setBannerMessage(roles);
+          this.setBannerMessage(role);
         },
         error: (error) => this.handleLoadError(error)
       });
@@ -208,7 +208,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       superuser: 'You are logged in as SUPERUSER. You have full access to view and manage all Christians in the system.',
       editor: 'You are logged in as EDITOR. You can view and manage Christians from your own parish only.',
       viewer: 'You are logged in as VIEWER. You can only view Christians in the system.',
-      member: 'You are logged in as MEMBER. You can only view your own personal information.'
+      member: 'You are logged in as MEMBER. You can only view and edit your own personal details.'
     };
 
     this.bannerMessage = messages[role as keyof typeof messages] || '';
@@ -419,7 +419,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const christianData = {
       id: christian.id, // Map user_id to id for compatibility
       email: christian.email,
-      role: christian.roles,
+      role: christian.role,
       name: `${christian.first_name} ${christian.last_name}`.trim(),
       parishId: christian.parish_id
     };

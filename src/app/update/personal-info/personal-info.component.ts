@@ -19,7 +19,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
   christianForm = this.fb.group({
     email: [''],
     password: [''],
-    roles: [''],
+    role: [''],
     phone_number: [''],
     registration_number: [''],
     first_name: [''],
@@ -106,8 +106,8 @@ export class PersonalInfoUpdateComponent implements OnInit {
     const userData = localStorage.getItem('userLoggedIn');
     if (userData) {
       const user = JSON.parse(userData);
-      if (user.roles !== 'superuser') {
-        this.christianForm.get('roles')?.disable();
+      if (user.role !== 'superuser') {
+        this.christianForm.get('role')?.disable();
       }
     }
   }
@@ -338,7 +338,7 @@ private setupParishListener(): void {
       'birth_place': 'Birth Place',
       'subcounty': 'Sub County',
       'parish_id': 'Parish',
-      'roles': 'Role'
+      'role': 'Role'
     };
     return labels[fieldName] || fieldName;
   }

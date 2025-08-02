@@ -37,7 +37,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      roles: ['member', Validators.required], // Default to 'member'
+      role: ['member', Validators.required], // Default to 'member'
       phone_number: [''],
       registration_number: [''],
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -85,16 +85,16 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     const userData = localStorage.getItem('userLoggedIn');
     if (userData) {
       const user = JSON.parse(userData);
-      const role = user.roles;
+      const role = user.role;
 
       if (role === 'superuser') {
-        this.getFieldLabel('roles');
+        this.getFieldLabel('role');
       }
       else {
-        this.getFieldLabel('roles');
-        this.userForm.get('roles')?.disable(); // Disable the roles field for non-superusers
-        this.userForm.get('roles')?.setValue('member'); // Set default role to 'member'
-        this.userForm.get('roles')?.markAsTouched();
+        this.getFieldLabel('role');
+        this.userForm.get('role')?.disable(); // Disable the role field for non-superusers
+        this.userForm.get('role')?.setValue('member'); // Set default role to 'member'
+        this.userForm.get('role')?.markAsTouched();
       }
     }
 
@@ -194,7 +194,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       localStorage.setItem('addedUser', JSON.stringify({
         id: response.user.id,
         email: response.user.email,
-        roles: response.user.roles,
+        role: response.user.role,
         first_name: response.user.first_name,
         last_name: response.user.last_name
       }));
@@ -252,7 +252,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       'birth_place': 'Birth Place',
       'subcounty': 'Sub County',
       'parish_id': 'Parish',
-      'roles': 'Roles'
+      'role': 'Role'
     };
     return labels[fieldName] || fieldName;
   }

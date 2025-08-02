@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
     middle_name: [''],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
-    roles: ['', [Validators.required, Validators.pattern(/^(superuser|editor|viewer|member)$/)]],
+    // role: ['member', [Validators.required, Validators.pattern(/^(superuser|editor|viewer|member)$/)]],
     phone_number: [''],
     deanery: [''],
     parish_id: [0]
@@ -41,13 +41,15 @@ export class RegisterComponent implements OnInit {
     }, 3000);
   }
 
+
   parishes: any[] = [];
   deaneries: any[] = [];
 
   ngAfterViewInit(): void {
     // One can only register as a member
-    this.form.get('roles')?.disable();
-    this.form.get('roles')?.setValue('member');
+    // this.form.get('role')?.markAsTouched();
+    // this.form.get('role')?.disable();
+    // this.form.get('role')?.setValue('member');
   }
 
 
@@ -76,7 +78,7 @@ export class RegisterComponent implements OnInit {
   // Load parishes for selected deanery
   private loadParishesByDeanery(): void {
     this.form.valueChanges.subscribe(values => {
-      // console.log('Current form values:', values.deanery);
+      // console.log('Current form values:', values);
       const deanery = values.deanery;
       if (deanery) {
         // console.log("Deanery found")
