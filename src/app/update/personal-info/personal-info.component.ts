@@ -17,8 +17,6 @@ export class PersonalInfoUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   christianForm = this.fb.group({
-    email: [''],
-    password: [''],
     role: [''],
     phone_number: [''],
     registration_number: [''],
@@ -332,7 +330,6 @@ private setupParishListener(): void {
       'first_name': 'First Name',
       'last_name': 'Last Name',
       'middle_name': 'Middle Name',
-      'email': 'Email',
       'phone_number': 'Phone Number',
       'birth_date': 'Birth Date',
       'birth_place': 'Birth Place',
