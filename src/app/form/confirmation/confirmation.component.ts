@@ -3,10 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../progress-bar';
 
 @Component({
   selector: 'app-confirmation',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
@@ -28,6 +29,7 @@ export class ConfirmationComponent {
 
   errorMessage = '';
   successMessage = '';
+  currentStep = 3; // Set the current step for the progress bar
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     // this.onSubmitConfirmationForm();

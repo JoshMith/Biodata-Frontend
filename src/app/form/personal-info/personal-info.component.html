@@ -1,13 +1,13 @@
 <body>
     <div class="container">
-        <div class="header">
-            <div class="div-home">
-                <a type="button" href="/dashboard">
-                    <i class="fa fa-home"></i> Home
-                </a>
-            </div>
-            <h2>Personal Information Form</h2>
+        <div class="div-home">
+            <a type="button" href="/dashboard">
+                <i class="fa fa-home"></i> Home
+            </a>
         </div>
+        <h2>Personal Information Form</h2>
+
+        <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 
         <form [formGroup]="userForm" (ngSubmit)="onSubmitUserForm()" class="formContainer">
             <div class="section">

@@ -2,12 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
+import { ProgressBarComponent } from '../../form/progress-bar';
 
 @Component({
   selector: 'app-baptism',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent],
   templateUrl: './baptism.component.html',
   styleUrl: './baptism.component.css'
 })
@@ -29,6 +30,7 @@ export class BaptismUpdateComponent implements OnInit {
   successMessage = '';
   existingBaptismId: string | null = null;
   noBaptism = false;
+  currentStep = 1; // Track the current step for the progress bar
 
   ngOnInit(): void {
     console.log("Initializing baptism form");

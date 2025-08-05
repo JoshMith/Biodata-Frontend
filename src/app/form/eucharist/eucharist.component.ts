@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../progress-bar';
 
 @Component({
   selector: 'app-eucharist',
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })
@@ -25,6 +26,7 @@ export class EucharistComponent {
 
   errorMessage = '';
   successMessage = '';
+  currentStep = 2; // Set the current step for the progress bar
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     // this.onSubmitEucharistForm();

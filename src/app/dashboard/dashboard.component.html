@@ -6,7 +6,7 @@
     <div class="sidebar">
         <h2>Dashboard</h2>
         <button (click)="navigateToSearch()">Search Christian</button>
-        <button (click)="navigateToForm()">Add Christian</button>
+        <button [disabled]="!canAddChristian" (click)="navigateToForm()">Add Christian</button>
         <button (click)="logoutChristian()">Logout</button>
     </div>
 

@@ -3,10 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../progress-bar';
 
 @Component({
   selector: 'app-baptism',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
   templateUrl: './baptism.component.html',
   styleUrl: './baptism.component.css'
 })
@@ -31,6 +32,7 @@ export class BaptismComponent {
   errorMessage = '';
   successMessage = '';
   userId: any;
+  currentStep = 1; // Set the current step for the progress bar
 
   ngOnInit(): void {
     console.log("Fill in the baptism form");

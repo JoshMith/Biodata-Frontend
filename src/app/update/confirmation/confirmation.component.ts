@@ -2,12 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
+import { ProgressBarComponent } from '../../form/progress-bar';
 
 @Component({
   selector: 'app-confirmation',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
@@ -28,6 +29,7 @@ export class ConfirmationUpdateComponent implements OnInit {
   successMessage = '';
   existingConfirmationId: string | null = null;
   noConfirmation = false;
+  currentStep = 3; // Track the current step for the progress bar
 
   ngOnInit(): void {
     console.log("Initializing confirmation form");

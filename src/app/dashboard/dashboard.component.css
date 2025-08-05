@@ -54,6 +54,11 @@ body {
     background-color: #4a002a3f;
 }
 
+.sidebar button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 /* Role banner styling */
 .role-banner {
     background-color: #e7c75f;

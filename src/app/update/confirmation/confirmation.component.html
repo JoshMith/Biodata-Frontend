@@ -9,6 +9,9 @@
       </a>
     </div>
         <h2>Confirmation Form</h2>
+
+        <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
+        
         <div class="error-alert" *ngIf="noConfirmation">
             This Christian is not Confirmed! Add Confirmation Record
         </div>

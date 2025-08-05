@@ -68,6 +68,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   // UI state
   showBanner = false;
   bannerMessage = '';
+  canDeleteChristian = true; // Control delete button visibility
+
 
   constructor(
     private apiService: ApiService,
@@ -181,15 +183,19 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     switch (role.toLowerCase()) {
       case 'viewer':
+        this.canDeleteChristian = false; // Hide delete button for viewers
+        return christians;
       case 'superuser':
         return christians;
       case 'editor':
+        this.canDeleteChristian = false; // Hide delete button for editors
         if (!parishId) {
           console.warn('No parish ID provided for editor role');
           return christians; // Show all if no parish restriction
         }
         return christians.filter(c => c.parish_id === parishId);
       case 'member':
+        this.canDeleteChristian = false; // Hide delete button for members
         // Member can only view their own personal information
         const userData = this.getUserSession();
         if (!userData || !userData.id) {

@@ -19,6 +19,7 @@ export class DashboardComponent {
 
   showBanner: boolean = false; // Added to control banner visibility
   bannerMessage: string = ''; // Added to store banner message
+  canAddChristian: boolean = true; // Added to control add user button visibility
 
 
   ngOnInit(): void {
@@ -38,14 +39,17 @@ export class DashboardComponent {
         this.showBanner = true;
         this.bannerMessage = `You are logged in as EDITOR. You can view and manage Christians from your own parish only.`;
       } else if (role === 'viewer') {
+        this.canAddChristian = false; // Hide add user button for viewers
         this.showBanner = true;
         this.bannerMessage = `You are logged in as VIEWER. You only have view access.`;
       }
       else if (role === 'member') {
+        this.canAddChristian = false; // Hide add user button for members
         this.showBanner = true;
         this.bannerMessage = `You are logged in as MEMBER. You can only view and edit own personal details.`;
       }
       else {
+        this.canAddChristian = false; // Hide add user button for unknown roles
         this.showBanner = true;
         this.bannerMessage = 'You are not logged in. Go to login page.';
         setTimeout(() => {

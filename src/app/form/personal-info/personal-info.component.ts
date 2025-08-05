@@ -3,15 +3,19 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../progress-bar';
 
 @Component({
   selector: 'app-personal-info',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent],
   standalone: true,
   templateUrl: './personal-info.component.html',
   styleUrl: './personal-info.component.css'
 })
 export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
+  // Progress bar steps
+  currentStep = 0;
+  
   // Form group
   userForm: FormGroup;
 
@@ -37,7 +41,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      role: ['member', Validators.required], // Default to 'member'
       phone_number: [''],
       registration_number: [''],
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -252,7 +255,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       'birth_place': 'Birth Place',
       'subcounty': 'Sub County',
       'parish_id': 'Parish',
-      'role': 'Role'
     };
     return labels[fieldName] || fieldName;
   }

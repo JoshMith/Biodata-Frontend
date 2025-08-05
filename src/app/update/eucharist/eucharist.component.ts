@@ -2,12 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../../form/progress-bar';
 
 @Component({
   selector: 'app-eucharist',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent],
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })
@@ -26,6 +27,7 @@ export class EucharistUpdateComponent implements OnInit {
   successMessage = '';
   existingEucharistId: string | null = null;
   noEucharist = false;
+  currentStep = 2; // Track the current step for the progress bar
 
   ngOnInit(): void {
     console.log("Initializing eucharist form");

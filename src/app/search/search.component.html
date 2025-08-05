@@ -153,7 +153,7 @@
                 <button class="update-button" (click)="redirectToUpdateChristian()">
                     <strong>Edit Details</strong>
                 </button>
-                <button class="delete-button" (click)="deleteChristian()">
+                <button [disabled]="!canDeleteChristian" class="delete-button" (click)="deleteChristian()">
                     <strong>Delete {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</strong>
                 </button>
             </div>

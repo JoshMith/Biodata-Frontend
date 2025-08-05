@@ -4,14 +4,16 @@ import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../progress-bar';
 
 @Component({
   selector: 'app-marriage',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
   templateUrl: './marriage.component.html',
   styleUrl: './marriage.component.css'
 })
 export class MarriageComponent implements OnInit {
+  currentStep = 4; // Set the current step for the progress bar
   marriageForm: FormGroup;
   countyOptions = ['Mombasa', 'Kwale', 'Kilifi', 'Tana River', 'Lamu', 'Taita/Taveta', 'Garissa', 'Wajir', 'Mandera', 'Marsabit', 'Isiolo', 'Meru', 'Tharaka-Nithi', 'Embu', 'Kitui', 'Machakos', 'Makueni', 'Nyandarua', 'Nyeri', 'Kirinyaga', 'Murang\'a', 'Kiambu', 'Turkana', 'West Pokot', 'Samburu', 'Trans Nzoia', 'Uasin Gishu', 'Elgeyo/Marakwet', 'Nandi', 'Baringo', 'Laikipia', 'Nakuru', 'Narok', 'Kajiado', 'Kericho', 'Bomet', 'Kakamega', 'Vihiga', 'Bungoma', 'Busia', 'Siaya', 'Kisumu', 'Homa Bay', 'Migori', 'Kisii', 'Nyamira', 'Nairobi'];
   maritalStatusOptions = ['Single', 'Divorced', 'Widowed'];
@@ -19,6 +21,7 @@ export class MarriageComponent implements OnInit {
   isSubmitting = false;
   selectedFile: File | null = null;
   uploadProgress: number | null = null;
+
 
   constructor(
     private fb: FormBuilder,

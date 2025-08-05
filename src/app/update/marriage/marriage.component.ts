@@ -4,11 +4,12 @@ import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../../form/progress-bar';
 
 @Component({
   selector: 'app-marriage',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
   templateUrl: './marriage.component.html',
   styleUrl: './marriage.component.css'
 })
@@ -24,6 +25,7 @@ export class MarriageUpdateComponent implements OnInit {
   userId: string | null = null;
   existingMarriageId: number | null = null;
   existingPartyIds: number[] = [];
+  currentStep = 4; // Track the current step for the progress bar
 
   constructor(
     private fb: FormBuilder,

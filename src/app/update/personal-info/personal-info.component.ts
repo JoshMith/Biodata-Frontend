@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../../form/progress-bar';
 
 @Component({
   selector: 'app-personal-info',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent],
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.css']
 })
@@ -35,6 +36,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     residence: [''],
   });
 
+  currentStep = 0;
   errorMessage = '';
   successMessage = '';
   isSubmitting = false;
