@@ -146,14 +146,14 @@
             </div>
 
             <div class="christian-actions">
-                <button class="print-button" (click)="redirectToPrintDetails()">
+                <button class="print-button" title="Print christian details (sacrament data)" (click)="redirectToPrintDetails()">
                     <strong>Print Details</strong>
                 </button>
 
-                <button class="update-button" (click)="redirectToUpdateChristian()">
+                <button class="update-button" title="Edit Christian details" (click)="redirectToUpdateChristian()">
                     <strong>Edit Details</strong>
                 </button>
-                <button [disabled]="!canDeleteChristian" class="delete-button" (click)="deleteChristian()">
+                <button [disabled]="!canDeleteChristian" class="delete-button" title="Delete access only to superusers" (click)="deleteChristian()">
                     <strong>Delete {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</strong>
                 </button>
             </div>

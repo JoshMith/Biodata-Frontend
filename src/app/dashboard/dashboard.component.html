@@ -5,8 +5,8 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>Dashboard</h2>
-        <button (click)="navigateToSearch()">Search Christian</button>
-        <button [disabled]="!canAddChristian" (click)="navigateToForm()">Add Christian</button>
+        <button title="Search Christian by name, email or phone number" (click)="navigateToSearch()">Search Christian</button>
+        <button [disabled]="!canAddChristian" title="Add a Christian into the system - Editors  & superusers only" (click)="navigateToForm()">Add Christian</button>
         <button (click)="logoutChristian()">Logout</button>
     </div>
 
