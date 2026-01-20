@@ -79,14 +79,14 @@ export class DashboardComponent {
       },
       (error) => {
         console.error('Error fetching user count:', error);
-        this.bannerMessage = 'You are not logged in. Go to login page.';
-        localStorage.removeItem('userLoggedIn');
-        setTimeout(() => {
-        this.showBanner = true;
-        if (confirm('You are not logged in. Do you want to go to the login page?')) {
-          this.router.navigate(['/login']);
-        }
-      }, 3000);
+      //   this.bannerMessage = 'You are not logged in. Go to login page.';
+      //   localStorage.removeItem('userLoggedIn');
+      //   setTimeout(() => {
+      //   this.showBanner = true;
+      //   if (confirm('You are not logged in. Do you want to go to the login page?')) {
+      //     this.router.navigate(['/login']);
+      //   }
+      // }, 3000);
       }
     );
   }
