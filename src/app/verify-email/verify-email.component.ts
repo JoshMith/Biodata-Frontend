@@ -22,7 +22,7 @@ export class VerifyEmailComponent implements OnInit {
   ngOnInit(): void {
     const token = this.route.snapshot.queryParamMap.get('token');
     if (token) {
-      this.http.get(`http://https://cbms.adnyeri.org/api/auth/verifyEmail?token=${token}`)
+      this.http.get(`https://cbms.adnyeri.org/api/auth/verifyEmail?token=${token}`)
         .subscribe({
           next: () => {
             this.state = "Verified!"
