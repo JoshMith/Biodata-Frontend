@@ -7,7 +7,7 @@ import { LoginResponse } from '../login/login.component';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://vps68131.dreamhostps.com:3000'; // Backend URL
+  private baseUrl = 'https://cbms.adnyeri.org/api'; // Backend URL
   // private baseUrl = 'http://localhost:3000';  // Backend URL
 
   constructor(private http: HttpClient) { }
