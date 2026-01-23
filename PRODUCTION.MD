@@ -8,6 +8,7 @@ cp -r ~/cbms.adnyeri.org ~/backups/cbms.adnyeri.org-backup-$(date +%Y%m%d-%H%M%S
 # 2. Remove old files from website directory (be careful!)
 rm -rf ~/cbms.adnyeri.org/*
 git pull
+JoshMith
 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
 ng build --configuration production
 # 3. Copy the built Angular files to your website
@@ -18,6 +19,7 @@ ls -la ~/cbms.adnyeri.org/
 Backend OnChanges
 Restart Server
 git pull
+JoshMith
 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
 pm2 delete biodata-backend
 pm2 start "npm run start" --name "biodata-backend"
