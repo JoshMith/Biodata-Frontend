@@ -38,7 +38,7 @@ export class ApiService {
 
   // Reset password with token
   resetPassword(token: string, newPassword: string, confirmPassword: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/reset-password`, {
+    return this.http.post(`${this.baseUrl}/auth/reset-password`, {
       token,
       newPassword,
       confirmPassword
