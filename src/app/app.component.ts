@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 // import { SearchComponent } from './search/search.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 @Component({
   selector: 'app-root',

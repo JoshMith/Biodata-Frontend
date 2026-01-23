@@ -1,14 +1,14 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
-import { LoginResponse } from '../login/login.component';
+import { LoginResponse } from '../auth/login/login.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://cbms.adnyeri.org/api'; // Backend URL
-  // private baseUrl = 'http://localhost:3000';  // Backend URL
+  // private baseUrl = 'https://cbms.adnyeri.org/api'; // Backend URL
+  private baseUrl = 'http://localhost:3000';  // Backend URL
 
   constructor(private http: HttpClient) { }
 
@@ -24,11 +24,26 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/auth/logout`, data, { withCredentials: true });
   }
 
-  // logoutChristian(data: any): Observable<any> {
-  //   return this.http.post(`${this.baseUrl}/auth/logout`, data);
-  // }
+  // Request password reset email
+  requestPasswordReset(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/request-password-reset`, { email });
+  }
 
+  // Verify reset token
+  verifyResetToken(token: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/verify-reset-token`, {
+      params: { token }
+    });
+  }
 
+  // Reset password with token
+  resetPassword(token: string, newPassword: string, confirmPassword: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reset-password`, {
+      token,
+      newPassword,
+      confirmPassword
+    });
+  }
 
   getChristians(): Observable<any> {
     return this.http.get(`${this.baseUrl}/users`, { withCredentials: true });
