@@ -1,6 +1,5 @@
-Frontend Deploy
-OnChanges
-Restart Server
+## Frontend OnChanges
+# Restart Server
 
 cd ~/Biodata-Frontend
 # 1. Backup your current website
@@ -16,8 +15,9 @@ cp -r ~/Biodata-Frontend/dist/biodata-system/browser/* ~/cbms.adnyeri.org/
 # 5. Verify the deployment
 ls -la ~/cbms.adnyeri.org/
 
-Backend OnChanges
-Restart Server
+## Backend OnChanges
+# Restart Server
+cd ~/Biodata-Backend
 git pull
 JoshMith
 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
@@ -28,7 +28,7 @@ pm2 status
 pm2 logs biodata-backend
 
 
-You have local changes in package.json that conflict with the incoming changes. Here's how to resolve this:
+## You have local changes in package.json that conflict with the incoming changes. Here's how to resolve this:
 Option 1: Stash Your Changes (Recommended if you want to keep them)
 bash# Save your local changes temporarily
 git stash

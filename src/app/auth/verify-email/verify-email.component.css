@@ -3,16 +3,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    padding: 20px;
 }
 
 .verify-email-card {
-    background: #fff;
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 2.5rem 2rem;
-    border-radius: 18px;
-    box-shadow: 0 8px 32px rgba(60, 60, 120, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     max-width: 350px;
+    width: 100%;
 }
 
 .verify-email-icon {
@@ -21,7 +22,7 @@
 }
 
 .verify-email-card h1 {
-    color: #2d6cdf;
+    color: #4a004a;
     margin-bottom: 0.5rem;
 }
 
@@ -30,43 +31,101 @@
     margin-bottom: 2rem;
 }
 
-
 .verify-email-card button {
-    /* display: block; */
+    display: block;
     margin: 1.5rem auto 0 auto;
-    background: linear-gradient(90deg, #2d6cdf 60%, #4f8cff 100%);
-    color: #fff;
+    padding: 12px 30px;
+    background-color: #4A002A;
+    color: white;
     border: none;
-    border-radius: 10px;
-    font-weight: 700;
-    width: auto;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(45, 108, 223, 0.15);
-    transition: background 0.2s, transform 0.15s;
-    letter-spacing: 0.5px;
+    transition: background-color 0.3s ease;
+    width: auto;
+    min-width: 150px;
 }
 
 .verify-email-card button:hover {
-    background: linear-gradient(90deg, #1b4fa0 60%, #3576e0 100%);
-    transform: translateY(-2px) scale(1.04);
+    background-color: #c2ae6d;
+    color: #4A002A;
+    transform: translateY(-2px);
 }
 
-button:hover {
-    background: #1b4fa0;
+/* Error/Message styling */
+.verify-error {
+    color: #a94442;
+    background-color: #f8d7da;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
 }
 
+.verify-success {
+    color: #155724;
+    background-color: #d4edda;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+}
 
-/* .home-btn {
-    display: inline-block;
-    padding: 0.7rem 1.5rem;
-    background: #2d6cdf;
-    color: #fff;
-    border-radius: 8px;
+/* Loading spinner */
+.verify-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.verify-spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #4A002A;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: verify-spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes verify-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Link styling */
+.verify-link {
+    color: #4a002a;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
     text-decoration: none;
-    font-weight: 600;
-    transition: background 0.2s;
-} */
+    display: inline-block;
+    margin-top: 20px;
+}
 
-/* .home-btn:hover {
-    background: #1b4fa0;
-} */
+.verify-link:hover {
+    color: #c2ae6d;
+    text-decoration: underline;
+}
+
+/* Home button alternative */
+.home-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4A002A;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.home-btn:hover {
+    background-color: #c2ae6d;
+    color: #4A002A;
+}
