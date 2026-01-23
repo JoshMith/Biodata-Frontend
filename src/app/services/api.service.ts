@@ -26,12 +26,12 @@ export class ApiService {
 
   // Request password reset email
   requestPasswordReset(email: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/request-password-reset`, { email });
+    return this.http.post(`${this.baseUrl}/auth/request-password-reset`, { email });
   }
 
   // Verify reset token
   verifyResetToken(token: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/verify-reset-token`, {
+    return this.http.get(`${this.baseUrl}/auth/verify-reset-token`, {
       params: { token }
     });
   }
