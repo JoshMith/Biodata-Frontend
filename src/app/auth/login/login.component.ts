@@ -62,7 +62,7 @@ export class LoginComponent {
         // Remove userLoggedIn after 1 hour
         setTimeout(() => {
           localStorage.removeItem('userLoggedIn');
-        }, 3600000); // 1 hour in milliseconds
+        }, 86400000); // 24 hours in milliseconds
 
       },
       (error: any) => {
