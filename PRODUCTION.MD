@@ -8,7 +8,7 @@ cp -r ~/cbms.adnyeri.org ~/backups/cbms.adnyeri.org-backup-$(date +%Y%m%d-%H%M%S
 rm -rf ~/cbms.adnyeri.org/*
 git pull
 JoshMith
-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
+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
 ng build --configuration production
 # 3. Copy the built Angular files to your website
 cp -r ~/Biodata-Frontend/dist/biodata-system/browser/* ~/cbms.adnyeri.org/
