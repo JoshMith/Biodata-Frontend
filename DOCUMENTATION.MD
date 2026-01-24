@@ -832,7 +832,7 @@ allowedOrigins = ['https://cbms.adnyeri.org', 'http://localhost:4200'];
 
 ### Session Management
 
-- 1-hour auto-logout
+- 24-hours auto-logout
 - Secure session storage
 - Protected routes with guards
 
@@ -1060,7 +1060,7 @@ ngOnDestroy() {
    - No offline mode
 
 2. **Session Management:**
-   - Fixed 1-hour timeout
+   - Fixed 24-hours timeout
    - No refresh token implementation
 
 3. **File Upload:**
