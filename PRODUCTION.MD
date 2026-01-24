@@ -21,6 +21,7 @@ cd ~/Biodata-Backend
 git pull
 JoshMith
 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
+pm2 restart biodata-backend
 pm2 delete biodata-backend
 pm2 start "npm run start" --name "biodata-backend"
 pm2 save

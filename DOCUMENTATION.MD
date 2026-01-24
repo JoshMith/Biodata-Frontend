@@ -881,6 +881,8 @@ cd ~/Biodata-Backend
 git pull
 
 # Restart PM2 process
+pm2 restart biodata-backend
+
 pm2 delete biodata-backend
 pm2 start "npm run start" --name "biodata-backend"
 pm2 save
