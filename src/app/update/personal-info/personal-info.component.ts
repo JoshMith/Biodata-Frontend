@@ -20,7 +20,6 @@ export class PersonalInfoUpdateComponent implements OnInit {
   christianForm = this.fb.group({
     role: [''],
     phone_number: [''],
-    registration_number: [''],
     first_name: [''],
     last_name: [''],
     middle_name: [''],

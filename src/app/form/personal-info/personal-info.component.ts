@@ -42,7 +42,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       phone_number: [''],
-      registration_number: [''],
       first_name: ['', [Validators.required, Validators.minLength(2)]],
       last_name: ['', [Validators.required, Validators.minLength(2)]],
       middle_name: [''],
