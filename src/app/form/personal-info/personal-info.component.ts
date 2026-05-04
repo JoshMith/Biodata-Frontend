@@ -15,7 +15,7 @@ import { ProgressBarComponent } from '../progress-bar';
 export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   // Progress bar steps
   currentStep = 0;
-  
+
   // Form group
   userForm: FormGroup;
 
@@ -41,20 +41,20 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      phone_number: [''],
       first_name: ['', [Validators.required, Validators.minLength(2)]],
       last_name: ['', [Validators.required, Validators.minLength(2)]],
       middle_name: [''],
+      deanery: ['', Validators.required],
+      parish_id: ['', Validators.required],
+      phone_number: [''],
       mother: [''],
       father: [''],
       birth_place: [''],
       subcounty: [''],
-      birth_date: ['', Validators.required],
+      birth_date: [''],
       tribe: [''],
       clan: [''],
-      residence: [''],
-      deanery: ['', Validators.required],
-      parish_id: ['', Validators.required]
+      domicile: ['']
     });
   }
 
@@ -104,7 +104,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     // remove added user from localStorage
-    
+
   }
 
 
@@ -207,7 +207,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       // Clear session storage since we've successfully saved
       sessionStorage.removeItem('userFormData');
 
-      
+
 
       // Navigate to next step
       this.navigateToBaptism();
@@ -259,12 +259,12 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToBaptism(): void {
-        // Save form data before navigating away
+    // Save form data before navigating away
     if (this.userForm.dirty) {
       sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.value));
     }
 
-      this.router.navigate(['/baptism']);
+    this.router.navigate(['/baptism']);
   }
 
   navigateToDashboard(): void {

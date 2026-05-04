@@ -9,7 +9,7 @@
         <input type="search" class="search-box" placeholder="Search by Name, Phone, or Email" [(ngModel)]="searchQuery"
             (keyup.enter)="searchChristianByName()" />
         <button class="search-button" (click)="searchChristianByName()">Search</button>
-        <button class="clear-button" (click)="clearSearch()">Clear/reset</button>
+        <button class="clear-button" (click)="clearSearch()">Clear/Reset</button>
     </div>
 
     <!-- Error Message -->
@@ -20,8 +20,8 @@
         <div *ngFor="let christian of christians" class="styled-christian-card" (click)="selectChristian(christian)">
             <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
             <p><strong>Email:</strong> {{ christian.email }}</p>
-            <p><strong>Phone:</strong> {{ christian.phone_number }}</p>
             <p><strong>Role:</strong> {{ christian.role | titlecase }}</p>
+            <p><strong>Phone:</strong> {{ christian.phone_number }}</p>
         </div>
     </div>
     <!-- Christian Details -->
@@ -29,8 +29,8 @@
         <h1 id="christianName">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</h1>
         <div class="christian-details" [ngClass]="{'highlighted': selectedChristian.id === selectedChristian.id}">
             <div class="personal-details">
-                <h3>Personal Details <span><a type="button" [routerLink]="['/edit-personal-info']"
-                            [queryParams]="{id: selectedChristian.id}">Edit Personal Details</a></span>
+                <h3>Personal Details <span><button [disabled]="!canEditChristian"
+                            (click)="navigateToUpdatePersonalInfo()">Edit Personal Details</button></span>
                 </h3>
                 <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
                 <p id="email"><strong>Email:</strong> {{ selectedChristian.email }}</p>
@@ -49,26 +49,26 @@
                 <p><strong>Sub County:</strong> {{ selectedChristian.subcounty }}</p>
                 <p><strong>Residence:</strong> {{ selectedChristian.residence }}</p>
                 <p *ngIf="!selectedBaptism" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is not yet baptised <span><a [routerLink]="['/edit-baptism']"
-                            [queryParams]="{id: selectedChristian.id}">Add
-                            Baptism</a></span></p>
+                    selectedChristian.last_name }} is not yet baptised <span><button [disabled]="!canEditChristian"
+                            (click)="navigateToUpdateBaptism()">Add
+                            Baptism</button></span></p>
                 <p *ngIf="!selectedEucharist" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is yet to receive eucharist <span><a
-                            [routerLink]="['/edit-eucharist']" [queryParams]="{id: selectedChristian.id}">Add
-                            Eucharist</a></span></p>
+                    selectedChristian.last_name }} is yet to receive eucharist <span><button
+                            [disabled]="!canEditChristian" (click)="navigateToUpdateEucharist()">Add
+                            Eucharist</button></span></p>
                 <p *ngIf="!selectedConfirmation" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is not yet confirmed <span><a [routerLink]="['/edit-confirmation']"
-                            [queryParams]="{id: selectedChristian.id}">Add
-                            Confirmation</a></span></p>
+                    selectedChristian.last_name }} is not yet confirmed <span><button [disabled]="!canEditChristian"
+                            (click)="navigateToUpdateConfirmation()">Add
+                            Confirmation</button></span></p>
                 <p *ngIf="!selectedMarriage" style="color: red;">{{ selectedChristian.first_name }} {{
-                    selectedChristian.last_name }} is not yet married <span><a [routerLink]="['/edit-marriage']"
-                            [queryParams]="{id: selectedChristian.id}">Add
-                            Marriage</a></span></p>
+                    selectedChristian.last_name }} is not yet married <span><button [disabled]="!canEditChristian"
+                            (click)="navigateToUpdateMarriage()">Add
+                            Marriage</button></span></p>
             </div>
 
             <div *ngIf="selectedBaptism" class="baptism-details">
-                <h3>Baptism Details <span><a type="button" [routerLink]="['/edit-baptism']"
-                            [queryParams]="{id: selectedChristian.id}">Edit Baptism</a></span></h3>
+                <h3>Baptism Details <span><button [disabled]="!canEditChristian"
+                            (click)="navigateToUpdateBaptism()">Edit Baptism</button></span></h3>
                 <p><strong>Parish:</strong> {{ selectedBaptism.parish }}</p>
                 <p><strong>Date:</strong> {{ selectedBaptism.baptism_date ? (selectedBaptism.baptism_date |
                     date:'yyyy-MM-dd') : '' }}</p>
@@ -78,16 +78,16 @@
             </div>
 
             <div *ngIf="selectedEucharist" class="eucharist-details">
-                <h3>Eucharist Details <span><a type="button" [routerLink]="['/edit-eucharist']"
-                            [queryParams]="{id: selectedChristian.id}">Edit Eucharist</a></span></h3>
+                <h3>Eucharist Details <span><button [disabled]="!canEditChristian"
+                            (click)="navigateToUpdateEucharist()">Edit Eucharist</button></span></h3>
                 <p><strong>Place:</strong> {{ selectedEucharist.eucharist_place }}</p>
                 <p><strong>Date:</strong> {{ selectedEucharist.eucharist_date ? (selectedEucharist.eucharist_date |
                     date:'yyyy-MM-dd') : '' }}</p>
             </div>
 
             <div *ngIf="selectedConfirmation" class="confirmation-details">
-                <h3>Confirmation Details <span><a type="button" [routerLink]="['/edit-confirmation']"
-                            [queryParams]="{id: selectedChristian.id}">Edit Confirmation</a></span>
+                <h3>Confirmation Details <span><button [disabled]="!canEditChristian"
+                            (click)="navigateToUpdateConfirmation()">Edit Confirmation</button></span>
                 </h3>
                 <p><strong>Place:</strong> {{ selectedConfirmation.confirmation_place }}</p>
                 <p><strong>Date:</strong> {{ selectedConfirmation.confirmation_date ?
@@ -96,9 +96,8 @@
             </div>
             <div *ngIf="selectedMarriage" class="marriage-details">
                 <h3>Marriage Details
-                    <span><a type="button" [routerLink]="['/edit-marriage']"
-                            [queryParams]="{id: selectedChristian.id}">Edit
-                            Marriage</a></span>
+                    <span><button [disabled]="!canEditChristian" (click)="navigateToUpdateMarriage()">Edit
+                            Marriage</button></span>
                     <span><a id="print-card" type="button" [routerLink]="['/marriage-card']"
                             [queryParams]="{id: selectedChristian.id}">Print Marriage
                             Card</a></span>
@@ -146,14 +145,17 @@
             </div>
 
             <div class="christian-actions">
-                <button class="print-button" title="Print christian details (sacrament data)" (click)="redirectToPrintDetails()">
+                <button class="print-button" title="Print christian details (sacrament data)"
+                    (click)="redirectToPrintDetails()">
                     <strong>Print Details</strong>
                 </button>
 
-                <button class="update-button" title="Edit Christian details" (click)="redirectToUpdateChristian()">
+                <button [disabled]="!canEditChristian" class="update-button" title="Edit Christian details"
+                    (click)="navigateToUpdatePersonalInfo()">
                     <strong>Edit Details</strong>
                 </button>
-                <button [disabled]="!canDeleteChristian" class="delete-button" title="Delete access only to superusers" (click)="deleteChristian()">
+                <button [disabled]="!canDeleteChristian" class="delete-button" title="Delete access only to superusers"
+                    (click)="deleteChristian()">
                     <strong>Delete {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</strong>
                 </button>
             </div>

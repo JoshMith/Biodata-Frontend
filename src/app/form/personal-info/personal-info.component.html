@@ -136,12 +136,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="birth_date">Date of Birth <span class="required-asterisk">*</span></label>
+                            <label for="birth_date">Date of Birth</label>
                             <input type="date" id="birth_date" formControlName="birth_date"
-                                placeholder="Your date of birth" [class.error]="hasFieldError('birth_date')">
-                            <span *ngIf="hasFieldError('birth_date')" class="error-message">
-                                {{ getFieldError('birth_date') }}
-                            </span>
+                                placeholder="Your date of birth">
                         </div>
                     </div>
 
@@ -152,9 +149,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="residence">Residence</label>
-                            <input type="text" id="residence" formControlName="residence"
-                                placeholder="Current residence">
+                            <label for="domicile">Domicile</label>
+                            <input type="text" id="domicile" formControlName="domicile"
+                                placeholder="Current domicile">
                         </div>
                     </div>
                 </div>

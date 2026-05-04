@@ -69,6 +69,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   showBanner = false;
   bannerMessage = '';
   canDeleteChristian = true; // Control delete button visibility
+  canEditChristian = true;
 
 
   constructor(
@@ -183,7 +184,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     switch (role.toLowerCase()) {
       case 'viewer':
-        this.canDeleteChristian = false; // Hide delete button for viewers
+        this.canDeleteChristian = false;
+        this.canEditChristian = false;
         return christians;
       case 'superuser':
         return christians;
@@ -195,7 +197,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
         return christians.filter(c => c.parish_id === parishId);
       case 'member':
-        this.canDeleteChristian = false; // Hide delete button for members
+        this.canDeleteChristian = false;
         // Member can only view their own personal information
         const userData = this.getUserSession();
         if (!userData || !userData.id) {
@@ -377,23 +379,63 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  redirectToUpdateChristian(): void {
+  navigateToUpdatePersonalInfo(): void {
     const selectedChristianData = this.getStoredSelectedChristian();
-
     if (selectedChristianData) {
-      setTimeout(() => {
-        this.router.navigate(['/edit-personal-info'], {
-          queryParams: { id: selectedChristianData.id }
-        });
-      }, 1000);
+      this.router.navigate(['/edit-personal-info'], {
+        queryParams: { id: selectedChristianData.id }
+      });
     } else {
       console.error('No Christian selected for redirection.');
     }
   }
 
-    redirectToPrintDetails(): void {
+  navigateToUpdateBaptism(): void {
     const selectedChristianData = this.getStoredSelectedChristian();
+    if (selectedChristianData) {
+      this.router.navigate(['/edit-baptism'], {
+        queryParams: { id: selectedChristianData.id }
+      });
+    } else {
+      console.error('No Christian selected for redirection.');
+    }
+  }
 
+  navigateToUpdateEucharist(): void {
+    const selectedChristianData = this.getStoredSelectedChristian();
+    if (selectedChristianData) {
+      this.router.navigate(['/edit-eucharist'], {
+        queryParams: { id: selectedChristianData.id }
+      });
+    } else {
+      console.error('No Christian selected for redirection.');
+    }
+  }
+
+  navigateToUpdateConfirmation(): void {
+    const selectedChristianData = this.getStoredSelectedChristian();
+    if (selectedChristianData) {
+      this.router.navigate(['/edit-confirmation'], {
+        queryParams: { id: selectedChristianData.id }
+      });
+    } else {
+      console.error('No Christian selected for redirection.');
+    }
+  }
+
+  navigateToUpdateMarriage(): void {
+    const selectedChristianData = this.getStoredSelectedChristian();
+    if (selectedChristianData) {
+      this.router.navigate(['/edit-marriage'], {
+        queryParams: { id: selectedChristianData.id }
+      });
+    } else {
+      console.error('No Christian selected for redirection.');
+    }
+  }
+
+  redirectToPrintDetails(): void {
+    const selectedChristianData = this.getStoredSelectedChristian();
     if (selectedChristianData) {
       setTimeout(() => {
         this.router.navigate(['/sacrament-card'], {

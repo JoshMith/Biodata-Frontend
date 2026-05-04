@@ -170,7 +170,7 @@ body {
   padding-left: 0;
 }
 
-span a {
+span button {
   text-decoration: none;
   color: #4a002a;
   font-weight: lighter;
@@ -185,9 +185,14 @@ span a {
   cursor: pointer;
 }
 
-span a:hover {
+span button:hover {
   background-color: #8d7f50;
   transform: scale(1.05);
+}
+
+span button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 #print-card {
@@ -256,6 +261,11 @@ span a:hover {
   transition: all 0.3s ease-in-out;
 }
 
+.update-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .delete-button {
   background-color: #d9534f;
   border: 1px solid #b71c1c;
@@ -277,7 +287,7 @@ span a:hover {
 }
 
 .delete-button:disabled {
-  opacity: 0.3;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
