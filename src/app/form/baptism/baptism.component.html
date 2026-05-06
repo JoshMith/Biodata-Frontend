@@ -11,13 +11,13 @@
             <div class="section">
                 <h3>Baptism Information</h3>
                 
-                <label for="parish">Parish:</label>
-                <input 
-                    type="text" 
-                    id="parish" 
+                <label for="parish">Parish / Place of Baptism:</label>
+                <app-parish-autocomplete
                     formControlName="parish"
-                    [class.error]="hasFieldError('parish')"
-                    placeholder="Enter the parish or church name">
+                    placeholder="Type a parish name..."
+                    label="Parish / Place of Baptism"
+                    [externalControl]="baptismForm.get('parish')"
+                ></app-parish-autocomplete>
                 <div class="error-message" *ngIf="hasFieldError('parish')">
                     {{ getFieldError('parish') }}
                 </div>

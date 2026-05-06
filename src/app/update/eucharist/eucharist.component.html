@@ -22,7 +22,12 @@
             <div class="section">
                 <h3>Eucharist Information</h3>
                 <label for="eucharist_place">Place:</label>
-                <input type="text" id="eucharist_place" formControlName="eucharist_place">
+                <app-parish-autocomplete
+                    formControlName="eucharist_place"
+                    placeholder="Type a parish name..."
+                    label="Place of First Eucharist"
+                    [externalControl]="eucharistForm.get('eucharist_place')"
+                ></app-parish-autocomplete>
 
                 <label for="eucharist_date">Date:</label>
                 <input type="date" id="eucharist_date" formControlName="eucharist_date">

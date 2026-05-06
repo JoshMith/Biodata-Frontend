@@ -22,8 +22,13 @@
             <div class="section">
                 <h3>Confirmation Information</h3>
                 <label for="confirmation_place">Place:</label>
-                <input type="text" id="confirmation_place" formControlName="confirmation_place">
-
+                <app-parish-autocomplete
+                    formControlName="confirmation_place"
+                    placeholder="Type a parish name..."
+                    label="Place of Confirmation"
+                    [externalControl]="confirmationForm.get('confirmation_place')"
+                ></app-parish-autocomplete>
+                
                 <label for="confirmation_date">Date:</label>
                 <input type="date" id="confirmation_date" formControlName="confirmation_date">
 

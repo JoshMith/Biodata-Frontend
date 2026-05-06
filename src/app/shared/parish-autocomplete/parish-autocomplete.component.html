@@ -1,0 +1,60 @@
+<div class="parish-autocomplete-wrapper" [class.has-value]="inputControl.value">
+  <div class="input-container" [class.invalid]="isInvalid" [class.valid]="isValid">
+    <input
+      #inputRef
+      type="text"
+      [formControl]="inputControl"
+      [placeholder]="placeholder"
+      [attr.aria-label]="label"
+      [attr.aria-autocomplete]="'list'"
+      [attr.aria-expanded]="showDropdown"
+      [attr.aria-activedescendant]="activeIndex >= 0 ? 'suggestion-' + activeIndex : null"
+      role="combobox"
+      autocomplete="off"
+      spellcheck="false"
+      (focus)="onInputFocus()"
+      (blur)="onInputBlur()"
+      (keydown)="onKeyDown($event)"
+      class="parish-input"
+    />
+    <span class="input-icon" [class.spinning]="isLoading">
+      <svg *ngIf="!isLoading" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <svg *ngIf="isLoading" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+    </span>
+  </div>
+
+  <!-- Dropdown -->
+  <ul
+    #dropdownRef
+    *ngIf="showDropdown && filteredSuggestions.length > 0"
+    class="suggestions-dropdown"
+    role="listbox"
+    [attr.aria-label]="'Parish suggestions'"
+  >
+    <li
+      *ngFor="let suggestion of filteredSuggestions; let i = index"
+      [id]="'suggestion-' + i"
+      [class.active]="i === activeIndex"
+      role="option"
+      [attr.aria-selected]="i === activeIndex"
+      (mousedown)="selectSuggestion(suggestion)"
+      class="suggestion-item"
+    >
+      <span class="suggestion-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </span>
+      <span class="suggestion-text" [innerHTML]="highlightMatch(suggestion)"></span>
+    </li>
+    <li class="suggestion-hint" *ngIf="filteredSuggestions.length > 0">
+      <small>↑↓ navigate · Enter select · Esc close</small>
+    </li>
+  </ul>
+</div>

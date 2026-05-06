@@ -12,8 +12,12 @@
                 <h3>Confirmation Information</h3>
 
                 <label for="confirmation_place">Place: <span class="required">*</span></label>
-                <input type="text" id="confirmation_place" formControlName="confirmation_place"
-                    [class.error]="hasFieldError('confirmation_place')" placeholder="Enter confirmation place">
+                <app-parish-autocomplete
+                    formControlName="confirmation_place"
+                    placeholder="Type a parish name..."
+                    label="Place of Confirmation"
+                    [externalControl]="confirmationForm.get('confirmation_place')"
+                ></app-parish-autocomplete>
                 <span *ngIf="hasFieldError('confirmation_place')" class="error-message">
                     {{ getFieldError('confirmation_place') }}
                 </span>

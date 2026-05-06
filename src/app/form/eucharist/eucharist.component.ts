@@ -4,10 +4,11 @@ import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../progress-bar';
+import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
   selector: 'app-eucharist',
-  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })

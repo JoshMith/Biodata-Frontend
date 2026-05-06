@@ -1,0 +1,201 @@
+/* =============================================
+   Parish Autocomplete Component Styles
+   Matches existing app design system:
+   Primary: #4A002A | Accent: #C2AE6D | Gold dark: #6d5507
+   ============================================= */
+
+.parish-autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* --- Input container --- */
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #ffb433;
+  border-radius: 5px;
+  background: white;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+.input-container:focus-within {
+  border-color: #c2ae6d;
+  box-shadow: 0 0 0 2px rgba(194, 174, 109, 0.25);
+  outline: none;
+}
+
+.input-container.invalid {
+  border-left: 5px solid #a94442 !important;
+  border-color: #a94442;
+}
+
+.input-container.valid {
+  border-left: 5px solid green !important;
+}
+
+/* --- Text input --- */
+.parish-input {
+  width: 100%;
+  padding: 10px 36px 10px 10px;
+  border: none !important;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #4A002A;
+  font-weight: bold;
+  background: transparent;
+  box-sizing: border-box;
+  outline: none !important;
+  box-shadow: none !important;
+  /* Override any global input styles that might add borders */
+  border-left: none !important;
+}
+
+/* Remove browser autofill styling */
+.parish-input:-webkit-autofill,
+.parish-input:-webkit-autofill:hover,
+.parish-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: #4A002A !important;
+}
+
+/* --- Icon inside input --- */
+.input-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #c2ae6d;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.input-icon.spinning svg {
+  animation: spin-icon 0.8s linear infinite;
+}
+
+@keyframes spin-icon {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* --- Dropdown list --- */
+.suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #c2ae6d;
+  border-radius: 6px;
+  box-shadow: 0 6px 20px rgba(74, 0, 42, 0.15);
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 4px 0;
+  margin: 0;
+  list-style: none;
+
+  /* Smooth appearance */
+  animation: dropdown-appear 0.15s ease;
+}
+
+@keyframes dropdown-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom scrollbar */
+.suggestions-dropdown::-webkit-scrollbar {
+  width: 5px;
+}
+.suggestions-dropdown::-webkit-scrollbar-track {
+  background: #f5f0e8;
+}
+.suggestions-dropdown::-webkit-scrollbar-thumb {
+  background: #c2ae6d;
+  border-radius: 3px;
+}
+
+/* --- Each suggestion row --- */
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  color: #333;
+  transition: background-color 0.12s ease;
+  border-radius: 0;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+  background-color: #f5eedb;
+  color: #4A002A;
+}
+
+.suggestion-item.active {
+  background-color: #f0e6c4;
+}
+
+.suggestion-icon {
+  color: #c2ae6d;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.suggestion-item.active .suggestion-icon,
+.suggestion-item:hover .suggestion-icon {
+  color: #6d5507;
+}
+
+.suggestion-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Highlighted match text */
+.suggestion-text mark {
+  background-color: #ffe066;
+  color: #4A002A;
+  font-weight: 700;
+  padding: 0 1px;
+  border-radius: 2px;
+}
+
+/* --- Keyboard hint row --- */
+.suggestion-hint {
+  padding: 5px 12px 6px;
+  border-top: 1px solid #f0e8d5;
+  margin-top: 2px;
+}
+
+.suggestion-hint small {
+  font-size: 0.72rem;
+  color: #aaa;
+  letter-spacing: 0.01em;
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .parish-input {
+    font-size: 0.95rem;
+    padding: 9px 34px 9px 9px;
+  }
+}

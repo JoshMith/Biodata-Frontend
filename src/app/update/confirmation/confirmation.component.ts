@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule, NgIf } from '@angular/common';
 import { ProgressBarComponent } from '../../form/progress-bar';
+import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
   selector: 'app-confirmation',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })

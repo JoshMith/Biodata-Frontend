@@ -21,8 +21,13 @@
         <form [formGroup]="baptismForm" (ngSubmit)="onSubmitBaptismForm()" class="formContainer">
             <div class="section">
                 <h3>Baptism Information</h3>
-                <label for="parish">Parish:</label>
-                <input type="text" id="parish" formControlName="parish">
+                <label for="parish">Parish / Place of Baptism:</label>
+                <app-parish-autocomplete
+                    formControlName="parish"
+                    placeholder="Type a parish name..."
+                    label="Parish / Place of Baptism"
+                    [externalControl]="baptismForm.get('parish')"
+                ></app-parish-autocomplete>
 
                 <label for="baptism_date">Date:</label>
                 <input type="date" id="baptism_date" formControlName="baptism_date">

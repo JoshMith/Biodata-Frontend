@@ -12,8 +12,12 @@
                 <h3>Eucharist Information</h3>
 
                 <label for="eucharist_place">Place: <span class="required">*</span></label>
-                <input type="text" id="eucharist_place" formControlName="eucharist_place"
-                    [class.error]="hasFieldError('eucharist_place')" placeholder="Enter Eucharist place">
+                <app-parish-autocomplete
+                    formControlName="eucharist_place"
+                    placeholder="Type a parish name..."
+                    label="Place of First Eucharist"
+                    [externalControl]="eucharistForm.get('eucharist_place')"
+                ></app-parish-autocomplete>
                 <span *ngIf="hasFieldError('eucharist_place')" class="error-message">
                     {{ getFieldError('eucharist_place') }}
                 </span>
