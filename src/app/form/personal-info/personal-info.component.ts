@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ProgressBarComponent } from '../progress-bar';
+import { ProgressBarComponent } from '../../shared/progress-bar';
 
 @Component({
   selector: 'app-personal-info',

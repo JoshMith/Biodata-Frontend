@@ -7,31 +7,32 @@
 
     <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 
-    <!-- Success Message -->
     <div class="success-message" *ngIf="showSuccess">
       Marriage certificate submitted successfully!
     </div>
 
-    <form [formGroup]="marriageForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <form [formGroup]="marriageForm" (ngSubmit)="onSubmit()">
 
-      <!-- Marriage Details Section -->
+      <!-- Marriage Details -->
       <div class="section">
         <h3>Marriage Details</h3>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="certificateNumber">Certificate Number <span class="required">*</span></label>
-            <input type="text" id="certificateNumber" formControlName="certificateNumber"
-              [class.error]="hasFieldError('certificateNumber')" placeholder="Enter certificate number">
-            <div class="error-message" *ngIf="hasFieldError('certificateNumber')">
-              {{ getFieldError('certificateNumber') }}
+            <label for="civilMarriageCertificateNumber">Civil Certificate Number <span class="required">*</span></label>
+            <input type="text" id="civilMarriageCertificateNumber"
+              formControlName="civilMarriageCertificateNumber"
+              [class.error]="hasFieldError('civilMarriageCertificateNumber')"
+              placeholder="Enter civil marriage certificate number">
+            <div class="error-message" *ngIf="hasFieldError('civilMarriageCertificateNumber')">
+              {{ getFieldError('civilMarriageCertificateNumber') }}
             </div>
           </div>
 
           <div class="form-group">
             <label for="marriageDate">Marriage Date <span class="required">*</span></label>
             <input type="date" id="marriageDate" formControlName="marriageDate"
-              [class.error]="hasFieldError('marriageDate')" [value]="marriageForm.get('marriageDate')?.value">
+              [class.error]="hasFieldError('marriageDate')">
             <div class="error-message" *ngIf="hasFieldError('marriageDate')">
               {{ getFieldError('marriageDate') }}
             </div>
@@ -40,9 +41,10 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="submissionLocation">Submission Location <span class="required">*</span></label>
+            <label for="submissionLocation">Place of Marriage <span class="required">*</span></label>
             <input type="text" id="submissionLocation" formControlName="submissionLocation"
-              [class.error]="hasFieldError('submissionLocation')" placeholder="Enter submission location">
+              [class.error]="hasFieldError('submissionLocation')"
+              placeholder="Enter place where marriage was solemnised">
             <div class="error-message" *ngIf="hasFieldError('submissionLocation')">
               {{ getFieldError('submissionLocation') }}
             </div>
@@ -72,28 +74,17 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="marriageEntryNumber">Marriage Entry Number <span class="required">*</span></label>
-            <input type="text" id="marriageEntryNumber" formControlName="marriageEntryNumber"
-              [class.error]="hasFieldError('marriageEntryNumber')" placeholder="Enter marriage entry number">
-            <div class="error-message" *ngIf="hasFieldError('marriageEntryNumber')">
-              {{ getFieldError('marriageEntryNumber') }}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="registrarCertificationNumber">Registrar Certification Number <span
-                class="required">*</span></label>
-            <input type="text" id="registrarCertificationNumber" formControlName="registrarCertificationNumber"
-              [class.error]="hasFieldError('registrarCertificationNumber')"
-              placeholder="Enter registrar certification number">
-            <div class="error-message" *ngIf="hasFieldError('registrarCertificationNumber')">
-              {{ getFieldError('registrarCertificationNumber') }}
+            <label for="conductedBy">Conducted By (Registrar / Minister) <span class="required">*</span></label>
+            <input type="text" id="conductedBy" formControlName="conductedBy"
+              [class.error]="hasFieldError('conductedBy')" placeholder="Enter name of officiant">
+            <div class="error-message" *ngIf="hasFieldError('conductedBy')">
+              {{ getFieldError('conductedBy') }}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Parties Information -->
+      <!-- Parties (Groom & Bride) -->
       <div class="section" formArrayName="parties">
         <h3>Parties Information</h3>
 
@@ -111,15 +102,6 @@
             </div>
 
             <div class="form-group">
-              <label [for]="'age'+i">Age <span class="required">*</span></label>
-              <input type="number" [id]="'age'+i" formControlName="age"
-                [class.error]="hasArrayFieldError('parties', i, 'age')" placeholder="Enter age">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'age')">
-                {{ getArrayFieldError('parties', i, 'age') }}
-              </div>
-            </div>
-
-            <div class="form-group">
               <label [for]="'maritalStatus'+i">Marital Status <span class="required">*</span></label>
               <select [id]="'maritalStatus'+i" formControlName="maritalStatus"
                 [class.error]="hasArrayFieldError('parties', i, 'maritalStatus')">
@@ -132,49 +114,16 @@
             </div>
 
             <div class="form-group">
-              <label [for]="'occupation'+i">Occupation <span class="required">*</span></label>
-              <input type="text" [id]="'occupation'+i" formControlName="occupation"
-                [class.error]="hasArrayFieldError('parties', i, 'occupation')" placeholder="Enter occupation">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'occupation')">
-                {{ getArrayFieldError('parties', i, 'occupation') }}
+              <label [for]="'domicile'+i">Domicile / Residence <span class="required">*</span></label>
+              <input type="text" [id]="'domicile'+i" formControlName="domicile"
+                [class.error]="hasArrayFieldError('parties', i, 'domicile')"
+                placeholder="Enter domicile at time of marriage">
+              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'domicile')">
+                {{ getArrayFieldError('parties', i, 'domicile') }}
               </div>
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label [for]="'residenceAddress'+i">Residence Address <span class="required">*</span></label>
-              <input type="text" [id]="'residenceAddress'+i" formControlName="residenceAddress"
-                [class.error]="hasArrayFieldError('parties', i, 'residenceAddress')"
-                placeholder="Enter residence address">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'residenceAddress')">
-                {{ getArrayFieldError('parties', i, 'residenceAddress') }}
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label [for]="'residenceCounty'+i">County <span class="required">*</span></label>
-              <select [id]="'residenceCounty'+i" formControlName="residenceCounty"
-                [class.error]="hasArrayFieldError('parties', i, 'residenceCounty')">
-                <option value="">Select County</option>
-                <option *ngFor="let county of countyOptions" [value]="county">{{county}}</option>
-              </select>
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'residenceCounty')">
-                {{ getArrayFieldError('parties', i, 'residenceCounty') }}
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label [for]="'residenceSubCounty'+i">Sub-County <span class="required">*</span></label>
-              <input type="text" [id]="'residenceSubCounty'+i" formControlName="residenceSubCounty"
-                [class.error]="hasArrayFieldError('parties', i, 'residenceSubCounty')" placeholder="Enter sub-county">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'residenceSubCounty')">
-                {{ getArrayFieldError('parties', i, 'residenceSubCounty') }}
-              </div>
-            </div>
-          </div>
-
-          <h5>Parent Information</h5>
           <div class="form-row">
             <div class="form-group">
               <label [for]="'fatherName'+i">Father's Name <span class="required">*</span></label>
@@ -186,28 +135,6 @@
             </div>
 
             <div class="form-group">
-              <label [for]="'fatherOccupation'+i">Father's Occupation <span class="required">*</span></label>
-              <input type="text" [id]="'fatherOccupation'+i" formControlName="fatherOccupation"
-                [class.error]="hasArrayFieldError('parties', i, 'fatherOccupation')"
-                placeholder="Enter father's occupation">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'fatherOccupation')">
-                {{ getArrayFieldError('parties', i, 'fatherOccupation') }}
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label [for]="'fatherResidence'+i">Father's Residence <span class="required">*</span></label>
-              <input type="text" [id]="'fatherResidence'+i" formControlName="fatherResidence"
-                [class.error]="hasArrayFieldError('parties', i, 'fatherResidence')"
-                placeholder="Enter father's residence">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'fatherResidence')">
-                {{ getArrayFieldError('parties', i, 'fatherResidence') }}
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
               <label [for]="'motherName'+i">Mother's Name <span class="required">*</span></label>
               <input type="text" [id]="'motherName'+i" formControlName="motherName"
                 [class.error]="hasArrayFieldError('parties', i, 'motherName')" placeholder="Enter mother's name">
@@ -215,99 +142,60 @@
                 {{ getArrayFieldError('parties', i, 'motherName') }}
               </div>
             </div>
-
-            <div class="form-group">
-              <label [for]="'motherOccupation'+i">Mother's Occupation <span class="required">*</span></label>
-              <input type="text" [id]="'motherOccupation'+i" formControlName="motherOccupation"
-                [class.error]="hasArrayFieldError('parties', i, 'motherOccupation')"
-                placeholder="Enter mother's occupation">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'motherOccupation')">
-                {{ getArrayFieldError('parties', i, 'motherOccupation') }}
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label [for]="'motherResidence'+i">Mother's Residence <span class="required">*</span></label>
-              <input type="text" [id]="'motherResidence'+i" formControlName="motherResidence"
-                [class.error]="hasArrayFieldError('parties', i, 'motherResidence')"
-                placeholder="Enter mother's residence">
-              <div class="error-message" *ngIf="hasArrayFieldError('parties', i, 'motherResidence')">
-                {{ getArrayFieldError('parties', i, 'motherResidence') }}
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      <!-- Ceremony Details -->
+      <!-- Witnesses -->
       <div class="section">
-        <h3>Ceremony Details</h3>
+        <h3>Witnesses</h3>
 
+        <h4>Witness 1</h4>
         <div class="form-row">
           <div class="form-group">
-            <label for="conductedBy">Conducted By <span class="required">*</span></label>
-            <input type="text" id="conductedBy" formControlName="conductedBy"
-              [class.error]="hasFieldError('conductedBy')" placeholder="Enter name of officiant">
-            <div class="error-message" *ngIf="hasFieldError('conductedBy')">
-              {{ getFieldError('conductedBy') }}
+            <label for="witness1Name">Name <span class="required">*</span></label>
+            <input type="text" id="witness1Name" formControlName="witness1Name"
+              [class.error]="hasFieldError('witness1Name')" placeholder="Witness 1 full name">
+            <div class="error-message" *ngIf="hasFieldError('witness1Name')">
+              {{ getFieldError('witness1Name') }}
             </div>
           </div>
-
           <div class="form-group">
-            <label for="specialLicenseNumber">Special License Number</label>
-            <input type="text" id="specialLicenseNumber" formControlName="specialLicenseNumber"
-              [class.error]="hasFieldError('specialLicenseNumber')" placeholder="Enter license number if applicable">
-            <div class="error-message" *ngIf="hasFieldError('specialLicenseNumber')">
-              {{ getFieldError('specialLicenseNumber') }}
-            </div>
+            <label for="witness1SonOf">Son/Daughter of</label>
+            <input type="text" id="witness1SonOf" formControlName="witness1SonOf"
+              placeholder="Witness 1 parent name">
+          </div>
+          <div class="form-group">
+            <label for="witness1Clan">Clan</label>
+            <input type="text" id="witness1Clan" formControlName="witness1Clan"
+              placeholder="Witness 1 clan">
           </div>
         </div>
 
+        <h4>Witness 2</h4>
         <div class="form-row">
           <div class="form-group">
-            <label for="privatePartiesCount">Number of Private Parties</label>
-            <input type="number" id="privatePartiesCount" formControlName="privatePartiesCount"
-              [class.error]="hasFieldError('privatePartiesCount')" placeholder="Enter number of private parties">
-            <div class="error-message" *ngIf="hasFieldError('privatePartiesCount')">
-              {{ getFieldError('privatePartiesCount') }}
+            <label for="witness2Name">Name <span class="required">*</span></label>
+            <input type="text" id="witness2Name" formControlName="witness2Name"
+              [class.error]="hasFieldError('witness2Name')" placeholder="Witness 2 full name">
+            <div class="error-message" *ngIf="hasFieldError('witness2Name')">
+              {{ getFieldError('witness2Name') }}
             </div>
           </div>
-
           <div class="form-group">
-            <label for="privatePartiesNames">Names of Private Parties</label>
-            <textarea id="privatePartiesNames" formControlName="privatePartiesNames"
-              [class.error]="hasFieldError('privatePartiesNames')" rows="2"
-              placeholder="Enter names separated by commas"></textarea>
-            <div class="error-message" *ngIf="hasFieldError('privatePartiesNames')">
-              {{ getFieldError('privatePartiesNames') }}
-            </div>
+            <label for="witness2SonOf">Son/Daughter of</label>
+            <input type="text" id="witness2SonOf" formControlName="witness2SonOf"
+              placeholder="Witness 2 parent name">
+          </div>
+          <div class="form-group">
+            <label for="witness2Clan">Clan</label>
+            <input type="text" id="witness2Clan" formControlName="witness2Clan"
+              placeholder="Witness 2 clan">
           </div>
         </div>
       </div>
 
-      <!-- Document Upload -->
-      <div class="section">
-        <h3>Document Upload</h3>
-        <div class="form-group">
-          <label for="marriageCertificateFile">Marriage Certificate <span class="required">*</span></label>
-          <input type="file" id="marriageCertificateFile" (change)="onFileChange($event)"
-            [class.error]="hasFieldError('marriageCertificateFile')" accept=".pdf,.jpg,.jpeg,.png">
-          <div class="error-message" *ngIf="hasFieldError('marriageCertificateFile')">
-            {{ getFieldError('marriageCertificateFile') }}
-          </div>
-          <small>Upload scanned copy of marriage certificate (PDF or image)</small>
-        </div>
-
-        <!-- Upload progress -->
-        <div *ngIf="uploadProgress !== null" class="upload-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" [style.width]="uploadProgress + '%'"></div>
-          </div>
-          <div class="progress-text">{{ uploadProgress }}% uploaded</div>
-        </div>
-      </div>
-
-      <!-- Submit Button -->
+      <!-- Submit -->
       <div class="div-btns">
         <button type="button" (click)="navigateToConfirmation()">Back</button>
         <button type="submit" [disabled]="isSubmitting">

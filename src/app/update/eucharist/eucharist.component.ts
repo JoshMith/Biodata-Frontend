@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { ProgressBarComponent } from '../../form/progress-bar';
+import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
@@ -46,55 +46,55 @@ export class EucharistUpdateComponent implements OnInit {
   }
 
   private loadExistingData(): void {
-  const christianId = this.getSelectedChristianId();
-  if (!christianId) {
-    this.errorMessage = 'No Christian selected';
-    return;
+    const christianId = this.getSelectedChristianId();
+    if (!christianId) {
+      this.errorMessage = 'No Christian selected';
+      return;
+    }
+
+    this.eucharistService.getEucharistByUserId(christianId).subscribe({
+      next: (data: any) => {
+        if (data && data.length > 0) {
+          this.existingEucharistId = data[0].eucharist_id;
+          this.eucharistForm.patchValue({
+            eucharist_place: data[0].eucharist_place,
+            eucharist_date: this.formatDateForInput(data[0].eucharist_date),
+            user_id: christianId
+          });
+        } else {
+          // Initialize with user_id if no existing data
+          this.eucharistForm.patchValue({ user_id: christianId });
+          this.noEucharist = true;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading eucharist data:', error);
+        this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
+      }
+    });
   }
 
-  this.eucharistService.getEucharistByUserId(christianId).subscribe({
-    next: (data: any) => {
-      if (data && data.length > 0) {
-        this.existingEucharistId = data[0].eucharist_id;
-        this.eucharistForm.patchValue({
-          eucharist_place: data[0].eucharist_place,
-          eucharist_date: this.formatDateForInput(data[0].eucharist_date),
-          user_id: christianId
-        });
-      } else {
-        // Initialize with user_id if no existing data
-        this.eucharistForm.patchValue({ user_id: christianId });
-        this.noEucharist = true;
-      }
-    },
-    error: (error) => {
-      console.error('Error loading eucharist data:', error);
-      this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
-    }
-  });
-}
+  // Add this helper method to your component
+  private formatDateForInput(dateString: string): string | null {
+    if (!dateString) return null;
 
-// Add this helper method to your component
-private formatDateForInput(dateString: string): string | null {
-  if (!dateString) return null;
-  
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      console.error('Invalid date string:', dateString);
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        console.error('Invalid date string:', dateString);
+        return null;
+      }
+
+      // Convert to local date string in YYYY-MM-DD format
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } catch (e) {
+      console.error('Error formatting date:', e);
       return null;
     }
-    
-    // Convert to local date string in YYYY-MM-DD format
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  } catch (e) {
-    console.error('Error formatting date:', e);
-    return null;
   }
-}
 
   onSubmitEucharistForm(): void {
     if (this.eucharistForm.invalid) {
@@ -135,8 +135,8 @@ private formatDateForInput(dateString: string): string | null {
   navigateToConfirmation(): void {
     const christianId = this.getSelectedChristianId();
     if (christianId) {
-      this.router.navigate(['/edit-confirmation'], { 
-        queryParams: { id: christianId } 
+      this.router.navigate(['/edit-confirmation'], {
+        queryParams: { id: christianId }
       });
     }
   }
@@ -144,8 +144,8 @@ private formatDateForInput(dateString: string): string | null {
   navigateToBaptism(): void {
     const christianId = this.getSelectedChristianId();
     if (christianId) {
-      this.router.navigate(['/edit-baptism'], { 
-        queryParams: { id: christianId } 
+      this.router.navigate(['/edit-baptism'], {
+        queryParams: { id: christianId }
       });
     }
   }

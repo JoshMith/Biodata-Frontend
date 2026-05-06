@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule, NgIf } from '@angular/common';
-import { ProgressBarComponent } from '../../form/progress-bar';
+import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
@@ -48,54 +48,54 @@ export class ConfirmationUpdateComponent implements OnInit {
   }
 
   private loadExistingData(): void {
-  const christianId = this.getSelectedChristianId();
-  if (!christianId) {
-    this.errorMessage = 'No Christian selected';
-    return;
-  }
-
-  this.confirmationService.getConfirmationByUserId(christianId).subscribe({
-    next: (data: any) => {
-      if (data?.length > 0) {
-        const confirmationData = data[0];
-        this.existingConfirmationId = confirmationData.confirmation_id;
-        
-        this.confirmationForm.patchValue({
-          confirmation_place: confirmationData.confirmation_place,
-          confirmation_date: this.formatDateForInput(confirmationData.confirmation_date),
-          minister: confirmationData.minister,
-          confirmation_no: confirmationData.confirmation_no,
-          user_id: christianId
-        });
-      } else {
-        this.confirmationForm.patchValue({ user_id: christianId });
-        this.noConfirmation = true;
-      }
-    },
-    error: (error) => {
-      console.error('Error loading confirmation data:', error);
-      this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
+    const christianId = this.getSelectedChristianId();
+    if (!christianId) {
+      this.errorMessage = 'No Christian selected';
+      return;
     }
-  });
-}
 
-// Add this helper method to your component
-private formatDateForInput(dateString: string): string | null {
-  if (!dateString) return null;
-  
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return null; // Check for invalid dates
-    
-    // Convert to local date and format as YYYY-MM-DD
-    const offset = date.getTimezoneOffset() * 60000; // Handle timezone offset
-    const localDate = new Date(date.getTime() - offset);
-    return localDate.toISOString().split('T')[0];
-  } catch (e) {
-    console.error('Error formatting date:', e);
-    return null;
+    this.confirmationService.getConfirmationByUserId(christianId).subscribe({
+      next: (data: any) => {
+        if (data?.length > 0) {
+          const confirmationData = data[0];
+          this.existingConfirmationId = confirmationData.confirmation_id;
+
+          this.confirmationForm.patchValue({
+            confirmation_place: confirmationData.confirmation_place,
+            confirmation_date: this.formatDateForInput(confirmationData.confirmation_date),
+            minister: confirmationData.minister,
+            confirmation_no: confirmationData.confirmation_no,
+            user_id: christianId
+          });
+        } else {
+          this.confirmationForm.patchValue({ user_id: christianId });
+          this.noConfirmation = true;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading confirmation data:', error);
+        this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
+      }
+    });
   }
-}
+
+  // Add this helper method to your component
+  private formatDateForInput(dateString: string): string | null {
+    if (!dateString) return null;
+
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return null; // Check for invalid dates
+
+      // Convert to local date and format as YYYY-MM-DD
+      const offset = date.getTimezoneOffset() * 60000; // Handle timezone offset
+      const localDate = new Date(date.getTime() - offset);
+      return localDate.toISOString().split('T')[0];
+    } catch (e) {
+      console.error('Error formatting date:', e);
+      return null;
+    }
+  }
   onSubmitConfirmationForm(): void {
     if (this.confirmationForm.invalid) {
       this.errorMessage = 'Please fill in all required fields';
@@ -135,8 +135,8 @@ private formatDateForInput(dateString: string): string | null {
   navigateToMarriage(): void {
     const christianId = this.getSelectedChristianId();
     if (christianId) {
-      this.router.navigate(['/edit-marriage'], { 
-        queryParams: { id: christianId } 
+      this.router.navigate(['/edit-marriage'], {
+        queryParams: { id: christianId }
       });
     }
   }
@@ -144,8 +144,8 @@ private formatDateForInput(dateString: string): string | null {
   navigateToEucharist(): void {
     const christianId = this.getSelectedChristianId();
     if (christianId) {
-      this.router.navigate(['/edit-eucharist'], { 
-        queryParams: { id: christianId } 
+      this.router.navigate(['/edit-eucharist'], {
+        queryParams: { id: christianId }
       });
     }
   }

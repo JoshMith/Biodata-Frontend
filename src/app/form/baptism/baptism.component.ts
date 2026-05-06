@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { ProgressBarComponent } from '../progress-bar';
+import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
@@ -16,10 +16,10 @@ export class BaptismComponent {
   constructor(
     private router: Router,
     private baptismService: ApiService
-  ) {}
+  ) { }
 
   private fb = inject(FormBuilder);
-  
+
   // Updated form to match database structure
   baptismForm = this.fb.group({
     parish: ['', Validators.required], // Changed from baptism_place
@@ -94,7 +94,7 @@ export class BaptismComponent {
       next: (response) => {
         console.log('Baptism information added successfully:', response);
         this.successMessage = 'Baptism Information Added successfully! Redirecting to next page...';
-        
+
         this.navigateToEucharist();
 
         // Clear the stored form data on success
@@ -144,7 +144,7 @@ export class BaptismComponent {
     if (this.baptismForm.dirty) {
       sessionStorage.setItem('baptismFormData', JSON.stringify(this.baptismForm.value));
     }
-      this.router.navigate(['/eucharist']);
+    this.router.navigate(['/eucharist']);
   }
 
   navigateToPersonalInfo() {
@@ -152,6 +152,6 @@ export class BaptismComponent {
     if (this.baptismForm.dirty) {
       sessionStorage.setItem('baptismFormData', JSON.stringify(this.baptismForm.value));
     }
-      this.router.navigate(['/personal-info']);
+    this.router.navigate(['/personal-info']);
   }
 }

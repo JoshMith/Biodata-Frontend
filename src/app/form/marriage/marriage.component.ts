@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { ProgressBarComponent } from '../progress-bar';
+import { ProgressBarComponent } from '../../shared/progress-bar';
 
 @Component({
   selector: 'app-marriage',
@@ -13,15 +12,22 @@ import { ProgressBarComponent } from '../progress-bar';
   styleUrl: './marriage.component.css'
 })
 export class MarriageComponent implements OnInit {
-  currentStep = 4; // Set the current step for the progress bar
+  currentStep = 4;
   marriageForm: FormGroup;
-  countyOptions = ['Mombasa', 'Kwale', 'Kilifi', 'Tana River', 'Lamu', 'Taita/Taveta', 'Garissa', 'Wajir', 'Mandera', 'Marsabit', 'Isiolo', 'Meru', 'Tharaka-Nithi', 'Embu', 'Kitui', 'Machakos', 'Makueni', 'Nyandarua', 'Nyeri', 'Kirinyaga', 'Murang\'a', 'Kiambu', 'Turkana', 'West Pokot', 'Samburu', 'Trans Nzoia', 'Uasin Gishu', 'Elgeyo/Marakwet', 'Nandi', 'Baringo', 'Laikipia', 'Nakuru', 'Narok', 'Kajiado', 'Kericho', 'Bomet', 'Kakamega', 'Vihiga', 'Bungoma', 'Busia', 'Siaya', 'Kisumu', 'Homa Bay', 'Migori', 'Kisii', 'Nyamira', 'Nairobi'];
+
+  countyOptions = [
+    'Mombasa', 'Kwale', 'Kilifi', 'Tana River', 'Lamu', 'Taita/Taveta', 'Garissa', 'Wajir',
+    'Mandera', 'Marsabit', 'Isiolo', 'Meru', 'Tharaka-Nithi', 'Embu', 'Kitui', 'Machakos',
+    'Makueni', 'Nyandarua', 'Nyeri', 'Kirinyaga', "Murang'a", 'Kiambu', 'Turkana',
+    'West Pokot', 'Samburu', 'Trans Nzoia', 'Uasin Gishu', 'Elgeyo/Marakwet', 'Nandi',
+    'Baringo', 'Laikipia', 'Nakuru', 'Narok', 'Kajiado', 'Kericho', 'Bomet', 'Kakamega',
+    'Vihiga', 'Bungoma', 'Busia', 'Siaya', 'Kisumu', 'Homa Bay', 'Migori', 'Kisii',
+    'Nyamira', 'Nairobi'
+  ];
   maritalStatusOptions = ['Single', 'Divorced', 'Widowed'];
+
   showSuccess = false;
   isSubmitting = false;
-  selectedFile: File | null = null;
-  uploadProgress: number | null = null;
-
 
   constructor(
     private fb: FormBuilder,
@@ -29,28 +35,29 @@ export class MarriageComponent implements OnInit {
     private router: Router
   ) {
     this.marriageForm = this.fb.group({
-      certificateNumber: ['', Validators.required],
+      // Matches updated DB: civil_marriage_certificate_number
+      civilMarriageCertificateNumber: ['', Validators.required],
       marriageDate: ['', Validators.required],
       submissionLocation: ['', Validators.required],
       submissionSubCounty: ['', Validators.required],
       submissionCounty: ['', Validators.required],
-      marriageEntryNumber: ['', Validators.required],
-      registrarCertificationNumber: ['', Validators.required],
+      conductedBy: ['', Validators.required],
+      // Witnesses (new columns added in databaseCorrections.sql)
+      witness1Name: ['', Validators.required],
+      witness1SonOf: [''],
+      witness1Clan: [''],
+      witness2Name: ['', Validators.required],
+      witness2SonOf: [''],
+      witness2Clan: [''],
+      // Parties array (groom & bride)
       parties: this.fb.array([
         this.createPartyGroup('groom'),
         this.createPartyGroup('bride')
-      ]),
-      conductedBy: ['', Validators.required],
-      specialLicenseNumber: [''],
-      privatePartiesCount: [''],
-      privatePartiesNames: [''],
-      marriageCertificateFile: [null, Validators.required]
+      ])
     });
   }
 
-  ngOnInit(): void { 
-
-    // Check if user is logged in
+  ngOnInit(): void {
     const user = localStorage.getItem('userLoggedIn');
     if (!user) {
       setTimeout(() => {
@@ -61,7 +68,6 @@ export class MarriageComponent implements OnInit {
       return;
     }
 
-    // Check if form data exists in session storage
     const storedFormData = sessionStorage.getItem('marriageFormData');
     if (storedFormData) {
       const formData = JSON.parse(storedFormData);
@@ -73,32 +79,16 @@ export class MarriageComponent implements OnInit {
     return this.fb.group({
       partyType: [partyType, Validators.required],
       fullName: ['', Validators.required],
-      age: ['', [Validators.required, Validators.min(18)]],
       maritalStatus: ['', Validators.required],
-      occupation: ['', Validators.required],
-      residenceAddress: ['', Validators.required],
-      residenceCounty: ['', Validators.required],
-      residenceSubCounty: ['', Validators.required],
+      // domicile replaces residence_address (per databaseCorrections.sql)
+      domicile: ['', Validators.required],
       fatherName: ['', Validators.required],
-      fatherOccupation: ['', Validators.required],
-      fatherResidence: ['', Validators.required],
-      motherName: ['', Validators.required],
-      motherOccupation: ['', Validators.required],
-      motherResidence: ['', Validators.required]
+      motherName: ['', Validators.required]
     });
   }
 
   get parties(): FormArray {
     return this.marriageForm.get('parties') as FormArray;
-  }
-
-  onFileChange(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.marriageForm.patchValue({ marriageCertificateFile: file });
-      this.marriageForm.get('marriageCertificateFile')?.updateValueAndValidity();
-    }
   }
 
   hasFieldError(field: string): boolean {
@@ -108,14 +98,7 @@ export class MarriageComponent implements OnInit {
 
   getFieldError(field: string): string {
     const control = this.marriageForm.get(field);
-    if (control && control.errors) {
-      if (control.errors['required']) {
-        return 'This field is required';
-      }
-      if (control.errors['min']) {
-        return `Minimum age is ${control.errors['min'].min}`;
-      }
-    }
+    if (control?.errors?.['required']) return 'This field is required';
     return '';
   }
 
@@ -130,134 +113,77 @@ export class MarriageComponent implements OnInit {
     const array = this.marriageForm.get(arrayName) as FormArray;
     const group = array.at(index) as FormGroup;
     const control = group.get(field);
-    if (control && control.errors) {
-      if (control.errors['required']) {
-        return 'This field is required';
-      }
-      if (control.errors['min']) {
-        return `Minimum age is ${control.errors['min'].min}`;
-      }
-    }
+    if (control?.errors?.['required']) return 'This field is required';
     return '';
   }
 
   navigateToConfirmation() {
-    // Save form data before navigating away
     if (this.marriageForm.dirty) {
       sessionStorage.setItem('marriageFormData', JSON.stringify(this.marriageForm.value));
     }
-      this.router.navigate(['/confirmation']); // Navigate to the eucharist page
+    this.router.navigate(['/confirmation']);
   }
 
-
-
   onSubmit(): void {
-    if (this.marriageForm.invalid || !this.selectedFile) {
+    if (this.marriageForm.invalid) {
       this.marriageForm.markAllAsTouched();
       return;
     }
 
-    this.isSubmitting = true;
-    this.uploadProgress = 0;
-
-    // Get addedChristian from local storage
     const addedChristian = localStorage.getItem('addedUser');
     let userId: string | null = null;
     if (addedChristian) {
       try {
-        const christianObj = JSON.parse(addedChristian);
-        userId = christianObj.id || null;
-      } catch (e) {
-        userId = null;
-      }
+        userId = JSON.parse(addedChristian).id || null;
+      } catch { userId = null; }
     }
     if (!userId) {
-      this.isSubmitting = false;
-      this.uploadProgress = null;
-      alert('No user selected. Please select a Christian before submitting.');
+      alert('No user selected. Please add a Christian first.');
       return;
     }
 
-    // Prepare main marriage data
+    this.isSubmitting = true;
+
+    const v = this.marriageForm.value;
+
     const marriageData = {
       user_id: userId,
-      certificate_number: this.marriageForm.value.certificateNumber,
-      marriage_date: this.marriageForm.value.marriageDate,
-      submission_location: this.marriageForm.value.submissionLocation,
-      submission_sub_county: this.marriageForm.value.submissionSubCounty,
-      submission_county: this.marriageForm.value.submissionCounty,
-      marriage_entry_number: this.marriageForm.value.marriageEntryNumber,
-      registrar_certification_number: this.marriageForm.value.registrarCertificationNumber,
-      conducted_by: this.marriageForm.value.conductedBy,
-      special_license_number: this.marriageForm.value.specialLicenseNumber,
-      private_parties_count: this.marriageForm.value.privatePartiesCount,
-      private_parties_names: this.marriageForm.value.privatePartiesNames
+      civil_marriage_certificate_number: v.civilMarriageCertificateNumber,
+      marriage_date: v.marriageDate,
+      submission_location: v.submissionLocation,
+      submission_sub_county: v.submissionSubCounty,
+      submission_county: v.submissionCounty,
+      conducted_by: v.conductedBy,
+      witness1_name: v.witness1Name,
+      witness1_son_of: v.witness1SonOf,
+      witness1_clan: v.witness1Clan,
+      witness2_name: v.witness2Name,
+      witness2_son_of: v.witness2SonOf,
+      witness2_clan: v.witness2Clan,
     };
 
-    // Create marriage record
     this.apiService.createMarriage(marriageData).subscribe({
       next: (marriageResponse) => {
         const marriageId = marriageResponse.marriage_id;
 
-        // Create marriage parties
-        const partyPromises = this.marriageForm.value.parties.map((party: any) => {
+        const partyPromises = v.parties.map((party: any) => {
           const partyData = {
             marriage_id: marriageId,
             party_type: party.partyType,
             full_name: party.fullName,
-            age: party.age,
             marital_status: party.maritalStatus,
-            residence_address: party.residenceAddress,
-            residence_county: party.residenceCounty,
-            residence_sub_county: party.residenceSubCounty,
-            occupation: party.occupation,
+            domicile: party.domicile,
             father_name: party.fatherName,
-            father_occupation: party.fatherOccupation,
-            father_residence: party.fatherResidence,
             mother_name: party.motherName,
-            mother_occupation: party.motherOccupation,
-            mother_residence: party.motherResidence
           };
           return this.apiService.createMarriageParty(partyData).toPromise();
         });
 
-        // Wait for all parties to be created
         Promise.all(partyPromises).then(() => {
-          // Upload marriage certificate
-          const formData = new FormData();
-          formData.append('marriage_id', marriageId);
-          formData.append('document_type', 'Marriage Certificate');
-          formData.append('file', this.selectedFile as Blob);
-
-          this.apiService.createMarriageDocument(formData)
-            .pipe(
-              finalize(() => {
-                this.isSubmitting = false;
-                this.uploadProgress = null;
-              })
-            )
-            .subscribe({
-              next: (event: any) => {
-                // Handle upload progress
-                if (event.type === 1 && event.loaded && event.total) {
-                  this.uploadProgress = Math.round((100 * event.loaded) / event.total);
-                }
-
-                // Complete
-                if (event.type === 4) {
-                  this.showSuccess = true;
-                  setTimeout(() => {
-                    this.router.navigate(['/dashboard']);
-                  }, 3000);
-                  // Clear session storage since we've successfully saved
-                  sessionStorage.removeItem('marriageFormData');
-                }
-              },
-              error: (err) => {
-                console.error('Document upload error:', err);
-                alert('Error uploading document. Please try again.');
-              }
-            });
+          this.isSubmitting = false;
+          this.showSuccess = true;
+          sessionStorage.removeItem('marriageFormData');
+          setTimeout(() => this.router.navigate(['/dashboard']), 3000);
         }).catch(err => {
           console.error('Party creation error:', err);
           this.isSubmitting = false;
@@ -267,7 +193,6 @@ export class MarriageComponent implements OnInit {
       error: (err) => {
         console.error('Marriage creation error:', err);
         this.isSubmitting = false;
-        this.uploadProgress = null;
         alert('Error creating marriage record. Please try again.');
       }
     });

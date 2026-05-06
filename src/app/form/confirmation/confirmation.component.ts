@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { ProgressBarComponent } from '../progress-bar';
+import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
@@ -93,38 +93,38 @@ export class ConfirmationComponent {
   }
 
   // Helper method to check if a field has errors and is touched
-hasFieldError(fieldName: string): boolean {
-  const field = this.confirmationForm.get(fieldName);
-  return !!(field && field.invalid && field.touched);
-}
-
-// Helper method to get field error message
-getFieldError(fieldName: string): string {
-  const field = this.confirmationForm.get(fieldName);
-  if (field && field.errors && field.touched) {
-    if (field.errors['required']) {
-      return `${this.getFieldLabel(fieldName)} is required.`;
-    }
+  hasFieldError(fieldName: string): boolean {
+    const field = this.confirmationForm.get(fieldName);
+    return !!(field && field.invalid && field.touched);
   }
-  return '';
-}
 
-private getFieldLabel(fieldName: string): string {
-  const labels: { [key: string]: string } = {
-    'confirmation_place': 'Confirmation Place',
-    'confirmation_date': 'Confirmation Date',
-    'minister': 'Minister',
-    'confirmation_no': 'Confirmation Number'
-  };
-  return labels[fieldName] || fieldName;
-}
+  // Helper method to get field error message
+  getFieldError(fieldName: string): string {
+    const field = this.confirmationForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) {
+        return `${this.getFieldLabel(fieldName)} is required.`;
+      }
+    }
+    return '';
+  }
+
+  private getFieldLabel(fieldName: string): string {
+    const labels: { [key: string]: string } = {
+      'confirmation_place': 'Confirmation Place',
+      'confirmation_date': 'Confirmation Date',
+      'minister': 'Minister',
+      'confirmation_no': 'Confirmation Number'
+    };
+    return labels[fieldName] || fieldName;
+  }
 
   navigateToMarriage() {
     // Save form data before navigating away
     if (this.confirmationForm.dirty) {
       sessionStorage.setItem('confirmationFormData', JSON.stringify(this.confirmationForm.value));
     }
-      this.router.navigate(['/marriage']);
+    this.router.navigate(['/marriage']);
   }
 
   navigateToEucharist() {
@@ -132,6 +132,6 @@ private getFieldLabel(fieldName: string): string {
     if (this.confirmationForm.dirty) {
       sessionStorage.setItem('confirmationFormData', JSON.stringify(this.confirmationForm.value));
     }
-      this.router.navigate(['/eucharist']);
+    this.router.navigate(['/eucharist']);
   }
 }

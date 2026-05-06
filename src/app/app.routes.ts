@@ -17,7 +17,7 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
 import { SearchComponent } from './search/search.component';
 import { MarriageUpdateComponent } from './update/marriage/marriage.component';
 import { SacramentCardComponent } from './sacrament-card/sacrament-card.component';
-import { ProgressBarComponent } from './form/progress-bar';
+import { ProgressBarComponent } from './shared/progress-bar';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
