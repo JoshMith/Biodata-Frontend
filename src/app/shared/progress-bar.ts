@@ -141,12 +141,12 @@ export class ProgressBarComponent implements OnInit {
 
   steps = ['Personal Info', 'Baptism', 'Eucharist', 'Confirmation', 'Marriage'];
 
-  private formRoutes  = ['/personal-info', '/baptism', '/eucharist', '/confirmation', '/marriage'];
-  private editRoutes  = ['/edit-personal-info', '/edit-baptism', '/edit-eucharist', '/edit-confirmation', '/edit-marriage'];
+  private formRoutes = ['/personal-info', '/baptism', '/eucharist', '/confirmation', '/marriage'];
+  private editRoutes = ['/edit-personal-info', '/edit-baptism', '/edit-eucharist', '/edit-confirmation', '/edit-marriage'];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   // ------------------------------------------------------------------
   // Helpers
