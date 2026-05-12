@@ -15,14 +15,52 @@
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
 
     <!-- Christians List (Always Visible) -->
-    <div class="christians-list">
-        <div *ngFor="let christian of christians" class="styled-christian-card" (click)="selectChristian(christian)">
-            <h2>{{ christian.first_name }} {{ christian.last_name }}</h2>
-            <p><strong>Email:</strong> {{ christian.email }}</p>
-            <p><strong>Role:</strong> {{ christian.role | titlecase }}</p>
-            <p><strong>Phone:</strong> {{ christian.phone_number }}</p>
-        </div>
-    </div>
+  <div class="table-container">
+    <table class="christians-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                
+                <th>Phone</th>
+                <th>Registration No.</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let christian of christians; let i = index"
+                (click)="selectChristian(christian)"
+                class="table-row">
+
+                <td>{{ i + 1 }}</td>
+
+                <td>
+                    {{ christian.first_name }}
+                    {{ christian.last_name }}
+                </td>
+
+                <td>{{ christian.email }}</td>
+
+               
+
+                <td>{{ christian.phone_number }}</td>
+
+                <td>{{ christian.registration_number }}</td>
+
+                <td>
+                    <button
+                        class="view-btn"
+                        (click)="selectChristian(christian); $event.stopPropagation()">
+                        View
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
 
     <!-- Christian Details -->
     <div class="details" *ngIf="selectedChristian">
