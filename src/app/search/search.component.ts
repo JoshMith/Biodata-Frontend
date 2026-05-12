@@ -25,8 +25,8 @@ interface Christian {
   birth_date: string;
   tribe: string;
   clan: string;
-  residence: string;
-  parish_id: string; // Changed from number to string (UUID)
+  domicile: string;
+  parish_id: string;
   created_at: string;
 }
 
@@ -505,32 +505,37 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private loadSacramentData(christianId: string): void {
-    // Use forkJoin to load all sacrament data simultaneously
     const sacramentRequests = {
       baptisms: this.apiService.getBaptisms(),
       eucharists: this.apiService.getEucharists(),
       confirmations: this.apiService.getConfirmations(),
       marriages: this.apiService.getMarriages()
     };
-
+ 
     forkJoin(sacramentRequests)
       .pipe(
         takeUntil(this.destroy$),
         switchMap(({ baptisms, eucharists, confirmations, marriages }) => {
-          // Find matching sacraments for the Christian
           const baptism = baptisms.find((b: any) => b.user_id === christianId);
           const eucharist = eucharists.find((e: any) => e.user_id === christianId);
           const confirmation = confirmations.find((c: any) => c.user_id === christianId);
           const marriage = marriages.find((m: any) => m.user_id === christianId);
-
-          // Create requests for detailed sacrament data
-          const detailRequests = {
-            baptism: baptism ? this.apiService.getBaptismById(baptism.baptism_id.toString()) : of(null),
-            eucharist: eucharist ? this.apiService.getEucharistById(eucharist.eucharist_id.toString()) : of(null),
-            confirmation: confirmation ? this.apiService.getConfirmationById(confirmation.confirmation_id.toString()) : of(null),
-            marriage: marriage ? this.apiService.getFullMarriageByUserId(christianId) : of(null)
-          };
-          return forkJoin(detailRequests);
+ 
+          return forkJoin({
+            baptism: baptism
+              ? this.apiService.getBaptismById(baptism.baptism_id.toString())
+              : of(null),
+            eucharist: eucharist
+              ? this.apiService.getEucharistById(eucharist.eucharist_id.toString())
+              : of(null),
+            confirmation: confirmation
+              ? this.apiService.getConfirmationById(confirmation.confirmation_id.toString())
+              : of(null),
+            // getFullMarriageByUserId returns the marriage with nested parties array
+            marriage: marriage
+              ? this.apiService.getFullMarriageByUserId(christianId)
+              : of(null)
+          });
         }),
         catchError((error) => {
           console.error('Error loading sacrament data:', error);
@@ -541,8 +546,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.selectedBaptism = sacramentData.baptism;
         this.selectedEucharist = sacramentData.eucharist;
         this.selectedConfirmation = sacramentData.confirmation;
-
-        // Handle marriage data - get first marriage if array exists
+ 
+        // getFullMarriageByUserId returns an array; take the first record
         if (Array.isArray(sacramentData.marriage)) {
           this.selectedMarriage = sacramentData.marriage.length > 0
             ? sacramentData.marriage[0]
@@ -550,14 +555,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         } else {
           this.selectedMarriage = sacramentData.marriage;
         }
-
-
-        // console.log('Loaded sacrament data:', {
-        //   baptism: this.selectedBaptism,
-        //   eucharist: this.selectedEucharist,
-        //   confirmation: this.selectedConfirmation,
-        //   marriage: this.selectedMarriage
-        // });
+ 
         this.sortChristians();
       });
   }

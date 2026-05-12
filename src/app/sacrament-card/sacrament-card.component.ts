@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { forkJoin } from 'rxjs';
-import { CommonModule, DatePipe } from '@angular/common'; // Add this import
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'sacrament-card',
   standalone: true,
-  imports: [CommonModule, DatePipe], // Add CommonModule here
+  imports: [CommonModule, DatePipe],
   templateUrl: './sacrament-card.component.html',
   styleUrls: ['./sacrament-card.component.css']
 })
@@ -20,6 +20,7 @@ export class SacramentCardComponent implements OnInit {
   marriage: any = null;
   isLoading: boolean = true;
   errorMessage: string = '';
+  language: string = 'en';
 
   constructor(
     private apiService: ApiService,
@@ -28,7 +29,6 @@ export class SacramentCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Check if user is logged in
     const user = localStorage.getItem('userLoggedIn');
     if (!user) {
       setTimeout(() => {
@@ -48,8 +48,11 @@ export class SacramentCardComponent implements OnInit {
       console.error('No Christian ID provided');
       this.isLoading = false;
       this.errorMessage = 'No Christian ID provided';
-      return;
     }
+  }
+
+  setLanguage(lang: string): void {
+    this.language = lang;
   }
 
   loadChristianData(christianId: string): void {
@@ -75,14 +78,19 @@ export class SacramentCardComponent implements OnInit {
     ]).subscribe({
       next: ([baptism, eucharist, confirmation, marriage]) => {
         this.isLoading = false;
-        this.baptism = baptism.length > 0 ? baptism[0] : this.errorMessage = 'No baptism record found for this user', null;
-        this.eucharist = eucharist.length > 0 ? eucharist[0] : this.errorMessage = 'No baptism record found for this user', null;
-        this.confirmation = confirmation.length > 0 ? confirmation[0] : this.errorMessage = 'No baptism record found for this user', null;
-        this.marriage = marriage.length > 0 ? marriage[0] : this.errorMessage = 'No baptism record found for this user', null;
+        this.baptism = baptism.length > 0 ? baptism[0] : null;
+        this.eucharist = eucharist.length > 0 ? eucharist[0] : null;
+        this.confirmation = confirmation.length > 0 ? confirmation[0] : null;
+        this.marriage = marriage.length > 0 ? marriage[0] : null;
+        
+        if (!this.baptism) {
+          console.warn('No baptism record found for this user');
+        }
       },
       error: (err) => {
         console.error('Error loading sacrament data:', err);
         this.isLoading = false;
+        this.errorMessage = 'Failed to load sacrament data';
       }
     });
   }
@@ -92,18 +100,14 @@ export class SacramentCardComponent implements OnInit {
       return '';
     }
 
-    // Get current Christian's full name
     const christianName = `${this.christian?.first_name || ''} ${this.christian?.last_name || ''}`.trim();
 
-    // Find the spouse (party that isn't the current Christian)
     const spouse = this.marriage.parties.find((party: any) => {
-      // Try different possible name properties
       const partyFullName = party.full_name ||
         `${party.first_name || ''} ${party.last_name || ''}`.trim();
       return partyFullName && partyFullName !== christianName;
     });
 
-    // Return the spouse's name in the best available format
     if (spouse) {
       return spouse.full_name ||
         `${spouse.first_name || ''} ${spouse.last_name || ''}`.trim() ||
@@ -117,4 +121,5 @@ export class SacramentCardComponent implements OnInit {
   printCard(): void {
     window.print();
   }
+
 }

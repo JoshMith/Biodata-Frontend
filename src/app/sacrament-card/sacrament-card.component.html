@@ -1,173 +1,173 @@
-<body>
-    <div *ngIf="isLoading" class="loading">Loading Sacrament Card...</div>
+<div *ngIf="isLoading" class="loading">Loading Sacrament Card...</div>
 
-    <div *ngIf="errorMessage" class="error">
-        <p>{{ errorMessage }}</p>
-        <button (click)="loadChristianData(christian)">Retry</button>
+<div *ngIf="errorMessage" class="error">
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadChristianData(christian?.id)">Retry</button>
+</div>
+
+<div *ngIf="christian && !isLoading && !errorMessage" class="sacrament-card">
+    <!-- Language Toggle Controls -->
+    <div class="language-controls">
+        <button class="lang-btn" [class.active]="language === 'en'" (click)="setLanguage('en')">English</button>
+        <button class="lang-btn" [class.active]="language === 'sw'" (click)="setLanguage('sw')">Kiswahili</button>
     </div>
-    <div *ngIf="christian && !isLoading !errorMessage" class="sacrament-card">
-        <!-- Page 1 - Cover -->
-        <div class="card-page page1">
-            <div class="notes-section">
-                <div class="church-info">
-                    <h4>ARCHDIOCESE OF NYERI</h4>
-                    <h4>SACRAMENT OFFICE</h4>
-                    <div class="divider"></div>
-                    <h3>OUR LADY OF CONSOLATA</h3>
-                    <h4>GIAKAIBII CATHOLIC CHURCH</h4>
-                    <p>P.O. Box 1216 KARATINA</p>
+
+    <!-- ENGLISH VERSION -->
+    <div *ngIf="language === 'en'" class="lang-version" id="english-version">
+        <!-- SHEET 1 — OUTSIDE (Note + Cover) -->
+        <div class="sheet sheet-outside">
+            <div class="half note-half">
+                <div class="note-title">NOTE</div>
+                <div class="note-lines">
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
                 </div>
-                <div class="bible-verse">
-                    <p>"By this everyone will know that you are my disciples, if you love one another." (John 13:35)</p>
+                <div class="verse">
+                    "By this everyone will know that you are my disciples, if you love one another."<br>
+                    (John 13:35)
                 </div>
-                <div class="registration-numbers">
-                    <div class="field">
-                        <span class="label">Reg. No:</span>
-                        <span class="value">{{ christian?.registration_number || 'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Bapt. No:</span>
-                        <span class="value">{{ baptism?.baptism_number || 'N/A' }}</span>
-                    </div>
+            </div>
+            <div class="half cover-half">
+                <div class="arch-title">ARCHDIOCESE OF NYERI</div>
+                <div class="arch-underline"></div>
+                <div class="kardi">SACRAMENT CARD</div>
+                <svg class="cross-svg" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="33" y="4" width="24" height="112" fill="#1a1a1a"/>
+                    <rect x="4" y="28" width="82" height="22" fill="#1a1a1a"/>
+                </svg>
+                <div class="church-name">
+                    {{ baptism?.parish || 'OUR LADY OF CONSOLATA' }}
+                </div>
+                <div class="cover-dot-line"></div>
+                <div class="reg-row">
+                    <span>Reg. No. {{ christian?.registration_number || '.....................' }}</span>
+                    <span>Bapt. No. {{ baptism?.baptism_number || '.................' }}</span>
                 </div>
             </div>
         </div>
-
-        <!-- Page 2 - Main Content -->
-        <div class="card-page page2">
-            <div class="card-header">
-                <h1>BAPTISMAL CARD</h1>
+        <div class="sheet sheet-inside">
+            <div class="half inside-left">
+                <div class="field-row"><span>Name</span><div class="field-dots">{{ christian?.first_name }} {{ christian?.middle_name }} {{ christian?.last_name }}</div></div>
+                <div class="field-row"><span>Father</span><div class="field-dots">{{ christian?.father || '' }}</div></div>
+                <div class="field-row"><span>Mother</span><div class="field-dots">{{ christian?.mother || '' }}</div></div>
+                <div class="field-pair"><div class="part flex-1"><span>Tribe</span><div class="field-dots">{{ christian?.tribe || '' }}</div></div><div class="part flex-1"><span>Clan</span><div class="field-dots">{{ christian?.clan || '' }}</div></div></div>
+                <div class="field-row"><span>Place of Birth</span><div class="field-dots">{{ christian?.birth_place || '' }}</div></div>
+                <div class="field-row"><span>Sub-County</span><div class="field-dots">{{ christian?.subcounty || '' }}</div></div>
+                <div class="field-row"><span>Date of Birth</span><div class="field-dots">{{ christian?.birth_date ? (christian.birth_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-row"><span>Domicile</span><div class="field-dots">{{ christian?.domicile || '' }}</div></div>
+                <div class="section-title">BAPTISM</div>
+                <div class="field-row"><span>Place</span><div class="field-dots">{{ baptism?.parish || '' }}</div></div>
+                <div class="field-row"><span>Date</span><div class="field-dots">{{ baptism?.baptism_date ? (baptism.baptism_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-row"><span>Minister</span><div class="field-dots">{{ baptism?.minister || '' }}</div></div>
+                <div class="field-row"><span>Sponsor</span><div class="field-dots">{{ baptism?.sponsor || '' }}</div></div>
             </div>
-
-            <div class="card-content">
-                <!-- Left Column - Personal Info -->
-                <div class="column personal-info">
-                    <div class="field">
-                        <span class="label">Name:</span>
-                        <span class="value">{{ christian?.first_name }} {{ christian?.middle_name }} {{ christian?.last_name }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Father:</span>
-                        <span class="value">{{ christian?.father || 'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Mother:</span>
-                        <span class="value">{{ christian?.mother || 'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Tribe:</span>
-                        <span class="value">{{ christian?.tribe || 'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Clan:</span>
-                        <span class="value">{{ christian?.clan || 'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Place of Birth:</span>
-                        <span class="value">{{ christian?.birth_place || 'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Sub-County:</span>
-                        <span class="value">{{ christian?.subcounty || 'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Date of Birth:</span>
-                        <span class="value">{{ christian?.birth_date ? (christian.birth_date | date:'yyyy-MM-dd') :
-                            'N/A' }}</span>
-                    </div>
-                    <div class="field">
-                        <span class="label">Residence:</span>
-                        <span class="value">{{ christian?.residence || 'N/A' }}</span>
-                    </div>
-                </div>
-
-                <!-- Right Column - Sacraments -->
-                <div class="column sacraments">
-                    <!-- Baptism -->
-                    <div class="sacrament-group" >
-                        <h3>BAPTISM</h3>
-                        <div class="field">
-                            <span class="label">Parish:</span>
-                            <span class="value">{{ baptism?.parish || 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Date:</span>
-                            <span class="value">{{ baptism?.baptism_date ? (baptism.baptism_date | date:'yyyy-MM-dd') :
-                                'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Minister:</span>
-                            <span class="value">{{ baptism?.minister || 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Sponsor:</span>
-                            <span class="value">{{ baptism?.sponsor || 'N/A' }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Eucharist -->
-                    <div class="sacrament-group">
-                        <h3>EUCHARIST</h3>
-                        <div class="field">
-                            <span class="label">Place:</span>
-                            <span class="value">{{ eucharist?.eucharist_place || 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Date:</span>
-                            <span class="value">{{ eucharist?.eucharist_date ? (eucharist.eucharist_date |
-                                date:'yyyy-MM-dd') : 'N/A' }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Confirmation -->
-                    <div class="sacrament-group">
-                        <h3>CONFIRMATION</h3>
-                        <div class="field">
-                            <span class="label">Place:</span>
-                            <span class="value">{{ confirmation?.confirmation_place || 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Date:</span>
-                            <span class="value">{{ confirmation?.confirmation_date ? (confirmation.confirmation_date |
-                                date:'yyyy-MM-dd') : 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Conf. No:</span>
-                            <span class="value">{{ confirmation?.confirmation_no || 'N/A' }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Marriage -->
-                    <div class="sacrament-group">
-                        <h3>MARRIAGE</h3>
-                        <div class="field">
-                            <span class="label">Spouse:</span>
-                            <span class="value">{{ getSpouseName() || 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Parish:</span>
-                            <span class="value">{{ marriage?.submission_location || 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Date:</span>
-                            <span class="value">{{ marriage?.marriage_date ? (marriage.marriage_date |
-                                date:'yyyy-MM-dd') : 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Entry No:</span>
-                            <span class="value">{{ marriage?.marriage_entry_number || 'N/A' }}</span>
-                        </div>
-                        <div class="field">
-                            <span class="label">Marr. No:</span>
-                            <span class="value">{{ marriage?.certificate_number || 'N/A' }}</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="half inside-right">
+                <div class="section-title">EUCHARIST</div>
+                <div class="field-row"><span>Place</span><div class="field-dots">{{ eucharist?.eucharist_place || '' }}</div></div>
+                <div class="field-row"><span>Date</span><div class="field-dots">{{ eucharist?.eucharist_date ? (eucharist.eucharist_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="section-title">CONFIRMATION</div>
+                <div class="field-row"><span>Place</span><div class="field-dots">{{ confirmation?.confirmation_place || '' }}</div></div>
+                <div class="field-row"><span>Date</span><div class="field-dots">{{ confirmation?.confirmation_date ? (confirmation.confirmation_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-pair"><div class="part flex-1"><span>Reg. No.</span><div class="field-dots">{{ christian?.registration_number || '' }}</div></div><div class="part flex-1"><span>Conf. No.</span><div class="field-dots">{{ confirmation?.confirmation_no || '' }}</div></div></div>
+                <div class="section-title">MARRIAGE</div>
+                <div class="field-row"><span>Spouse</span><div class="field-dots">{{ getSpouseName() || '' }}</div></div>
+                <div class="field-row"><span>Place</span><div class="field-dots">{{ marriage?.submission_location || '' }}</div></div>
+                <div class="field-row"><span>Date</span><div class="field-dots">{{ marriage?.marriage_date ? (marriage.marriage_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-pair"><div class="part flex-1"><span>Civil Cert.</span><div class="field-dots">{{ marriage?.civil_marriage_certificate_number || '' }}</div></div><div class="part flex-1"><span>Marr. No.</span><div class="field-dots">{{ marriage?.marriage_number || '' }}</div></div></div>
+                <div class="field-row"><span>Witness 1</span><div class="field-dots">{{ marriage?.witness1_name || '' }}</div></div>
+                <div class="field-row"><span>Witness 2</span><div class="field-dots">{{ marriage?.witness2_name || '' }}</div></div>
             </div>
-        </div>
-
-        <div class="print-controls">
-            <button class="print-button" (click)="printCard()">Print Card</button>
         </div>
     </div>
-</body>
+
+    <!-- KISWAHILI VERSION -->
+    <div *ngIf="language === 'sw'" class="lang-version" id="swahili-version">
+        <div class="sheet sheet-outside">
+            <div class="half note-half">
+                <div class="note-title">KUMBUKUMU</div>
+                <div class="note-lines">
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                    <div class="dot-line"></div>
+                </div>
+                <div class="verse">
+                    "Kwa hili wote watajua ya kuwa ninyi ni wanafunzi wangu, mkipendana ninyi kwa ninyi."<br>
+                    (Yohana 13:35)
+                </div>
+            </div>
+            <div class="half cover-half">
+                <div class="arch-title">JIMBO KUU LA NYERI</div>
+                <div class="arch-underline"></div>
+                <div class="kardi">KARDI YA SAKRAMENTI</div>
+                <svg class="cross-svg" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="33" y="4" width="24" height="112" fill="#1a1a1a"/>
+                    <rect x="4" y="28" width="82" height="22" fill="#1a1a1a"/>
+                </svg>
+                <div class="church-name">
+                    {{ baptism?.parish || 'MAMA YETU WA CONSOLATA' }}
+                </div>
+                <div class="cover-dot-line"></div>
+                <div class="reg-row">
+                    <span>Nambari ya Usajili {{ christian?.registration_number || '.....................' }}</span>
+                    <span>Nambari ya Ubatizo {{ baptism?.baptism_number || '.................' }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="sheet sheet-inside">
+            <div class="half inside-left">
+                <div class="field-row"><span>Jina Kamili</span><div class="field-dots">{{ christian?.first_name }} {{ christian?.middle_name }} {{ christian?.last_name }}</div></div>
+                <div class="field-row"><span>Baba</span><div class="field-dots">{{ christian?.father || '' }}</div></div>
+                <div class="field-row"><span>Mama</span><div class="field-dots">{{ christian?.mother || '' }}</div></div>
+                <div class="field-pair"><div class="part flex-1"><span>Kabila</span><div class="field-dots">{{ christian?.tribe || '' }}</div></div><div class="part flex-1"><span>Ukoo</span><div class="field-dots">{{ christian?.clan || '' }}</div></div></div>
+                <div class="field-row"><span>Mahali Pa Kuzaliwa</span><div class="field-dots">{{ christian?.birth_place || '' }}</div></div>
+                <div class="field-row"><span>Wilaya Ndogo</span><div class="field-dots">{{ christian?.subcounty || '' }}</div></div>
+                <div class="field-row"><span>Tarehe Ya Kuzaliwa</span><div class="field-dots">{{ christian?.birth_date ? (christian.birth_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-row"><span>Makazi</span><div class="field-dots">{{ christian?.domicile || '' }}</div></div>
+                <div class="section-title">UBATIZO</div>
+                <div class="field-row"><span>Mahali</span><div class="field-dots">{{ baptism?.parish || '' }}</div></div>
+                <div class="field-row"><span>Tarehe</span><div class="field-dots">{{ baptism?.baptism_date ? (baptism.baptism_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-row"><span>Mbatizaji</span><div class="field-dots">{{ baptism?.minister || '' }}</div></div>
+                <div class="field-row"><span>Mlezi/Msimamizi</span><div class="field-dots">{{ baptism?.sponsor || '' }}</div></div>
+            </div>
+            <div class="half inside-right">
+                <div class="section-title">EUKARISTI</div>
+                <div class="field-row"><span>Mahali</span><div class="field-dots">{{ eucharist?.eucharist_place || '' }}</div></div>
+                <div class="field-row"><span>Tarehe</span><div class="field-dots">{{ eucharist?.eucharist_date ? (eucharist.eucharist_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="section-title">KIPINDUO</div>
+                <div class="field-row"><span>Mahali</span><div class="field-dots">{{ confirmation?.confirmation_place || '' }}</div></div>
+                <div class="field-row"><span>Tarehe</span><div class="field-dots">{{ confirmation?.confirmation_date ? (confirmation.confirmation_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-pair"><div class="part flex-1"><span>Nambari ya Usajili</span><div class="field-dots">{{ christian?.registration_number || '' }}</div></div><div class="part flex-1"><span>Nambari ya Kipinduo</span><div class="field-dots">{{ confirmation?.confirmation_no || '' }}</div></div></div>
+                <div class="section-title">NDOA</div>
+                <div class="field-row"><span>Mwenzi Wa Ndoa</span><div class="field-dots">{{ getSpouseName() || '' }}</div></div>
+                <div class="field-row"><span>Mahali</span><div class="field-dots">{{ marriage?.submission_location || '' }}</div></div>
+                <div class="field-row"><span>Tarehe</span><div class="field-dots">{{ marriage?.marriage_date ? (marriage.marriage_date | date:'yyyy-MM-dd') : '' }}</div></div>
+                <div class="field-pair"><div class="part flex-1"><span>Cheti Cha Kiraia</span><div class="field-dots">{{ marriage?.civil_marriage_certificate_number || '' }}</div></div><div class="part flex-1"><span>Nambari Ya Ndoa</span><div class="field-dots">{{ marriage?.marriage_number || '' }}</div></div></div>
+                <div class="field-row"><span>Shahidi 1</span><div class="field-dots">{{ marriage?.witness1_name || '' }}</div></div>
+                <div class="field-row"><span>Shahidi 2</span><div class="field-dots">{{ marriage?.witness2_name || '' }}</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="print-controls">
+        <button class="print-button" (click)="printCard()">
+            Print {{ language === 'en' ? 'English' : 'Kiswahili' }} Card
+        </button>
+    </div>
+</div>
