@@ -171,6 +171,7 @@ body {
 }
 
 span button {
+  width: fit-content;
   text-decoration: none;
   color: #4a002a;
   font-weight: lighter;
@@ -514,6 +515,7 @@ li button {
 }
 
 .view-btn {
+    width: fit-content;
     padding: 6px 12px;
     border: none;
     border-radius: 6px;

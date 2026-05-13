@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
@@ -56,6 +57,9 @@ export class SacramentCardComponent implements OnInit {
   }
 
   loadChristianData(christianId: string): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
     this.apiService.getChristianById(christianId).subscribe({
       next: (data) => {
         this.christian = data;
@@ -71,24 +75,44 @@ export class SacramentCardComponent implements OnInit {
 
   loadSacramentData(christianId: string): void {
     forkJoin([
-      this.apiService.getBaptismByUserId(christianId),
-      this.apiService.getEucharistByUserId(christianId),
-      this.apiService.getConfirmationByUserId(christianId),
-      this.apiService.getFullMarriageByUserId(christianId)
+      // Each call is wrapped with catchError so a 404 on one
+      // does NOT cause forkJoin to fail entirely.
+      this.apiService.getBaptismByUserId(christianId).pipe(
+        catchError(err => {
+          console.warn('Baptism not found:', err);
+          return of([]);
+        })
+      ),
+      this.apiService.getEucharistByUserId(christianId).pipe(
+        catchError(err => {
+          console.warn('Eucharist not found:', err);
+          return of([]);
+        })
+      ),
+      this.apiService.getConfirmationByUserId(christianId).pipe(
+        catchError(err => {
+          console.warn('Confirmation not found:', err);
+          return of([]);
+        })
+      ),
+      this.apiService.getFullMarriageByUserId(christianId).pipe(
+        catchError(err => {
+          console.warn('Marriage not found:', err);
+          return of([]);
+        })
+      )
     ]).subscribe({
       next: ([baptism, eucharist, confirmation, marriage]) => {
         this.isLoading = false;
-        this.baptism = baptism.length > 0 ? baptism[0] : null;
-        this.eucharist = eucharist.length > 0 ? eucharist[0] : null;
-        this.confirmation = confirmation.length > 0 ? confirmation[0] : null;
-        this.marriage = marriage.length > 0 ? marriage[0] : null;
-        
-        if (!this.baptism) {
-          console.warn('No baptism record found for this user');
-        }
+        this.baptism     = Array.isArray(baptism)      && baptism.length      > 0 ? baptism[0]      : null;
+        this.eucharist   = Array.isArray(eucharist)    && eucharist.length    > 0 ? eucharist[0]    : null;
+        this.confirmation= Array.isArray(confirmation) && confirmation.length > 0 ? confirmation[0] : null;
+        this.marriage    = Array.isArray(marriage)     && marriage.length     > 0 ? marriage[0]     : null;
       },
+      // This error block now only fires if something truly unexpected happens
+      // (e.g. network completely down), not for missing records.
       error: (err) => {
-        console.error('Error loading sacrament data:', err);
+        console.error('Unexpected error loading sacrament data:', err);
         this.isLoading = false;
         this.errorMessage = 'Failed to load sacrament data';
       }
@@ -121,5 +145,4 @@ export class SacramentCardComponent implements OnInit {
   printCard(): void {
     window.print();
   }
-
 }
