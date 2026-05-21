@@ -38,6 +38,7 @@
 
                 <td>
                     {{ christian.first_name }}
+                    {{ christian.middle_name }}
                     {{ christian.last_name }}
                 </td>
 
@@ -64,7 +65,7 @@
 
     <!-- Christian Details -->
     <div class="details" *ngIf="selectedChristian">
-        <h1 id="christianName">{{ selectedChristian.first_name }} {{ selectedChristian.last_name }}'s Details</h1>
+        <h1 id="christianName">{{ selectedChristian.first_name }} {{ selectedChristian.middle_name }} {{ selectedChristian.last_name }}'s Details</h1>
         <div class="christian-details" [ngClass]="{'highlighted': selectedChristian.id === selectedChristian.id}">
 
             <div class="personal-details">
@@ -75,7 +76,7 @@
                         </button>
                     </span>
                 </h3>
-                <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</p>
+                <p><strong>Name:</strong> {{ selectedChristian.first_name }} {{ selectedChristian.middle_name }} {{ selectedChristian.last_name }}</p>
                 <p id="email"><strong>Email:</strong> {{ selectedChristian.email }}</p>
                 <p><strong>Role:</strong> {{ selectedChristian.role ? (selectedChristian.role.charAt(0).toUpperCase()
                     + selectedChristian.role.slice(1).toLowerCase()) : '' }}</p>
@@ -210,7 +211,7 @@
                 </button>
                 <button [disabled]="!canDeleteChristian" class="delete-button" title="Delete access only to superusers"
                     (click)="deleteChristian()">
-                    <strong>Delete {{ selectedChristian.first_name }} {{ selectedChristian.last_name }}</strong>
+                    <strong>Delete Christian</strong>
                 </button>
             </div>
 
