@@ -28,15 +28,27 @@
                     label="Place of Confirmation"
                     [externalControl]="confirmationForm.get('confirmation_place')"
                 ></app-parish-autocomplete>
+                <div class="error-message" *ngIf="hasFieldError('confirmation_place')">
+                    {{ getFieldError('confirmation_place') }}
+                </div>
                 
                 <label for="confirmation_date">Date:</label>
-                <input type="date" id="confirmation_date" formControlName="confirmation_date">
+                <input type="date" id="confirmation_date" formControlName="confirmation_date" [class.error]="hasFieldError('confirmation_date')">
+                <div class="error-message" *ngIf="hasFieldError('confirmation_date')">
+                    {{ getFieldError('confirmation_date') }}
+                </div>
 
                 <label for="minister">Minister:</label>
-                <input type="text" id="minister" formControlName="minister">
+                <input type="text" id="minister" formControlName="minister" [class.error]="hasFieldError('minister')">
+                <div class="error-message" *ngIf="hasFieldError('minister')">
+                    {{ getFieldError('minister') }}
+                </div>
 
                 <label for="confirmation_no">Confirmation No:</label>
-                <input type="text" id="confirmation_no" formControlName="confirmation_no">
+                <input type="text" id="confirmation_no" formControlName="confirmation_no" [class.error]="hasFieldError('confirmation_no')">
+                <div class="error-message" *ngIf="hasFieldError('confirmation_no')">
+                    {{ getFieldError('confirmation_no') }}
+                </div>
 
                 <!-- Feedback Messages -->
                 <div class="feedback-messages">

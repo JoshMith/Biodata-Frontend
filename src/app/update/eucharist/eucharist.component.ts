@@ -149,4 +149,13 @@ export class EucharistUpdateComponent implements OnInit {
       });
     }
   }
+
+  hasFieldError(field: string): boolean {
+    const c = this.eucharistForm.get(field);
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  }
+
+  getFieldError(field: string): string {
+    return this.eucharistForm.get(field)?.errors?.['required'] ? 'This field is required' : '';
+  }
 }

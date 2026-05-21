@@ -28,9 +28,15 @@
                     label="Place of First Eucharist"
                     [externalControl]="eucharistForm.get('eucharist_place')"
                 ></app-parish-autocomplete>
+                <div class="error-message" *ngIf="hasFieldError('eucharist_place')">
+                    {{ getFieldError('eucharist_place') }}
+                </div>
 
                 <label for="eucharist_date">Date:</label>
-                <input type="date" id="eucharist_date" formControlName="eucharist_date">
+                <input type="date" id="eucharist_date" formControlName="eucharist_date" [class.error]="hasFieldError('eucharist_date')">
+                <div class="error-message" *ngIf="hasFieldError('eucharist_date')">
+                    {{ getFieldError('eucharist_date') }}
+                </div>
 
                 <!-- Feedback Messages -->
                 <div class="feedback-messages">

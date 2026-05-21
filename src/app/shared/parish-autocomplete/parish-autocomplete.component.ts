@@ -196,12 +196,12 @@ export class ParishAutocompleteComponent
     if (this.externalControl) {
       return !!(
         this.externalControl.invalid &&
-        (this.externalControl.dirty || this.externalControl.touched)
+        (this.externalControl.touched)
       );
     }
     return !!(
       this.inputControl.invalid &&
-      (this.inputControl.dirty || this.inputControl.touched)
+      (this.inputControl.touched)
     );
   }
 
@@ -209,12 +209,12 @@ export class ParishAutocompleteComponent
     if (this.externalControl) {
       return !!(
         this.externalControl.valid &&
-        (this.externalControl.dirty || this.externalControl.touched)
+        (this.externalControl.dirty)
       );
     }
     return !!(
       this.inputControl.valid &&
-      (this.inputControl.dirty || this.inputControl.touched)
+      (this.inputControl.dirty)
     );
   }
 

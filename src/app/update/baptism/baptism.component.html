@@ -28,18 +28,33 @@
                     label="Parish / Place of Baptism"
                     [externalControl]="baptismForm.get('parish')"
                 ></app-parish-autocomplete>
+                <div class="error-message" *ngIf="hasFieldError('parish')">
+                    {{ getFieldError('parish') }}
+                </div>
 
                 <label for="baptism_date">Date:</label>
-                <input type="date" id="baptism_date" formControlName="baptism_date">
+                <input type="date" id="baptism_date" formControlName="baptism_date" [class.error]="hasFieldError('baptism_date')">
+                <div class="error-message" *ngIf="hasFieldError('baptism_date')">
+                    {{ getFieldError('baptism_date') }}
+                </div>
 
                 <label for="baptism_number">Baptism Number:</label>
-                <input type="text" id="baptism_number" formControlName="baptism_number">
+                <input type="text" id="baptism_number" formControlName="baptism_number" [class.error]="hasFieldError('baptism_number')">
+                <div class="error-message" *ngIf="hasFieldError('baptism_number')">
+                    {{ getFieldError('baptism_number') }}
+                </div>
 
                 <label for="minister">Minister:</label>
-                <input type="text" id="minister" formControlName="minister">
+                <input type="text" id="minister" formControlName="minister" [class.error]="hasFieldError('minister')">
+                <div class="error-message" *ngIf="hasFieldError('minister')">
+                    {{ getFieldError('minister') }}
+                </div>
 
                 <label for="sponsor">Sponsor:</label>
-                <input type="text" id="sponsor" formControlName="sponsor">
+                <input type="text" id="sponsor" formControlName="sponsor" [class.error]="hasFieldError('sponsor')">
+                <div class="error-message" *ngIf="hasFieldError('sponsor')">
+                    {{ getFieldError('sponsor') }}
+                </div>
 
                 <!-- Feedback Messages -->
                 <div class="feedback-messages">

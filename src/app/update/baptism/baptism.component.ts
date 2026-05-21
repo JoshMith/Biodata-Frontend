@@ -150,4 +150,13 @@ export class BaptismUpdateComponent implements OnInit {
       });
     }
   }
+
+  hasFieldError(field: string): boolean {
+    const c = this.baptismForm.get(field);
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  }
+  
+  getFieldError(field: string): string {
+    return this.baptismForm.get(field)?.errors?.['required'] ? 'This field is required' : '';
+  }
 }

@@ -4,10 +4,11 @@ import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
+import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
   selector: 'app-marriage',
-  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './marriage.component.html',
   styleUrl: './marriage.component.css'
 })
@@ -35,21 +36,18 @@ export class MarriageComponent implements OnInit {
     private router: Router
   ) {
     this.marriageForm = this.fb.group({
-      // Matches updated DB: civil_marriage_certificate_number
       civilMarriageCertificateNumber: ['', Validators.required],
       marriageDate: ['', Validators.required],
       submissionLocation: ['', Validators.required],
       submissionSubCounty: ['', Validators.required],
       submissionCounty: ['', Validators.required],
       conductedBy: ['', Validators.required],
-      // Witnesses (new columns added in databaseCorrections.sql)
       witness1Name: ['', Validators.required],
       witness1SonOf: [''],
       witness1Clan: [''],
       witness2Name: ['', Validators.required],
       witness2SonOf: [''],
       witness2Clan: [''],
-      // Parties array (groom & bride)
       parties: this.fb.array([
         this.createPartyGroup('groom'),
         this.createPartyGroup('bride')
@@ -80,7 +78,6 @@ export class MarriageComponent implements OnInit {
       partyType: [partyType, Validators.required],
       fullName: ['', Validators.required],
       maritalStatus: ['', Validators.required],
-      // domicile replaces residence_address (per databaseCorrections.sql)
       domicile: ['', Validators.required],
       fatherName: ['', Validators.required],
       motherName: ['', Validators.required]

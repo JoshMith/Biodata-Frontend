@@ -4,11 +4,12 @@ import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
+import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
 
 @Component({
   selector: 'app-marriage',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './marriage.component.html',
   styleUrl: './marriage.component.css'
 })

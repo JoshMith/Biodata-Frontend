@@ -71,7 +71,6 @@ export class PersonalInfoUpdateComponent implements OnInit {
   private loadExistingData(id: string): void {
     this.apiService.getChristianById(id).subscribe({
       next: (data) => {
-        // Format dates before patching the form
         const formattedData = {
           ...data,
           birth_date: this.formatDateForInput(data.birth_date)

@@ -42,9 +42,10 @@
         <div class="form-row">
           <div class="form-group">
             <label for="submissionLocation">Place of Marriage <span class="required">*</span></label>
-            <input type="text" id="submissionLocation" formControlName="submissionLocation"
-              [class.error]="hasFieldError('submissionLocation')"
-              placeholder="Enter place where marriage was solemnised">
+            <app-parish-autocomplete formControlName="submissionLocation"
+              placeholder="Enter place where marriage was solemnised" label="Place of Marriage"
+              [externalControl]="marriageForm.get('submissionLocation')">
+            </app-parish-autocomplete>
             <div class="error-message" *ngIf="hasFieldError('submissionLocation')">
               {{ getFieldError('submissionLocation') }}
             </div>

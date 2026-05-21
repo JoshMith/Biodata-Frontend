@@ -21,8 +21,8 @@ export class ConfirmationUpdateComponent implements OnInit {
   confirmationForm = this.fb.group({
     confirmation_place: ['', Validators.required],
     confirmation_date: ['', Validators.required],
-    minister: [''],
-    confirmation_no: [''],
+    minister: ['', Validators.required],
+    confirmation_no: ['', Validators.required],
     user_id: ['']
   });
 
@@ -148,5 +148,14 @@ export class ConfirmationUpdateComponent implements OnInit {
         queryParams: { id: christianId }
       });
     }
+  }
+
+  hasFieldError(field: string): boolean {
+    const c = this.confirmationForm.get(field);
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  }
+  
+  getFieldError(field: string): string {
+    return this.confirmationForm.get(field)?.errors?.['required'] ? 'This field is required' : '';
   }
 }

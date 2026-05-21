@@ -39,8 +39,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     // Initialize form with validation - updated to match new schema
     this.userForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      email: ['', [Validators.email]],
+      password: ['', [Validators.minLength(8)]],
       first_name: ['', [Validators.required, Validators.minLength(2)]],
       last_name: ['', [Validators.required, Validators.minLength(2)]],
       middle_name: [''],
@@ -264,7 +264,9 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.value));
     }
 
-    this.router.navigate(['/baptism']);
+    setTimeout(() => {
+      this.router.navigate(['/baptism']);
+    }, 1500);
   }
 
   navigateToDashboard(): void {
