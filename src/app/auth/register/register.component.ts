@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
   successMessage = '';
   registerMessage = '';
   isLoading: boolean = false;
+  showPassword = false;
 
   constructor(private register: ApiService, private router: Router) { }
 

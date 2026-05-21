@@ -14,8 +14,13 @@
                     Email is invalid!
                 </p>
             </div>
-            <p>
-                <input type="password" id="password" placeholder="Password" formControlName="password">
+            <p style="position: relative;">
+                <input [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Password"
+                    formControlName="password">
+                <button type="button" (click)="showPassword = !showPassword" style="position:absolute; right:8px; top: 20%; transform:translateY(-50%);
+           background:none; border:none; cursor:pointer; padding:4px; width:auto; color: #333;">
+                    <i [class]="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'" style="font-size:18px;"></i>
+                </button>
             </p>
             <div *ngIf="!form.controls.password.valid && form.controls.password.touched">
                 <p *ngIf="form.controls.password.errors?.['required']">

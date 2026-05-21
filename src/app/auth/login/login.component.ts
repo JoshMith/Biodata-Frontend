@@ -22,8 +22,8 @@ export class LoginComponent {
   errorMessage: string = '';
   successMessage = '';
   loginMessage = '';
-
   isLoading: boolean = false; // To indicate loading state
+  showPassword = false;
 
   constructor(private router: Router, private login: ApiService) { }
 

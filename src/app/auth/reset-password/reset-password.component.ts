@@ -19,6 +19,8 @@ export class ResetPasswordComponent implements OnInit {
   successMessage = '';
   isValidToken = false;
   isCheckingToken = true;
+  showNewPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -88,7 +90,7 @@ export class ResetPasswordComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         this.successMessage = response.message || 'Password reset successful!';
-        
+
         // Redirect to login after 3 seconds
         setTimeout(() => {
           this.router.navigate(['/login']);
