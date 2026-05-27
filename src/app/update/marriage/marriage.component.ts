@@ -26,6 +26,8 @@ export class MarriageUpdateComponent implements OnInit {
   ];
   maritalStatusOptions = ['Single', 'Divorced', 'Widowed'];
 
+  errorMessage = '';
+  successMessage = '';
   showSuccess = false;
   noMarriage = false;
   isSubmitting = false;
@@ -104,7 +106,10 @@ export class MarriageUpdateComponent implements OnInit {
           this.noMarriage = true;
         }
       },
-      error: () => { this.noMarriage = true; }
+      error: (error) => { 
+        this.noMarriage = true;
+        this.errorMessage = `Failed to load existing data: ${error.error?.message}`;
+       }
     });
   }
 
@@ -200,10 +205,12 @@ export class MarriageUpdateComponent implements OnInit {
       next: (resp: any) => {
         const marriageId = this.existingMarriageId || resp.marriage_id;
         this.saveParties(marriageId, v.parties);
+        this.successMessage = 'Marriage record saved successfully!';
       },
       error: (err: any) => {
         console.error('Marriage save error:', err);
         this.isSubmitting = false;
+        this.errorMessage = err.error?.message || 'Failed to save marriage record';
         alert('Error saving marriage record. Please try again.');
       }
     });
@@ -234,11 +241,13 @@ export class MarriageUpdateComponent implements OnInit {
       }).catch(err => {
         console.error('Party creation error:', err);
         this.isSubmitting = false;
+        this.errorMessage = err.error?.message || 'Failed to save marriage parties';
         alert('Error creating marriage parties. Please try again.');
       });
     }).catch(err => {
       console.error('Party delete error:', err);
       this.isSubmitting = false;
+      this.errorMessage = err.error?.message || 'Failed to delete marriage parties';
     });
   }
 

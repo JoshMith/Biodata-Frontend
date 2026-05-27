@@ -187,6 +187,17 @@
             <input type="text" id="witness2Clan" formControlName="witness2Clan" placeholder="Clan">
           </div>
         </div>
+
+        <!-- Feedback Messages -->
+        <div class="feedback-messages">
+          <div *ngIf="successMessage" class="success-message">
+            <i class="fa fa-check-circle"></i> {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="error-alert">
+            <i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}
+          </div>
+        </div>
+        
       </div>
 
       <div class="div-btns">

@@ -82,9 +82,10 @@ input.error:focus {
 }
 
 .error-message {
-    color: #dc3545;
+    color: #d32f2f;
     font-size: 12px;
     margin-top: 2px;
+    margin-bottom: 8px;
     display: block;
     font-weight: normal;
 }

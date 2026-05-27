@@ -31,6 +31,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   parishes: any[] = [];
   deaneries: any[] = [];
 
+  showPassword = false;
+
   private fb = inject(FormBuilder);
 
   constructor(

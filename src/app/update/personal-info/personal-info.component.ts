@@ -19,6 +19,8 @@ export class PersonalInfoUpdateComponent implements OnInit {
 
   christianForm = this.fb.group({
     role: [''],
+    email: [''],
+    password: [''],
     phone_number: [''],
     first_name: [''],
     last_name: [''],
@@ -32,7 +34,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     birth_place: [''],
     birth_date: [''],
     subcounty: [''],
-    residence: [''],
+    domicile: [''],
   });
 
   currentStep = 0;
@@ -43,6 +45,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
   parishes: any[] = [];
   deaneries: any[] = [];
   noRecord = false;
+  showPassword = false;
 
   ngOnInit(): void {
     this.checkAuthentication();

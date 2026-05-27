@@ -54,6 +54,21 @@
                                 placeholder="+256700000000">
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" formControlName="email" placeholder="example@gmail.com">
+                        </div>
+                        <div class="form-group" style="position: relative;">
+                            <label for="password">Password</label>
+                            <input [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Password"
+                                formControlName="password">
+                            <button type="button" (click)="showPassword = !showPassword" style="position:absolute; right:8px; top:50%; transform:translateY(-50%);
+           background:none; border:none; cursor:pointer; padding:4px; width:auto; color: #333;">
+                                <i [class]="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'" style="font-size:18px;"></i>
+                            </button>
+                        </div>
+                    </div>
                     
                 </div>
 
@@ -158,9 +173,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="residence">Residence</label>
-                                <input type="text" id="residence" formControlName="residence"
-                                    placeholder="Current residence">
+                                <label for="domicile">Domicile / Residence</label>
+                                <input type="text" id="domicile" formControlName="domicile"
+                                    placeholder="Current domicile">
                             </div>
                         </div>
                     </div>

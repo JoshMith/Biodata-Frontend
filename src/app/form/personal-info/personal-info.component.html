@@ -53,10 +53,14 @@
                             <label for="email">Email</label>
                             <input type="email" id="email" formControlName="email" placeholder="example@gmail.com">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="position: relative;">
                             <label for="password">Password</label>
-                            <input type="password" id="password" formControlName="password"
-                                placeholder="Include special characters for security">
+                            <input [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Password"
+                                formControlName="password" required>
+                            <button type="button" (click)="showPassword = !showPassword" style="position:absolute; right:8px; top:50%; transform:translateY(-50%);
+           background:none; border:none; cursor:pointer; padding:4px; width:auto; color: #333;">
+                                <i [class]="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'" style="font-size:18px;"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -141,9 +145,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="domicile">Domicile</label>
-                            <input type="text" id="domicile" formControlName="domicile"
-                                placeholder="Current domicile">
+                            <label for="domicile">Domicile / Residence</label>
+                            <input type="text" id="domicile" formControlName="domicile" placeholder="Current domicile">
                         </div>
                     </div>
                 </div>

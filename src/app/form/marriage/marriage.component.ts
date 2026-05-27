@@ -27,6 +27,8 @@ export class MarriageComponent implements OnInit {
   ];
   maritalStatusOptions = ['Single', 'Divorced', 'Widowed'];
 
+  errorMessage = '';
+  successMessage = '';
   showSuccess = false;
   isSubmitting = false;
 
@@ -135,7 +137,7 @@ export class MarriageComponent implements OnInit {
       } catch { userId = null; }
     }
     if (!userId) {
-      alert('No user selected. Please add a Christian first.');
+      this.errorMessage = 'No user selected. Please add a Christian first.';
       return;
     }
 
@@ -179,17 +181,20 @@ export class MarriageComponent implements OnInit {
         Promise.all(partyPromises).then(() => {
           this.isSubmitting = false;
           this.showSuccess = true;
+          this.successMessage = 'Marriage record saved successfully!';
           sessionStorage.removeItem('marriageFormData');
           setTimeout(() => this.router.navigate(['/dashboard']), 3000);
         }).catch(err => {
           console.error('Party creation error:', err);
           this.isSubmitting = false;
+          this.errorMessage = err.error?.message || 'Failed to save marriage parties';
           alert('Error creating marriage parties. Please try again.');
         });
       },
       error: (err) => {
         console.error('Marriage creation error:', err);
         this.isSubmitting = false;
+        this.errorMessage = err.error?.message || 'Failed to save marriage record';
         alert('Error creating marriage record. Please try again.');
       }
     });
