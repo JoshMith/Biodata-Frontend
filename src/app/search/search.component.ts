@@ -138,77 +138,26 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private loadChristians(userSession: any): void {
-    // Handle different possible structures of userSession
-    let role: string;
-    let parishId: string;
-
-    if (userSession) {
-      // Structure: { user: { role: '', parishId: '' } }
-      role = userSession.role;
-      parishId = userSession.parishId;
-    } else if (userSession.role) {
-      // Structure: { role: '', parishId: '' } or { role: '', parish_id: '' }
-      role = userSession.role;
-      parishId = userSession.parishId || userSession.parish_id;
-    } else {
-      console.error('Cannot determine user role from session:', userSession);
-      this.handleUnauthenticatedUser();
-      return;
-    }
-
-    // console.log('User role:', role, 'Parish ID:', parishId);
+    const role = userSession.role;
 
     this.apiService.getChristians()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data: Christian[]) => {
-          this.christians = this.filterChristiansByRole(data, role, parishId);
-          this.sortChristians();
-          this.setBannerMessage(role);
-        },
-        error: (error) => this.handleLoadError(error)
-      });
-  }
-
-  private filterChristiansByRole(
-    christians: Christian[],
-    role: string,
-    parishId: string
-  ): Christian[] {
-    // console.log('Filtering Christians by role:', role, 'Parish ID:', parishId);
-
-    if (!role) {
-      console.warn('No role provided for filtering');
-      return [];
-    }
-
-    switch (role.toLowerCase()) {
-      case 'viewer':
-        this.canDeleteChristian = false;
-        this.canEditChristian = false;
-        return christians;
-      case 'superuser':
-        return christians;
-      case 'editor':
-        this.canDeleteChristian = false; // Hide delete button for editors
-        if (!parishId) {
-          console.warn('No parish ID provided for editor role');
-          return christians; // Show all if no parish restriction
-        }
-        return christians.filter(c => c.parish_id === parishId);
-      case 'member':
-        this.canDeleteChristian = false;
-        // Member can only view their own personal information
-        const userData = this.getUserSession();
-        if (!userData || !userData.id) {
-          console.warn('No user data found for member role');
-        }
-        return christians.filter(c => c.id === userData.id)
-
-      default:
-        return [];
-    }
-  }
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: (data: Christian[]) => {
+                this.christians = data; // backend now scopes this correctly
+                this.sortChristians();
+                this.setBannerMessage(role);
+                // Still set UI permissions based on role
+                if (role === 'viewer') {
+                    this.canDeleteChristian = false;
+                    this.canEditChristian = false;
+                } else if (role === 'editor' || role === 'member') {
+                    this.canDeleteChristian = false;
+                }
+            },
+            error: (error) => this.handleLoadError(error)
+        });
+}
 
   private setBannerMessage(role: string): void {
     this.showBanner = true;
@@ -300,9 +249,19 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.selectedChristian = christian;
     this.storeSelectedChristian(christian);
-
     // Only display the selected Christian in the list
     this.christians = [christian];
+
+    // Set edit permission — members can only edit their own record
+    const session = this.getUserSession();
+    const role = session?.role;
+    if (role === 'viewer') {
+        this.canEditChristian = false;
+    } else if (role === 'member') {
+        this.canEditChristian = christian.id === session?.id;
+    } else {
+        this.canEditChristian = true; // superuser, editor
+    }
 
     this.loadParishName(christian.parish_id);
     this.loadSacramentData(christian.id);

@@ -20,27 +20,69 @@ import { SacramentCardComponent } from './sacrament-card/sacrament-card.componen
 import { ProgressBarComponent } from './shared/progress-bar';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, //the default page
+  // --- Public routes (no auth needed) ---
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'search', component: SearchComponent },
-  { path: 'personal-info', component: PersonalInfoComponent },
-  { path: 'baptism', component: BaptismComponent },
-  { path: 'eucharist', component: EucharistComponent },
-  { path: 'confirmation', component: ConfirmationComponent },
-  { path: 'marriage', component: MarriageComponent },
-  { path: 'edit-personal-info', component: PersonalInfoUpdateComponent },
-  { path: 'edit-baptism', component: BaptismUpdateComponent },
-  { path: 'edit-eucharist', component: EucharistUpdateComponent },
-  { path: 'edit-confirmation', component: ConfirmationUpdateComponent },
-  { path: 'edit-marriage', component: MarriageUpdateComponent },
-  { path: 'marriage-card', component: MarriageCardComponent },
-  { path: 'verifyEmail', component: VerifyEmailComponent },
-  { path: 'sacrament-card', component: SacramentCardComponent },
-  { path: 'progress-bar', component: ProgressBarComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'verifyEmail', component: VerifyEmailComponent },
+
+  // --- Any authenticated role ---
+  {
+    path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]
+  },
+  {
+    path: 'search', component: SearchComponent, canActivate: [authGuard]
+  },
+  {
+    path: 'sacrament-card', component: SacramentCardComponent, canActivate: [authGuard]
+  },
+  {
+    path: 'marriage-card', component: MarriageCardComponent, canActivate: [authGuard]
+  },
+
+  // --- Add new records: superuser and editor only ---
+  {
+    path: 'personal-info', component: PersonalInfoComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
+  },
+  {
+    path: 'baptism', component: BaptismComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
+  },
+  {
+    path: 'eucharist', component: EucharistComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
+  },
+  {
+    path: 'confirmation', component: ConfirmationComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
+  },
+  {
+    path: 'marriage', component: MarriageComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
+  },
+
+  // --- Edit existing records: superuser, editor, and member (own record only) ---
+  // Note: member ownership is enforced in the component, not the route guard,
+  // because the guard doesn't know which record ID is being edited.
+  {
+    path: 'edit-personal-info', component: PersonalInfoUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
+  },
+  {
+    path: 'edit-baptism', component: BaptismUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
+  },
+  {
+    path: 'edit-eucharist', component: EucharistUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
+  },
+  {
+    path: 'edit-confirmation', component: ConfirmationUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
+  },
+  {
+    path: 'edit-marriage', component: MarriageUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
+  },
+
+  // --- Dev/internal only (no guard needed in production but keep isolated) ---
+  { path: 'progress-bar', component: ProgressBarComponent },
+
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
