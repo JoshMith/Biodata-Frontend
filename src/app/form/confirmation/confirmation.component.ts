@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,7 @@ export class ConfirmationComponent {
 
   confirmationForm = this.fb.group({ // Create a form group for the confirmation form
     confirmation_place: ['', Validators.required],
-    confirmation_date: ['', Validators.required],
+    confirmation_date: ['', Validators.required, this.noFutureDateValidator],
     minister: ['', Validators.required],
     confirmation_no: ['', Validators.required],
     user_id: ['']
@@ -31,6 +31,7 @@ export class ConfirmationComponent {
   errorMessage = '';
   successMessage = '';
   currentStep = 3; // Set the current step for the progress bar
+  today = new Date().toISOString().split('T')[0];
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     // this.onSubmitConfirmationForm();
@@ -117,6 +118,14 @@ export class ConfirmationComponent {
       'confirmation_no': 'Confirmation Number'
     };
     return labels[fieldName] || fieldName;
+  }
+
+  noFutureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
   }
 
   navigateToMarriage() {

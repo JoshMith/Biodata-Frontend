@@ -33,7 +33,7 @@
                 </div>
                 
                 <label for="confirmation_date">Date:</label>
-                <input type="date" id="confirmation_date" formControlName="confirmation_date" [class.error]="hasFieldError('confirmation_date')">
+                <input type="date" id="confirmation_date" formControlName="confirmation_date" [max]="today" [class.error]="hasFieldError('confirmation_date')">
                 <div class="error-message" *ngIf="hasFieldError('confirmation_date')">
                     {{ getFieldError('confirmation_date') }}
                 </div>

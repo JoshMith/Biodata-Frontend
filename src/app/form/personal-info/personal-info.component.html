@@ -134,6 +134,7 @@
                         <div class="form-group">
                             <label for="birth_date">Date of Birth</label>
                             <input type="date" id="birth_date" formControlName="birth_date"
+                                [max]="today"
                                 placeholder="Your date of birth">
                         </div>
                     </div>

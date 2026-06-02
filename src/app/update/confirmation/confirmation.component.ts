@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule, NgIf } from '@angular/common';
@@ -20,7 +20,7 @@ export class ConfirmationUpdateComponent implements OnInit {
 
   confirmationForm = this.fb.group({
     confirmation_place: ['', Validators.required],
-    confirmation_date: ['', Validators.required],
+    confirmation_date: ['', Validators.required, this.noFutureDateValidator],
     minister: ['', Validators.required],
     confirmation_no: ['', Validators.required],
     user_id: ['']
@@ -31,6 +31,7 @@ export class ConfirmationUpdateComponent implements OnInit {
   existingConfirmationId: string | null = null;
   noConfirmation = false;
   currentStep = 3; // Track the current step for the progress bar
+  today = new Date().toISOString().split('T')[0];
 
   ngOnInit(): void {
     console.log("Initializing confirmation form");
@@ -132,6 +133,14 @@ export class ConfirmationUpdateComponent implements OnInit {
     return selectedChristian ? JSON.parse(selectedChristian).id : null;
   }
 
+  noFutureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
+  }
+
   navigateToMarriage(): void {
     const christianId = this.getSelectedChristianId();
     if (christianId) {
@@ -154,7 +163,7 @@ export class ConfirmationUpdateComponent implements OnInit {
     const c = this.confirmationForm.get(field);
     return !!(c && c.invalid && (c.dirty || c.touched));
   }
-  
+
   getFieldError(field: string): string {
     return this.confirmationForm.get(field)?.errors?.['required'] ? 'This field is required' : '';
   }

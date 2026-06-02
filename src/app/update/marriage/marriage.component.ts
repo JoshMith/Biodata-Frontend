@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -35,6 +35,7 @@ export class MarriageUpdateComponent implements OnInit {
   existingMarriageId: number | null = null;
   existingPartyIds: number[] = [];
   currentStep = 4;
+  today = new Date().toISOString().split('T')[0];
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +44,7 @@ export class MarriageUpdateComponent implements OnInit {
   ) {
     this.marriageForm = this.fb.group({
       civilMarriageCertificateNumber: ['', Validators.required],
-      marriageDate: ['', Validators.required],
+      marriageDate: ['', Validators.required, this.noFutureDateValidator],
       submissionLocation: ['', Validators.required],
       submissionSubCounty: ['', Validators.required],
       submissionCounty: ['', Validators.required],
@@ -250,6 +251,14 @@ export class MarriageUpdateComponent implements OnInit {
       this.errorMessage = err.error?.message || 'Failed to delete marriage parties';
     });
   }
+
+  noFutureDateValidator(control: AbstractControl) {
+  if (!control.value) return null;
+  const selected = new Date(control.value);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return selected > today ? { futureDate: true } : null;
+}
 
   navigateToConfirmation() {
     const id = this.getSelectedChristianId();

@@ -24,6 +24,7 @@
 
                 <label for="confirmation_date">Date: <span class="required">*</span></label>
                 <input type="date" id="confirmation_date" formControlName="confirmation_date"
+                    [max]="today"
                     [class.error]="hasFieldError('confirmation_date')">
                 <span *ngIf="hasFieldError('confirmation_date')" class="error-message">
                     {{ getFieldError('confirmation_date') }}

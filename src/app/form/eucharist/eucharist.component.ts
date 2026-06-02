@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
@@ -21,13 +21,14 @@ export class EucharistComponent {
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation
   eucharistForm = this.fb.group({ // Create a form group for the eucharist form
     eucharist_place: ['', Validators.required],
-    eucharist_date: ['', Validators.required],
+    eucharist_date: ['', Validators.required, this.noFutureDateValidator],
     user_id: [''],
   });
 
   errorMessage = '';
   successMessage = '';
   currentStep = 2; // Set the current step for the progress bar
+  today = new Date().toISOString().split('T')[0];
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     // this.onSubmitEucharistForm();
@@ -107,6 +108,14 @@ export class EucharistComponent {
       'eucharist_date': 'Eucharist Date',
     };
     return labels[fieldName] || fieldName;
+  }
+
+  noFutureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
   }
 
   navigateToConfirmation() {

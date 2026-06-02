@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 
@@ -32,7 +32,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     tribe: [''],
     clan: [''],
     birth_place: [''],
-    birth_date: [''],
+    birth_date: ['', this.noFutureDateValidator],
     subcounty: [''],
     domicile: [''],
   });
@@ -46,6 +46,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
   deaneries: any[] = [];
   noRecord = false;
   showPassword = false;
+  today = new Date().toISOString().split('T')[0];
 
   ngOnInit(): void {
     this.checkAuthentication();
@@ -346,6 +347,14 @@ export class PersonalInfoUpdateComponent implements OnInit {
   private getSelectedChristianId(): string | null {
     const selectedChristian = localStorage.getItem('selectedChristian');
     return selectedChristian ? JSON.parse(selectedChristian).id : null;
+  }
+
+  noFutureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
   }
 
   navigateToBaptism(): void {

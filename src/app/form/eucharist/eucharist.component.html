@@ -24,6 +24,7 @@
 
                 <label for="eucharist_date">Date: <span class="required">*</span></label>
                 <input type="date" id="eucharist_date" formControlName="eucharist_date"
+                    [max]="today"
                     [class.error]="hasFieldError('eucharist_date')">
                 <span *ngIf="hasFieldError('eucharist_date')" class="error-message">
                     {{ getFieldError('eucharist_date') }}

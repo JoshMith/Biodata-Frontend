@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule, NgIf } from '@angular/common';
@@ -20,7 +20,7 @@ export class BaptismUpdateComponent implements OnInit {
 
   baptismForm = this.fb.group({
     parish: ['', Validators.required],
-    baptism_date: ['', Validators.required],
+    baptism_date: ['', Validators.required, this.noFutureDateValidator],
     baptism_number: ['', Validators.required],
     minister: ['', Validators.required],
     sponsor: ['', Validators.required],
@@ -32,6 +32,7 @@ export class BaptismUpdateComponent implements OnInit {
   existingBaptismId: string | null = null;
   noBaptism = false;
   currentStep = 1; // Track the current step for the progress bar
+  today = new Date().toISOString().split('T')[0];
 
   ngOnInit(): void {
     console.log("Initializing baptism form");
@@ -133,6 +134,14 @@ export class BaptismUpdateComponent implements OnInit {
     return selectedChristian ? JSON.parse(selectedChristian).id : null;
   }
 
+  noFutureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
+  }
+
   navigateToEucharist(): void {
     const christianId = this.getSelectedChristianId();
     if (christianId) {
@@ -155,7 +164,7 @@ export class BaptismUpdateComponent implements OnInit {
     const c = this.baptismForm.get(field);
     return !!(c && c.invalid && (c.dirty || c.touched));
   }
-  
+
   getFieldError(field: string): string {
     return this.baptismForm.get(field)?.errors?.['required'] ? 'This field is required' : '';
   }

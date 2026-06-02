@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 
@@ -32,6 +32,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   deaneries: any[] = [];
 
   showPassword = false;
+  today = new Date().toISOString().split('T')[0];
 
   private fb = inject(FormBuilder);
 
@@ -53,7 +54,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       father: [''],
       birth_place: [''],
       subcounty: [''],
-      birth_date: [''],
+      birth_date: ['', this.noFutureDateValidator],
       tribe: [''],
       clan: [''],
       domicile: ['']
@@ -259,6 +260,14 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     return labels[fieldName] || fieldName;
   }
+
+  noFutureDateValidator(control: AbstractControl) {
+  if (!control.value) return null;
+  const selected = new Date(control.value);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return selected > today ? { futureDate: true } : null;
+}
 
   navigateToBaptism(): void {
     // Save form data before navigating away

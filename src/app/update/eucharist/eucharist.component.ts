@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ export class EucharistUpdateComponent implements OnInit {
 
   eucharistForm = this.fb.group({
     eucharist_place: ['', Validators.required],
-    eucharist_date: ['', Validators.required],
+    eucharist_date: ['', Validators.required, this.noFutureDateValidator],
     user_id: ['']
   });
 
@@ -29,6 +29,7 @@ export class EucharistUpdateComponent implements OnInit {
   existingEucharistId: string | null = null;
   noEucharist = false;
   currentStep = 2; // Track the current step for the progress bar
+  today = new Date().toISOString().split('T')[0];
 
   ngOnInit(): void {
     console.log("Initializing eucharist form");
@@ -130,6 +131,14 @@ export class EucharistUpdateComponent implements OnInit {
   private getSelectedChristianId(): string | null {
     const selectedChristian = localStorage.getItem('selectedChristian');
     return selectedChristian ? JSON.parse(selectedChristian).id : null;
+  }
+
+  noFutureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
   }
 
   navigateToConfirmation(): void {

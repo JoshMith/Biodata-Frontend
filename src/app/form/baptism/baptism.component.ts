@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,7 @@ export class BaptismComponent {
   // Updated form to match database structure
   baptismForm = this.fb.group({
     parish: ['', Validators.required], // Changed from baptism_place
-    baptism_date: ['', Validators.required],
+    baptism_date: ['', [Validators.required, this.noFutureDateValidator]],
     baptism_number: ['', Validators.required], // New field for baptism number
     minister: ['', Validators.required], // Changed from baptised_by
     sponsor: ['', Validators.required], // Changed from administrator
@@ -34,6 +34,7 @@ export class BaptismComponent {
   successMessage = '';
   userId: any;
   currentStep = 1; // Set the current step for the progress bar
+  today = new Date().toISOString().split('T')[0];
 
   ngOnInit(): void {
     console.log("Fill in the baptism form");
@@ -137,6 +138,14 @@ export class BaptismComponent {
       'sponsor': 'Sponsor'
     };
     return labels[fieldName] || fieldName;
+  }
+
+  noFutureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
   }
 
   navigateToEucharist() {
