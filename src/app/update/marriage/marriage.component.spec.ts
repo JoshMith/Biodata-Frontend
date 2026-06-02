@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MarriageUpdateComponent } from './marriage.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ApiService } from '../../services/api.service';
 
 describe('MarriageUpdateComponent', () => {
   let component: MarriageUpdateComponent;
@@ -8,7 +11,8 @@ describe('MarriageUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MarriageUpdateComponent]
+      imports: [MarriageUpdateComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [ApiService]
     })
     .compileComponents();
 

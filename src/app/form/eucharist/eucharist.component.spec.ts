@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EucharistComponent } from './eucharist.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ApiService } from '../../services/api.service';
 
 describe('EucharistComponent', () => {
   let component: EucharistComponent;
@@ -8,7 +11,8 @@ describe('EucharistComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EucharistComponent]
+      imports: [EucharistComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [ApiService]
     })
     .compileComponents();
 

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PersonalInfoUpdateComponent } from './personal-info.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ApiService } from '../../services/api.service';
 
 describe('PersonalInfoUpdateComponent', () => {
   let component: PersonalInfoUpdateComponent;
@@ -8,7 +11,8 @@ describe('PersonalInfoUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PersonalInfoUpdateComponent]
+      imports: [PersonalInfoUpdateComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [ApiService]
     })
     .compileComponents();
 

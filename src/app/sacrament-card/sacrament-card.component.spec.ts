@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SacramentCardComponent } from './sacrament-card.component';
+import { ApiService } from '../services/api.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SacramentCardComponent', () => {
   let component: SacramentCardComponent;
@@ -8,9 +11,10 @@ describe('SacramentCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SacramentCardComponent]
+      imports: [SacramentCardComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [ApiService]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SacramentCardComponent);
     component = fixture.componentInstance;
