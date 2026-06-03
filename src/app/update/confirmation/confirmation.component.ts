@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { CommonModule, NgIf } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -17,6 +18,7 @@ export class ConfirmationUpdateComponent implements OnInit {
   private router = inject(Router);
   private confirmationService = inject(ApiService);
   private fb = inject(FormBuilder);
+  public nav = inject(NavigationService);
 
   confirmationForm = this.fb.group({
     confirmation_place: ['', Validators.required],

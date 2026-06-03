@@ -5,6 +5,7 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-eucharist',
@@ -15,7 +16,8 @@ import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/pa
 export class EucharistComponent {
   constructor(
     private router: Router,
-    private eucharistService: ApiService // Inject ApiService for API calls
+    private eucharistService: ApiService, // Inject ApiService for API calls
+    public nav: NavigationService // Inject NavigationService for navigation
   ) { }
 
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation

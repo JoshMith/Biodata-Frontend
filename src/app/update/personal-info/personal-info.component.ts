@@ -4,6 +4,7 @@ import { ApiService } from '../../services/api.service';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -16,6 +17,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
   private apiService = inject(ApiService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  public nav = inject(NavigationService);
 
   christianForm = this.fb.group({
     role: [''],

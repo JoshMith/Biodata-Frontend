@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-baptism',
@@ -15,7 +16,8 @@ import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/pa
 export class BaptismComponent {
   constructor(
     private router: Router,
-    private baptismService: ApiService
+    private baptismService: ApiService,
+    public nav: NavigationService
   ) { }
 
   private fb = inject(FormBuilder);

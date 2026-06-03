@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.member-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--nyeri-cream);
+    font-family: 'DM Sans', sans-serif;
+}
+
+.top-bar {
+    background: var(--nyeri-green);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.top-bar-inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo {
+    height: 48px;
+    width: auto;
+}
+
+.top-title {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--nyeri-gold-light);
+    line-height: 1.2;
+}
+
+.top-sub {
+    display: block;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.04em;
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    color: white;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.member-main {
+    flex: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 48px 24px 32px;
+}
+
+.welcome-card {
+    background: var(--nyeri-green);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(27, 94, 43, 0.25);
+}
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 28px;
+    color: var(--nyeri-gold-light);
+    border: 2px solid rgba(200, 151, 26, 0.4);
+}
+
+.welcome-text h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--nyeri-white);
+    margin: 0 0 4px;
+}
+
+.welcome-text .sub {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.info-strip {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.info-chip {
+    background: var(--nyeri-white);
+    border: 1px solid rgba(27, 94, 43, 0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--nyeri-black);
+}
+
+.info-chip i {
+    color: var(--nyeri-green);
+    font-size: 15px;
+}
+
+.info-chip.role {
+    background: var(--nyeri-gold-pale);
+    border-color: var(--nyeri-gold);
+}
+
+.info-chip.role i {
+    color: var(--nyeri-gold);
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.action-card {
+    background: var(--nyeri-white);
+    border: 1.5px solid rgba(27, 94, 43, 0.12);
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.action-card.primary {
+    border-color: var(--nyeri-green);
+}
+
+.action-card.primary:hover {
+    box-shadow: 0 8px 24px rgba(27, 94, 43, 0.2);
+}
+
+.action-card.secondary {
+    border-color: rgba(107, 30, 30, 0.2);
+}
+
+.action-card.secondary:hover {
+    box-shadow: 0 8px 24px rgba(107, 30, 30, 0.12);
+}
+
+.action-icon {
+    font-size: 26px;
+    margin-bottom: 4px;
+}
+
+.action-card.primary .action-icon {
+    color: var(--nyeri-green);
+}
+
+.action-card.secondary .action-icon {
+    color: var(--nyeri-maroon);
+}
+
+.action-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--nyeri-black);
+}
+
+.action-desc {
+    font-size: 12px;
+    color: var(--nyeri-gray);
+    line-height: 1.4;
+}
+
+.action-arrow {
+    position: absolute;
+    top: 20px;
+    right: 16px;
+    font-size: 16px;
+    color: var(--nyeri-gray);
+    transition: transform 0.2s;
+}
+
+.action-card:hover .action-arrow {
+    transform: translateX(4px);
+}
+
+.loading-state {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(27, 94, 43, 0.2);
+    border-top-color: var(--nyeri-green);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.bottom-bar {
+    background: var(--nyeri-green-dark);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    padding: 12px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.motto {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--nyeri-gold-light);
+    font-size: 13px;
+}
+
+@media (max-width: 480px) {
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .top-bar {
+        padding: 12px 16px;
+    }
+}

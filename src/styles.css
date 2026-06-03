@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+/* Archdiocese of Nyeri — brand tokens */
+:root {
+  --nyeri-green:       #1B5E2B;
+  --nyeri-green-light: #2E7D42;
+  --nyeri-green-dark:  #0F3D1A;
+  --nyeri-gold:        #C8971A;
+  --nyeri-gold-light:  #E8B84B;
+  --nyeri-gold-pale:   #F5E9C4;
+  --nyeri-maroon:      #6B1E1E;
+  --nyeri-navy:        #1A3A5C;
+  --nyeri-cream:       #F5F2E8;
+  --nyeri-white:       #FFFFFF;
+  --nyeri-black:       #1A1A1A;
+  --nyeri-gray:        #6B7280;
+  --nyeri-gray-light:  #F0EDE4;
+}

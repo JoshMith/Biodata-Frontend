@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 import { LoginComponent } from './auth/login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MarriageComponent } from './form/marriage/marriage.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { PersonalInfoComponent } from './form/personal-info/personal-info.component';
@@ -22,6 +21,9 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { SuperuserDashboardComponent } from './dashboard/superuser-dashboard/superuser-dashboard.component';
+import { MemberDashboardComponent } from './dashboard/member-dashboard/member-dashboard.component';
+import { EditorDashboardComponent } from './dashboard/editor-dashboard/editor-dashboard.component';
 
 export const routes: Routes = [
   // --- Public routes (no auth needed) ---
@@ -33,7 +35,13 @@ export const routes: Routes = [
 
   // --- Any authenticated role ---
   {
-    path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]
+    path: 'dashboard', component: SuperuserDashboardComponent, canActivate: [authGuard, roleGuard(['superuser', 'viewer'])]
+  },
+  {
+    path: 'dashboard/editor', component: EditorDashboardComponent, canActivate: [authGuard, roleGuard(['editor'])]
+  },
+  {
+    path: 'dashboard/member', component: MemberDashboardComponent, canActivate: [authGuard, roleGuard(['member'])]
   },
   {
     path: 'search', component: SearchComponent, canActivate: [authGuard]

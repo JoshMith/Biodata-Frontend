@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -15,7 +16,8 @@ import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/pa
 export class ConfirmationComponent {
   constructor(
     private router: Router, // Inject Router for navigation
-    private confirmationService: ApiService // Inject ApiService for API calls
+    private confirmationService: ApiService, // Inject ApiService for API calls
+    public nav: NavigationService // Inject NavigationService for navigation
   ) { } // Constructor for the component
 
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation

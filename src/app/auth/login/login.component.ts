@@ -74,8 +74,19 @@ export class LoginComponent {
 
   navigateToDashboard(): void {
     setTimeout(() => {
-      this.router.navigate(['/dashboard']);
-    }, 1500); // Delay to show success message
+      const raw = localStorage.getItem('userLoggedIn');
+      const user = raw ? JSON.parse(raw) : null;
+      const role = user?.role;
+
+      if (role === 'member') {
+        this.router.navigate(['/dashboard/member']);
+      } else if (role === 'editor') {
+        this.router.navigate(['/dashboard/editor']);
+      } else {
+        // superuser and viewer both go to the same overview dashboard
+        this.router.navigate(['/dashboard']);
+      }
+    }, 1500);
   }
 
   navigateToRegister(): void {

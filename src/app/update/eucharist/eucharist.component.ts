@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-eucharist',
@@ -17,6 +18,7 @@ export class EucharistUpdateComponent implements OnInit {
   private router = inject(Router);
   private eucharistService = inject(ApiService);
   private fb = inject(FormBuilder);
+  public nav = inject(NavigationService);
 
   eucharistForm = this.fb.group({
     eucharist_place: ['', Validators.required],

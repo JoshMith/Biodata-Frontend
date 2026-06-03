@@ -1,0 +1,70 @@
+<div class="member-shell">
+
+    <header class="top-bar">
+        <div class="top-bar-inner">
+            <img src="assets/logo.png" alt="Archdiocese of Nyeri" class="logo" onerror="this.style.display='none'">
+            <div class="top-bar-text">
+                <span class="top-title">Archdiocese of Nyeri</span>
+                <span class="top-sub">Christian Data Management System</span>
+            </div>
+        </div>
+        <button class="logout-btn" (click)="logout()">
+            <i class="ti ti-logout"></i> Logout
+        </button>
+    </header>
+
+    <main class="member-main" *ngIf="!isLoading">
+
+        <div class="welcome-card">
+            <div class="avatar">
+                <i class="ti ti-user"></i>
+            </div>
+            <div class="welcome-text">
+                <h1>Welcome, {{ user?.firstName || user?.first_name }}</h1>
+                <p class="sub">{{ user?.email }}</p>
+            </div>
+        </div>
+
+        <div class="info-strip">
+            <div class="info-chip">
+                <i class="ti ti-building-church"></i>
+                <span>{{ parishName || 'Parish not set' }}</span>
+            </div>
+            <div class="info-chip">
+                <i class="ti ti-map-pin"></i>
+                <span>{{ deaneryName || 'Deanery not set' }}</span>
+            </div>
+            <div class="info-chip role">
+                <i class="ti ti-shield-check"></i>
+                <span>Member</span>
+            </div>
+        </div>
+
+        <div class="action-grid">
+            <button class="action-card primary" (click)="viewMyDetails()">
+                <div class="action-icon"><i class="ti ti-id-badge"></i></div>
+                <div class="action-label">My Profile</div>
+                <div class="action-desc">View and edit your personal details and sacramental records</div>
+                <i class="ti ti-arrow-right action-arrow"></i>
+            </button>
+
+            <button class="action-card secondary" (click)="logout()">
+                <div class="action-icon"><i class="ti ti-door-exit"></i></div>
+                <div class="action-label">Sign Out</div>
+                <div class="action-desc">Securely log out of your account</div>
+                <i class="ti ti-arrow-right action-arrow"></i>
+            </button>
+        </div>
+
+    </main>
+
+    <div class="loading-state" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+
+    <footer class="bottom-bar">
+        <span>© {{ currentYear }} Archdiocese of Nyeri. All rights reserved.</span>
+        <span class="motto">Ut Essemus Sancti</span>
+    </footer>
+
+</div>

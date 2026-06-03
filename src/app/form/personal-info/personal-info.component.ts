@@ -4,6 +4,7 @@ import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -38,7 +39,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    public nav: NavigationService
   ) {
     // Initialize form with validation - updated to match new schema
     this.userForm = this.fb.group({

@@ -1,0 +1,138 @@
+<div class="shell">
+
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <img src="assets/logo.png" alt="Archdiocese of Nyeri" class="sidebar-logo"
+                onerror="this.style.display='none'">
+            <div class="sidebar-title">
+                <span class="s-main">Archdiocese</span>
+                <span class="s-sub">of Nyeri</span>
+            </div>
+        </div>
+
+        <div class="parish-badge">
+            <i class="ti ti-building-church"></i>
+            <div>
+                <span class="pb-parish">{{ parishName || 'Your Parish' }}</span>
+                <span class="pb-deanery">{{ deaneryName || '' }} Deanery</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" (click)="navigate('/dashboard/editor')">
+                <i class="ti ti-layout-dashboard"></i> Dashboard
+            </button>
+            <button class="nav-item" (click)="navigate('/search')">
+                <i class="ti ti-search"></i> Search Christians
+            </button>
+            <button class="nav-item" (click)="navigate('/personal-info')">
+                <i class="ti ti-user-plus"></i> Add Christian
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-row">
+                <div class="user-avatar"><i class="ti ti-user"></i></div>
+                <div class="user-info">
+                    <span class="u-name">{{ user?.firstName || user?.first_name }}</span>
+                    <span class="u-role">Editor</span>
+                </div>
+            </div>
+            <button class="sidebar-logout" (click)="logout()">
+                <i class="ti ti-logout"></i> Sign out
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>Parish Dashboard</h1>
+                <p class="page-sub">{{ parishName }} — {{ deaneryName }} Deanery</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-gold" (click)="navigate('/personal-info')">
+                    <i class="ti ti-plus"></i> Add Christian
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-grid" *ngIf="!isLoading">
+            <div class="stat-card green">
+                <div class="stat-icon"><i class="ti ti-users"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num">{{ stats.christians }}</span>
+                    <span class="stat-label">Total Christians</span>
+                </div>
+            </div>
+            <div class="stat-card gold">
+                <div class="stat-icon"><i class="ti ti-droplet"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num">{{ stats.baptised }}</span>
+                    <span class="stat-label">Baptised</span>
+                </div>
+            </div>
+            <div class="stat-card navy">
+                <div class="stat-icon"><i class="ti ti-bread"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num">{{ stats.eucharist }}</span>
+                    <span class="stat-label">First Eucharist</span>
+                </div>
+            </div>
+            <div class="stat-card maroon">
+                <div class="stat-icon"><i class="ti ti-flame"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num">{{ stats.confirmed }}</span>
+                    <span class="stat-label">Confirmed</span>
+                </div>
+            </div>
+            <div class="stat-card dark">
+                <div class="stat-icon"><i class="ti ti-rings-wedding"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num">{{ stats.married }}</span>
+                    <span class="stat-label">Married</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-state" *ngIf="isLoading">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="qa-grid">
+                <button class="qa-card" (click)="navigate('/personal-info')">
+                    <i class="ti ti-user-plus"></i>
+                    <span>Add Christian</span>
+                </button>
+                <button class="qa-card" (click)="navigate('/baptism')">
+                    <i class="ti ti-droplet"></i>
+                    <span>Add Baptism</span>
+                </button>
+                <button class="qa-card" (click)="navigate('/eucharist')">
+                    <i class="ti ti-bread"></i>
+                    <span>Add Eucharist</span>
+                </button>
+                <button class="qa-card" (click)="navigate('/confirmation')">
+                    <i class="ti ti-flame"></i>
+                    <span>Add Confirmation</span>
+                </button>
+                <button class="qa-card" (click)="navigate('/marriage')">
+                    <i class="ti ti-rings-wedding"></i>
+                    <span>Add Marriage</span>
+                </button>
+                <button class="qa-card" (click)="navigate('/search')">
+                    <i class="ti ti-search"></i>
+                    <span>Search Records</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bottom-bar">
+        <span>© {{ currentYear }} Archdiocese of Nyeri</span>
+        <span class="motto">Ut Essemus Sancti</span>
+    </footer>
+
+</div>

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Subject, forkJoin, of, EMPTY } from 'rxjs';
 import { takeUntil, catchError, switchMap, map } from 'rxjs/operators';
+import { NavigationService } from '../services/navigation.service';
 
 // Updated interfaces to match database schema
 interface Christian {
@@ -74,7 +75,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    public nav: NavigationService
   ) { }
 
   ngOnInit(): void {
