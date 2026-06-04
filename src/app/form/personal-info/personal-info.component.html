@@ -1,7 +1,9 @@
 <body>
     <div class="container">
         <div class="div-home">
-            <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
+            <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">
+                <i class="fa fa-home"></i> Home
+            </a>
         </div>
         <h2>Personal Information Form</h2>
 
@@ -11,7 +13,6 @@
             <div class="section">
                 <h3>Personal Information</h3>
 
-                <!-- Required Fields Section -->
                 <div class="required-fields">
                     <div class="form-row">
                         <div class="form-group">
@@ -22,7 +23,6 @@
                                 {{ getFieldError('first_name') }}
                             </span>
                         </div>
-
                         <div class="form-group">
                             <label for="last_name">Last Name <span class="required-asterisk">*</span></label>
                             <input type="text" id="last_name" formControlName="last_name"
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="phone_number">Phone Number</label>
                             <input type="tel" id="phone_number" formControlName="phone_number"
-                                placeholder="+256700000000">
+                                placeholder="+254700000000">
                         </div>
                     </div>
 
@@ -54,18 +54,38 @@
                         <div class="form-group" style="position: relative;">
                             <label for="password">Password</label>
                             <input [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Password"
-                                formControlName="password" required>
-                            <button type="button" (click)="showPassword = !showPassword" style="position:absolute; right:8px; top:50%; transform:translateY(-50%);
-           background:none; border:none; cursor:pointer; padding:4px; width:auto; color: #333;">
+                                formControlName="password">
+                            <button type="button" (click)="showPassword = !showPassword"
+                                style="position:absolute; right:8px; top:50%; transform:translateY(-50%);
+                                background:none; border:none; cursor:pointer; padding:4px; width:auto; color:#333;">
                                 <i [class]="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'" style="font-size:18px;"></i>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Church Information Section -->
+                <!-- Parish / Deanery: rendered differently per role -->
                 <div class="church-info">
-                    <div class="form-row">
+
+                    <!-- EDITOR: locked to their own parish, shown as read-only -->
+                    <div *ngIf="isEditor" class="form-row">
+                        <div class="form-group">
+                            <label>Deanery</label>
+                            <input type="text" [value]="userForm.get('deanery')?.value" disabled
+                                style="background:#f5f5f5; color:#666; cursor:not-allowed;">
+                        </div>
+                        <div class="form-group">
+                            <label>Parish <span class="required-asterisk">*</span></label>
+                            <input type="text" [value]="editorParishName" disabled
+                                style="background:#f5f5f5; color:#666; cursor:not-allowed;">
+                            <span class="error-message" style="color:#555; font-style:italic; font-weight:normal;">
+                                As an editor, you can only add Christians to your own parish.
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- SUPERUSER / VIEWER: full free-choice dropdowns -->
+                    <div *ngIf="!isEditor" class="form-row">
                         <div class="form-group">
                             <label for="deanery">Deanery <span class="required-asterisk">*</span></label>
                             <select id="deanery" formControlName="deanery">
@@ -78,7 +98,6 @@
                                 {{ getFieldError('deanery') }}
                             </span>
                         </div>
-
                         <div class="form-group">
                             <label for="parish_id">Parish <span class="required-asterisk">*</span></label>
                             <select id="parish_id" formControlName="parish_id">
@@ -94,55 +113,44 @@
                     </div>
                 </div>
 
-                <!-- Optional Personal Details Section -->
                 <div class="optional-fields">
                     <h4>Additional Information</h4>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label for="father">Father's Name</label>
                             <input type="text" id="father" formControlName="father" placeholder="Father's name">
                         </div>
-
                         <div class="form-group">
                             <label for="mother">Mother's Name</label>
                             <input type="text" id="mother" formControlName="mother" placeholder="Mother's name">
                         </div>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label for="tribe">Tribe</label>
                             <input type="text" id="tribe" formControlName="tribe" placeholder="Your tribe">
                         </div>
-
                         <div class="form-group">
                             <label for="clan">Clan</label>
                             <input type="text" id="clan" formControlName="clan" placeholder="Your clan">
                         </div>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label for="birth_place">Place of Birth</label>
                             <input type="text" id="birth_place" formControlName="birth_place"
                                 placeholder="Where you were born">
                         </div>
-
                         <div class="form-group">
                             <label for="birth_date">Date of Birth</label>
-                            <input type="date" id="birth_date" formControlName="birth_date"
-                                [max]="today"
-                                placeholder="Your date of birth">
+                            <input type="date" id="birth_date" formControlName="birth_date" [max]="today">
                         </div>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label for="subcounty">Subcounty</label>
                             <input type="text" id="subcounty" formControlName="subcounty" placeholder="Your subcounty">
                         </div>
-
                         <div class="form-group">
                             <label for="domicile">Domicile / Residence</label>
                             <input type="text" id="domicile" formControlName="domicile" placeholder="Current domicile">
@@ -150,7 +158,6 @@
                     </div>
                 </div>
 
-                <!-- Feedback Messages -->
                 <div class="feedback-messages">
                     <div *ngIf="successMessage" class="success-message">
                         <i class="fa fa-check-circle"></i> {{ successMessage }}
@@ -161,7 +168,6 @@
                 </div>
             </div>
 
-            <!-- Form Navigation Buttons -->
             <div class="div-btns">
                 <button type="button" (click)="navigateToDashboard()">
                     <i class="fa fa-arrow-left"></i> Back
@@ -175,5 +181,4 @@
             </div>
         </form>
     </div>
-
 </body>

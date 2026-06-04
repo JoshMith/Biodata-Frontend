@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
 import { ParishAutocompleteComponent } from '../../shared/parish-autocomplete/parish-autocomplete.component';
@@ -10,7 +10,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-marriage',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent, ParishAutocompleteComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent, ParishAutocompleteComponent, RouterLink],
   templateUrl: './marriage.component.html',
   styleUrl: './marriage.component.css'
 })

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../shared/progress-bar';
@@ -10,7 +10,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-eucharist',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent, RouterLink],
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })

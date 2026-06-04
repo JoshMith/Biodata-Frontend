@@ -1,15 +1,13 @@
 <body>
     <div class="container">
         <div class="nav-buttons">
-      <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
-      <a type="button" href="/search">
-          <i class="fas fa-search"></i> Search
-      </a>
-    </div>
+            <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
+            <a type="button" routerLink="/search" style="cursor:pointer">Search</a>
+        </div>
         <h2>Eucharist Form</h2>
 
         <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
-        
+
         <div class="error-alert" *ngIf="noEucharist">
             This Christian has not Received Eucharist! Add Eucharist Record
         </div>
@@ -20,18 +18,16 @@
             <div class="section">
                 <h3>Eucharist Information</h3>
                 <label for="eucharist_place">Place:</label>
-                <app-parish-autocomplete
-                    formControlName="eucharist_place"
-                    placeholder="Type a parish name..."
+                <app-parish-autocomplete formControlName="eucharist_place" placeholder="Type a parish name..."
                     label="Place of First Eucharist"
-                    [externalControl]="eucharistForm.get('eucharist_place')"
-                ></app-parish-autocomplete>
+                    [externalControl]="eucharistForm.get('eucharist_place')"></app-parish-autocomplete>
                 <div class="error-message" *ngIf="hasFieldError('eucharist_place')">
                     {{ getFieldError('eucharist_place') }}
                 </div>
 
                 <label for="eucharist_date">Date:</label>
-                <input type="date" id="eucharist_date" formControlName="eucharist_date" [max]="today" [class.error]="hasFieldError('eucharist_date')">
+                <input type="date" id="eucharist_date" formControlName="eucharist_date" [max]="today"
+                    [class.error]="hasFieldError('eucharist_date')">
                 <div class="error-message" *ngIf="hasFieldError('eucharist_date')">
                     {{ getFieldError('eucharist_date') }}
                 </div>
@@ -49,7 +45,7 @@
 
             <div class="div-btns">
                 <button type="button" (click)="navigateToBaptism()">Back</button>
-                <button type="submit" [disabled]="eucharistForm.invalid">Save       </button>
+                <button type="submit" [disabled]="eucharistForm.invalid">Save </button>
                 <button type="button" (click)="navigateToConfirmation()">Next</button>
             </div>
 

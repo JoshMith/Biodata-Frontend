@@ -1,15 +1,13 @@
 <body>
     <div class="container">
         <div class="nav-buttons">
-      <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
-      <a type="button" href="/search">
-          <i class="fas fa-search"></i> Search
-      </a>
-    </div>
+            <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
+            <a type="button" routerLink="/search" style="cursor:pointer">Search</a>
+        </div>
         <h2>Confirmation Form</h2>
 
         <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
-        
+
         <div class="error-alert" *ngIf="noConfirmation">
             This Christian is not Confirmed! Add Confirmation Record
         </div>
@@ -20,18 +18,16 @@
             <div class="section">
                 <h3>Confirmation Information</h3>
                 <label for="confirmation_place">Place:</label>
-                <app-parish-autocomplete
-                    formControlName="confirmation_place"
-                    placeholder="Type a parish name..."
+                <app-parish-autocomplete formControlName="confirmation_place" placeholder="Type a parish name..."
                     label="Place of Confirmation"
-                    [externalControl]="confirmationForm.get('confirmation_place')"
-                ></app-parish-autocomplete>
+                    [externalControl]="confirmationForm.get('confirmation_place')"></app-parish-autocomplete>
                 <div class="error-message" *ngIf="hasFieldError('confirmation_place')">
                     {{ getFieldError('confirmation_place') }}
                 </div>
-                
+
                 <label for="confirmation_date">Date:</label>
-                <input type="date" id="confirmation_date" formControlName="confirmation_date" [max]="today" [class.error]="hasFieldError('confirmation_date')">
+                <input type="date" id="confirmation_date" formControlName="confirmation_date" [max]="today"
+                    [class.error]="hasFieldError('confirmation_date')">
                 <div class="error-message" *ngIf="hasFieldError('confirmation_date')">
                     {{ getFieldError('confirmation_date') }}
                 </div>
@@ -43,7 +39,8 @@
                 </div>
 
                 <label for="confirmation_no">Confirmation No:</label>
-                <input type="text" id="confirmation_no" formControlName="confirmation_no" [class.error]="hasFieldError('confirmation_no')">
+                <input type="text" id="confirmation_no" formControlName="confirmation_no"
+                    [class.error]="hasFieldError('confirmation_no')">
                 <div class="error-message" *ngIf="hasFieldError('confirmation_no')">
                     {{ getFieldError('confirmation_no') }}
                 </div>
@@ -62,7 +59,7 @@
 
             <div class="div-btns">
                 <button type="button" (click)="navigateToEucharist()">Back</button>
-                <button type="submit" [disabled]="confirmationForm.invalid">Save       </button>
+                <button type="submit" [disabled]="confirmationForm.invalid">Save </button>
                 <button type="button" (click)="navigateToMarriage()">Next</button>
             </div>
         </form>

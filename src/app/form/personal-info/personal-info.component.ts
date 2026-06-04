@@ -14,26 +14,23 @@ import { NavigationService } from '../../services/navigation.service';
   styleUrl: './personal-info.component.css'
 })
 export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
-  // Progress bar steps
   currentStep = 0;
-
-  // Form group
   userForm: FormGroup;
-
-  // Feedback messages
   errorMessage = '';
   successMessage = '';
   isSubmitting = false;
-
-  // User data
   userId: string | null = null;
-
-  // Parish data
   parishes: any[] = [];
   deaneries: any[] = [];
-
   showPassword = false;
   today = new Date().toISOString().split('T')[0];
+
+  // Role-awareness
+  loggedInUser: any = null;
+  loggedInRole = '';
+  isEditor = false;
+  isSuperuser = false;
+  editorParishName = '';
 
   private fb = inject(FormBuilder);
 
@@ -42,7 +39,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     public nav: NavigationService
   ) {
-    // Initialize form with validation - updated to match new schema
     this.userForm = this.fb.group({
       email: ['', [Validators.email]],
       password: ['', [Validators.minLength(8)]],
@@ -64,9 +60,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Check if user is logged in
-    const user = localStorage.getItem('userLoggedIn');
-    if (!user) {
+    const raw = localStorage.getItem('userLoggedIn');
+    if (!raw) {
       setTimeout(() => {
         if (confirm('You are not logged in. Do you want to go to the login page?')) {
           this.router.navigate(['/login']);
@@ -75,77 +70,91 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // Load parishes and deaneries
-    this.loadDeaneries();
-    this.loadParishesByDeanery();
+    this.loggedInUser = JSON.parse(raw);
+    this.loggedInRole = this.loggedInUser?.role ?? '';
+    this.isEditor = this.loggedInRole === 'editor';
+    this.isSuperuser = this.loggedInRole === 'superuser';
 
-    // Check if form data exists in session storage
+    if (this.isEditor) {
+      this.lockEditorParish();
+    } else {
+      this.loadDeaneries();
+      this.loadParishesByDeanery();
+    }
+
     const storedFormData = sessionStorage.getItem('userFormData');
     if (storedFormData) {
       const formData = JSON.parse(storedFormData);
-      this.userForm.patchValue(formData);
+      if (this.isEditor) {
+        const { parish_id, deanery, ...rest } = formData;
+        this.userForm.patchValue(rest);
+      } else {
+        this.userForm.patchValue(formData);
+      }
     }
   }
 
   ngAfterViewInit(): void {
-    // Any additional setup can be done here
     const userData = localStorage.getItem('userLoggedIn');
     if (userData) {
       const user = JSON.parse(userData);
-      const role = user.role;
-
-      if (role === 'superuser') {
-        this.getFieldLabel('role');
-      }
-      else {
-        this.getFieldLabel('role');
-        this.userForm.get('role')?.disable(); // Disable the role field for non-superusers
-        this.userForm.get('role')?.setValue('member'); // Set default role to 'member'
+      if (user.role !== 'superuser') {
+        this.userForm.get('role')?.disable();
+        this.userForm.get('role')?.setValue('member');
         this.userForm.get('role')?.markAsTouched();
       }
     }
-
   }
 
-  ngOnDestroy(): void {
-    // remove added user from localStorage
+  ngOnDestroy(): void {}
 
+
+  private lockEditorParish(): void {
+    const parishId = this.loggedInUser?.parishId ?? this.loggedInUser?.parish_id ?? '';
+    if (!parishId) {
+      this.errorMessage = 'Your parish could not be determined. Please contact an administrator.';
+      return;
+    }
+
+    this.userForm.get('parish_id')?.setValue(parishId);
+    this.userForm.get('parish_id')?.disable();
+
+    this.apiService.getParishById(parishId).subscribe({
+      next: (parish) => {
+        this.editorParishName = parish.parish_name;
+        this.userForm.get('deanery')?.setValue(parish.deanery);
+        this.userForm.get('deanery')?.disable();
+      },
+      error: () => {
+        this.errorMessage = 'Failed to load your parish details.';
+      }
+    });
   }
 
 
-  // Load deaneries from API
   private loadDeaneries(): void {
     this.apiService.getParishes().subscribe({
       next: (data) => {
-        // Remove duplicate deaneries by name
         const seen = new Set<string>();
         this.deaneries = data.filter((item: any) => {
-          if (seen.has(item.deanery)) {
-            return false;
-          }
+          if (seen.has(item.deanery)) return false;
           seen.add(item.deanery);
           return true;
         });
-        console.log("Deaneries loaded:", this.deaneries)
       },
-      error: (error) => {
-        console.error('Error loading deaneries:', error);
+      error: () => {
         this.errorMessage = 'Failed to load deaneries. Please refresh the page.';
       }
     });
   }
 
-  //Load parishes from API
   private loadParishesByDeanery(): void {
     this.userForm.get('deanery')?.valueChanges.subscribe(deanery => {
       if (deanery) {
         this.apiService.getParishByDeanery(deanery).subscribe({
-          next: (parishes) => {
-            this.parishes = parishes;
-          },
-          error: (error) => {
-            console.error('Error loading parishes:', error);
-            this.errorMessage = 'Failed to load parishes for the selected deanery. Please try again.';
+          next: (parishes) => { this.parishes = parishes; },
+          error: () => {
+            this.errorMessage = 'Failed to load parishes for the selected deanery.';
           }
         });
       } else {
@@ -154,8 +163,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // ── Submit ──────────────────────────────────────────────────────────────────
 
-  //Submit the form
   onSubmitUserForm(): void {
     if (this.userForm.invalid) {
       this.markFormGroupTouched(this.userForm);
@@ -167,37 +176,22 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.errorMessage = '';
     this.successMessage = 'Submitting your information...';
 
-    // Mark all fields as touched to trigger validation messages
-    Object.keys(this.userForm.controls).forEach(key => {
-      const control = this.userForm.get(key);
-      control?.markAsTouched();
-    });
+    const payload = this.userForm.getRawValue();
+    sessionStorage.setItem('userFormData', JSON.stringify(payload));
 
-
-    // Save form data to session storage in case of navigation issues
-    sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.value));
-
-    // Submit to API
-    this.apiService.addChristian(this.userForm.value).subscribe({
-      next: (response) => {
-        this.handleSuccessfulSubmission(response);
-
-      },
+    this.apiService.addChristian(payload).subscribe({
+      next: (response) => { this.handleSuccessfulSubmission(response); },
       error: (error) => {
         this.isSubmitting = false;
         this.successMessage = '';
         this.errorMessage = error.error?.message || 'An error occurred. Please try again.';
-        console.error('Error adding user:', error);
       }
     });
   }
 
-  // Handle successful form submission
   private handleSuccessfulSubmission(response: any): void {
     if (response && response.user) {
       this.userId = response.user.id;
-
-      // Store user info in localStorage
       localStorage.setItem('addedUser', JSON.stringify({
         id: response.user.id,
         email: response.user.email,
@@ -205,16 +199,9 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
         first_name: response.user.first_name,
         last_name: response.user.last_name
       }));
-
       this.successMessage = 'Personal information saved successfully! Redirecting...';
       this.isSubmitting = false;
-
-      // Clear session storage since we've successfully saved
       sessionStorage.removeItem('userFormData');
-
-
-
-      // Navigate to next step
       this.navigateToBaptism();
     } else {
       this.isSubmitting = false;
@@ -222,72 +209,54 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // Utility to mark all controls in a form group as touched
   private markFormGroupTouched(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      control?.markAsTouched();
+      formGroup.get(key)?.markAsTouched();
     });
   }
 
-  // Helper method to check if a field has errors and is touched
   hasFieldError(fieldName: string): boolean {
     const field = this.userForm.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
 
-  // Helper method to get field error message
   getFieldError(fieldName: string): string {
     const field = this.userForm.get(fieldName);
-    if (field && field.errors && field.touched) {
-      if (field.errors['required']) {
-        return `${this.getFieldLabel(fieldName)} is required.`;
-      }
+    if (field?.errors?.['required'] && field.touched) {
+      return `${this.getFieldLabel(fieldName)} is required.`;
     }
     return '';
   }
 
   private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
-      'first_name': 'First Name',
-      'last_name': 'Last Name',
-      'middle_name': 'Middle Name',
-      'email': 'Email',
-      'password': 'Password',
-      'phone_number': 'Phone Number',
-      'birth_date': 'Birth Date',
-      'birth_place': 'Birth Place',
-      'subcounty': 'Sub County',
-      'parish_id': 'Parish',
+      'first_name': 'First Name', 'last_name': 'Last Name', 'middle_name': 'Middle Name',
+      'email': 'Email', 'password': 'Password', 'phone_number': 'Phone Number',
+      'birth_date': 'Birth Date', 'birth_place': 'Birth Place',
+      'subcounty': 'Sub County', 'parish_id': 'Parish',
     };
     return labels[fieldName] || fieldName;
   }
 
   noFutureDateValidator(control: AbstractControl) {
-  if (!control.value) return null;
-  const selected = new Date(control.value);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return selected > today ? { futureDate: true } : null;
-}
+    if (!control.value) return null;
+    const selected = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selected > today ? { futureDate: true } : null;
+  }
 
   navigateToBaptism(): void {
-    // Save form data before navigating away
     if (this.userForm.dirty) {
-      sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.value));
+      sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.getRawValue()));
     }
-
-    setTimeout(() => {
-      this.router.navigate(['/baptism']);
-    }, 1500);
+    setTimeout(() => { this.router.navigate(['/baptism']); }, 1500);
   }
 
   navigateToDashboard(): void {
-    // Save form data before navigating away
     if (this.userForm.dirty) {
-      sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.value));
+      sessionStorage.setItem('userFormData', JSON.stringify(this.userForm.getRawValue()));
     }
-
-    this.router.navigate(['/dashboard']);
+    this.nav.goToDashboard();
   }
 }

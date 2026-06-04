@@ -1,15 +1,13 @@
 <body>
     <div class="container">
         <div class="nav-buttons">
-        <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
-        <a type="button" href="/search">
-            <i class="fas fa-search"></i> Search
-        </a>
+            <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
+            <a type="button" routerLink="/search" style="cursor:pointer">Search</a>
         </div>
         <h2>Baptism Form</h2>
 
         <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
-        
+
         <div class="error-alert" *ngIf="noBaptism">
             This Christian is not Baptized! Add Baptism Record
         </div>
@@ -20,24 +18,23 @@
             <div class="section">
                 <h3>Baptism Information</h3>
                 <label for="parish">Parish / Place of Baptism:</label>
-                <app-parish-autocomplete
-                    formControlName="parish"
-                    placeholder="Type a parish name..."
+                <app-parish-autocomplete formControlName="parish" placeholder="Type a parish name..."
                     label="Parish / Place of Baptism"
-                    [externalControl]="baptismForm.get('parish')"
-                ></app-parish-autocomplete>
+                    [externalControl]="baptismForm.get('parish')"></app-parish-autocomplete>
                 <div class="error-message" *ngIf="hasFieldError('parish')">
                     {{ getFieldError('parish') }}
                 </div>
 
                 <label for="baptism_date">Date:</label>
-                <input type="date" id="baptism_date" formControlName="baptism_date" [max]="today" [class.error]="hasFieldError('baptism_date')">
+                <input type="date" id="baptism_date" formControlName="baptism_date" [max]="today"
+                    [class.error]="hasFieldError('baptism_date')">
                 <div class="error-message" *ngIf="hasFieldError('baptism_date')">
                     {{ getFieldError('baptism_date') }}
                 </div>
 
                 <label for="baptism_number">Baptism Number:</label>
-                <input type="text" id="baptism_number" formControlName="baptism_number" [class.error]="hasFieldError('baptism_number')">
+                <input type="text" id="baptism_number" formControlName="baptism_number"
+                    [class.error]="hasFieldError('baptism_number')">
                 <div class="error-message" *ngIf="hasFieldError('baptism_number')">
                     {{ getFieldError('baptism_number') }}
                 </div>
