@@ -111,6 +111,27 @@
                             </span>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birth_place">Place of Birth</label>
+                            <input type="text" id="birth_place" formControlName="birth_place"
+                                placeholder="Where you were born">
+                        </div>
+                        <div class="form-group">
+                            <label for="birth_date">Date of Birth</label>
+                            <input type="date" id="birth_date" formControlName="birth_date" [max]="today">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subcounty">Subcounty</label>
+                            <input type="text" id="subcounty" formControlName="subcounty" placeholder="Your subcounty">
+                        </div>
+                        <div class="form-group">
+                            <label for="domicile">Domicile / Residence</label>
+                            <input type="text" id="domicile" formControlName="domicile" placeholder="Current domicile">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="optional-fields">
@@ -133,27 +154,6 @@
                         <div class="form-group">
                             <label for="clan">Clan</label>
                             <input type="text" id="clan" formControlName="clan" placeholder="Your clan">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="birth_place">Place of Birth</label>
-                            <input type="text" id="birth_place" formControlName="birth_place"
-                                placeholder="Where you were born">
-                        </div>
-                        <div class="form-group">
-                            <label for="birth_date">Date of Birth</label>
-                            <input type="date" id="birth_date" formControlName="birth_date" [max]="today">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="subcounty">Subcounty</label>
-                            <input type="text" id="subcounty" formControlName="subcounty" placeholder="Your subcounty">
-                        </div>
-                        <div class="form-group">
-                            <label for="domicile">Domicile / Residence</label>
-                            <input type="text" id="domicile" formControlName="domicile" placeholder="Current domicile">
                         </div>
                     </div>
                 </div>
