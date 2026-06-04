@@ -8,8 +8,8 @@ import { LoginResponse } from '../auth/login/login.component';
 })
 export class ApiService {
   // private baseUrl = 'https://cbms.adnyeri.org/api'; // Backend URL
-  private baseUrl = 'http://localhost:3000';  // Backend URL
-  // private baseUrl = 'https://biodata-backend-cbms.up.railway.app'
+  // private baseUrl = 'http://localhost:3000';  // Backend URL
+  private baseUrl = 'https://biodata-backend-cbms.up.railway.app'
 
   constructor(private http: HttpClient) { }
 
