@@ -1,241 +1,210 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
-
 .member-shell {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--nyeri-cream);
-    font-family: 'DM Sans', sans-serif;
-}
-
-.top-bar {
-    background: var(--nyeri-green);
-    padding: 14px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-}
-
-.top-bar-inner {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.logo {
-    height: 48px;
-    width: auto;
-}
-
-.top-title {
-    display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--nyeri-gold-light);
-    line-height: 1.2;
-}
-
-.top-sub {
-    display: block;
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.65);
-    letter-spacing: 0.04em;
-}
-
-.logout-btn {
-    background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.35);
-    color: white;
-    padding: 7px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s;
-}
-
-.logout-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.6);
+    min-height: 100%;
+    padding: 2rem;
+    background: #f8fafc;
 }
 
 .member-main {
-    flex: 1;
-    max-width: 640px;
-    margin: 0 auto;
     width: 100%;
-    padding: 48px 24px 32px;
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 .welcome-card {
-    background: var(--nyeri-green);
+    width:auto;
+    background: linear-gradient(135deg, #1b5e2b, #2e7d32);
+    color: white;
     border-radius: 16px;
-    padding: 32px;
+    padding: 2rem;
     display: flex;
     align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 20px rgba(27, 94, 43, 0.25);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .avatar {
-    width: 64px;
-    height: 64px;
-    background: rgba(255, 255, 255, 0.15);
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
+    background: rgba(255,255,255,.15);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 2rem;
     flex-shrink: 0;
-    font-size: 28px;
-    color: var(--nyeri-gold-light);
-    border: 2px solid rgba(200, 151, 26, 0.4);
 }
 
 .welcome-text h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 26px;
+    margin: 0;
+    font-size: 1.8rem;
     font-weight: 700;
-    color: var(--nyeri-white);
-    margin: 0 0 4px;
 }
 
-.welcome-text .sub {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-    margin: 0;
+.sub {
+    margin-top: .35rem;
+    opacity: .8;
+    color:#4a002a
 }
 
 .info-strip {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 28px;
+    justify-content: center;
+    gap: .5rem;
+    margin-bottom: 2rem;
 }
 
 .info-chip {
-    background: var(--nyeri-white);
-    border: 1px solid rgba(27, 94, 43, 0.15);
-    border-radius: 20px;
-    padding: 6px 14px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    color: #4a002a;
+    padding: .75rem 1rem;
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--nyeri-black);
+    gap: .5rem;
+    color:hsla(326, 100%, 15%, 0.685);
+    font-size: .9rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
 
 .info-chip i {
-    color: var(--nyeri-green);
-    font-size: 15px;
+    color: #1b5e2b;
 }
 
-.info-chip.role {
-    background: var(--nyeri-gold-pale);
-    border-color: var(--nyeri-gold);
-}
-
-.info-chip.role i {
-    color: var(--nyeri-gold);
+.role {
+    background: #fff8e6;
+    border-color: #f3d37a;
 }
 
 .action-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    justify-content: center;
 }
 
 .action-card {
-    background: var(--nyeri-white);
-    border: 1.5px solid rgba(27, 94, 43, 0.12);
-    border-radius: 14px;
-    padding: 24px 20px;
+    position: relative;
+    border: none;
+    border-radius: 18px;
+    padding: 2rem;
     text-align: left;
     cursor: pointer;
-    position: relative;
-    transition: all 0.2s ease;
+    overflow: hidden;
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    min-height: 220px;
 }
 
 .action-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-6px);
 }
 
 .action-card.primary {
-    border-color: var(--nyeri-green);
-}
-
-.action-card.primary:hover {
-    box-shadow: 0 8px 24px rgba(27, 94, 43, 0.2);
+    background: linear-gradient(135deg, #1b5e2b, #2e7d32);
+    color: white;
+    box-shadow: 0 12px 30px rgba(27, 94, 43, 0.25);
 }
 
 .action-card.secondary {
-    border-color: rgba(107, 30, 30, 0.2);
-}
-
-.action-card.secondary:hover {
-    box-shadow: 0 8px 24px rgba(107, 30, 30, 0.12);
+    background: #ffffff;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
 
 .action-icon {
-    font-size: 26px;
-    margin-bottom: 4px;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
 }
 
 .action-card.primary .action-icon {
-    color: var(--nyeri-green);
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
 }
 
 .action-card.secondary .action-icon {
-    color: var(--nyeri-maroon);
+    background: rgba(220, 38, 38, 0.08);
+    color: #dc2626;
 }
 
 .action-label {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--nyeri-black);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: .75rem;
 }
 
 .action-desc {
-    font-size: 12px;
-    color: var(--nyeri-gray);
-    line-height: 1.4;
+    line-height: 1.6;
+    font-size: .95rem;
+    opacity: .9;
+    max-width: 90%;
+}
+
+.action-card.primary .action-desc {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.action-card.secondary .action-desc {
+    color: #6b7280;
 }
 
 .action-arrow {
     position: absolute;
-    top: 20px;
-    right: 16px;
-    font-size: 16px;
-    color: var(--nyeri-gray);
-    transition: transform 0.2s;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    font-size: 1.5rem;
+    transition: transform .3s ease;
 }
 
 .action-card:hover .action-arrow {
-    transform: translateX(4px);
+    transform: translateX(8px);
+}
+
+.action-card.primary::before {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    right: -50px;
+    top: -50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+}
+
+.action-card.secondary::before {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    right: -40px;
+    top: -40px;
+    border-radius: 50%;
+    background: rgba(220, 38, 38, .04);
 }
 
 .loading-state {
-    flex: 1;
+    min-height: 60vh;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
 .spinner {
-    width: 36px;
-    height: 36px;
-    border: 3px solid rgba(27, 94, 43, 0.2);
-    border-top-color: var(--nyeri-green);
+    width: 42px;
+    height: 42px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #1b5e2b;
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    animation: spin .8s linear infinite;
 }
 
 @keyframes spin {
@@ -244,26 +213,9 @@
     }
 }
 
-.bottom-bar {
-    background: var(--nyeri-green-dark);
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 12px;
-    padding: 12px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.motto {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--nyeri-gold-light);
-    font-size: 13px;
-}
-
-@media (max-width: 480px) {
-    .action-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 768px) {
+    .member-shell {
+        padding: 1rem;
     }
 
     .welcome-card {
@@ -271,7 +223,7 @@
         text-align: center;
     }
 
-    .top-bar {
-        padding: 12px 16px;
+    .welcome-text h1 {
+        font-size: 1.5rem;
     }
 }

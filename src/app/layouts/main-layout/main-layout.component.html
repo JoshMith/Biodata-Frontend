@@ -1,7 +1,7 @@
 <div class="shell">
       <aside class="sidebar">
         <div class="sidebar-top">
-            <img src="../../../../public/logo.png" alt="Archdiocese of Nyeri" class="sidebar-logo"
+            <img src="/logo.png" alt="Archdiocese of Nyeri" class="sidebar-logo"
                 onerror="this.style.display='none'">
             <div class="sidebar-title">
                 <span class="s-main">Archdiocese</span>
@@ -10,9 +10,9 @@
         </div>
 
         <nav class="sidebar-nav">
-            <button class="nav-item active" (click)="navigate('/dashboard')">
-                <i class="ti ti-layout-dashboard"></i> Dashboard
-            </button>
+           <button class="nav-item active" (click)="goToDashboard()">
+    <i class="ti ti-layout-dashboard"></i> Dashboard
+</button>
             <button class="nav-item" (click)="navigate('/search')">
                 <i class="ti ti-search"></i> Search Christians
             </button>
@@ -20,7 +20,6 @@
                 <i class="ti ti-user-plus"></i> Add Christian
             </button>
         </nav>
-
         <div class="sidebar-footer">
             <div class="user-row">
                 <div class="user-avatar"><i class="ti ti-user"></i></div>

@@ -1,12 +1,14 @@
+
 body {
   font-family: Arial, sans-serif;
   background-color: #fbf8ef;
-  text-align: center;
-  margin: 0;
-  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.div-home {
+/* .div-home {
   a {
     text-decoration: none;
     background: #6d5507;
@@ -20,10 +22,10 @@ body {
     text-align: center;
     cursor: pointer;
   }
-}
+} */
 
 .role-banner {
-  background-color: #ffe082;
+  background: var(--nyeri-gold-light);;
   color: #4a002a;
   padding: 12px 20px;
   border-radius: 8px;

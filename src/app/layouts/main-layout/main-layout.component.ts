@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet} from '@angular/router';
 import { ApiService } from '../../services/api.service';
+
 
 @Component({
   selector: 'app-main-layout',
@@ -34,9 +35,32 @@ export class MainLayoutComponent implements OnInit {
     this.isSuperuser = this.user?.role === 'superuser';
   }
 
-  navigate(route: string): void {
-    this.router.navigate([route]);
+navigate(route: string): void {
+  this.router.navigate([route]);
+
+}
+goToDashboard(): void {
+  const role = this.user?.role?.toLowerCase();
+
+  switch (role) {
+    case 'superuser':
+    case 'viewer':
+      this.router.navigate(['/dashboard']);
+      break;
+
+    case 'editor':
+      this.router.navigate(['/dashboard/editor']);
+      break;
+
+    case 'member':
+      this.router.navigate(['/dashboard/member']);
+      break;
+
+    default:
+      console.error('Unknown role:', role);
+      this.router.navigate(['/login']);
   }
+}
 
   logout(): void {
     this.apiService.logoutChristian(this.user?.email).subscribe({
