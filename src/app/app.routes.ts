@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { LoginComponent } from './auth/login/login.component';
 import { MarriageComponent } from './form/marriage/marriage.component';
 import { RegisterComponent } from './auth/register/register.component';
@@ -34,63 +34,104 @@ export const routes: Routes = [
   { path: 'verifyEmail', component: VerifyEmailComponent },
 
   // --- Any authenticated role ---
-  {
-    path: 'dashboard', component: SuperuserDashboardComponent, canActivate: [authGuard, roleGuard(['superuser', 'viewer'])]
-  },
-  {
-    path: 'dashboard/editor', component: EditorDashboardComponent, canActivate: [authGuard, roleGuard(['editor'])]
-  },
-  {
-    path: 'dashboard/member', component: MemberDashboardComponent, canActivate: [authGuard, roleGuard(['member'])]
-  },
-  {
-    path: 'search', component: SearchComponent, canActivate: [authGuard]
-  },
-  {
-    path: 'sacrament-card', component: SacramentCardComponent, canActivate: [authGuard]
-  },
-  {
-    path: 'marriage-card', component: MarriageCardComponent, canActivate: [authGuard]
-  },
+ {
+  path: '',
+  component: MainLayoutComponent,
+  canActivate: [authGuard],
+  children: [
+    {
+      path: 'dashboard',
+      component: SuperuserDashboardComponent,
+      canActivate: [roleGuard(['superuser', 'viewer'])]
+    },
+    {
+      path: 'dashboard/editor',
+      component: EditorDashboardComponent,
+      canActivate: [roleGuard(['editor'])]
+    },
+    {
+      path: 'dashboard/member',
+      component: MemberDashboardComponent,
+      canActivate: [roleGuard(['member'])]
+    },
+    {
+      path: 'search',
+      component: SearchComponent
+    },
+    {
+      path: 'sacrament-card',
+      component: SacramentCardComponent
+    },
+    {
+      path: 'marriage-card',
+      component: MarriageCardComponent
+    },
 
-  // --- Add new records: superuser and editor only ---
-  {
-    path: 'personal-info', component: PersonalInfoComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
-  },
-  {
-    path: 'baptism', component: BaptismComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
-  },
-  {
-    path: 'eucharist', component: EucharistComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
-  },
-  {
-    path: 'confirmation', component: ConfirmationComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
-  },
-  {
-    path: 'marriage', component: MarriageComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor'])]
-  },
+    // Add records
+    {
+      path: 'personal-info',
+      component: PersonalInfoComponent,
+      canActivate: [roleGuard(['superuser', 'editor'])]
+    },
+    {
+      path: 'baptism',
+      component: BaptismComponent,
+      canActivate: [roleGuard(['superuser', 'editor'])]
+    },
+    {
+      path: 'eucharist',
+      component: EucharistComponent,
+      canActivate: [roleGuard(['superuser', 'editor'])]
+    },
+    {
+      path: 'confirmation',
+      component: ConfirmationComponent,
+      canActivate: [roleGuard(['superuser', 'editor'])]
+    },
+    {
+      path: 'marriage',
+      component: MarriageComponent,
+      canActivate: [roleGuard(['superuser', 'editor'])]
+    },
 
-  // --- Edit existing records: superuser, editor, and member (own record only) ---
-  // Note: member ownership is enforced in the component, not the route guard,
-  // because the guard doesn't know which record ID is being edited.
-  {
-    path: 'edit-personal-info', component: PersonalInfoUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
-  },
-  {
-    path: 'edit-baptism', component: BaptismUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
-  },
-  {
-    path: 'edit-eucharist', component: EucharistUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
-  },
-  {
-    path: 'edit-confirmation', component: ConfirmationUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
-  },
-  {
-    path: 'edit-marriage', component: MarriageUpdateComponent, canActivate: [authGuard, roleGuard(['superuser', 'editor', 'member'])]
-  },
+    // Edit records
+    {
+      path: 'edit-personal-info',
+      component: PersonalInfoUpdateComponent,
+      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
+    },
+    {
+      path: 'edit-baptism',
+      component: BaptismUpdateComponent,
+      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
+    },
+    {
+      path: 'edit-eucharist',
+      component: EucharistUpdateComponent,
+      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
+    },
+    {
+      path: 'edit-confirmation',
+      component: ConfirmationUpdateComponent,
+      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
+    },
+    {
+      path: 'edit-marriage',
+      component: MarriageUpdateComponent,
+      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
+    }
+  ]
+},
 
-  // --- Dev/internal only (no guard needed in production but keep isolated) ---
-  { path: 'progress-bar', component: ProgressBarComponent },
+// Dev route remains outside layout
+{
+  path: 'progress-bar',
+  component: ProgressBarComponent
+},
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+{
+  path: '',
+  redirectTo: 'login',
+  pathMatch: 'full'
+}
 ];
