@@ -20,23 +20,19 @@ export class ApiService {
   registerChristian(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/register`, data, { withCredentials: true });
   }
-
   logoutChristian(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/logout`, data, { withCredentials: true });
   }
-
   // Request password reset email
   requestPasswordReset(email: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/request-password-reset`, { email });
   }
-
   // Verify reset token
   verifyResetToken(token: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/auth/verify-reset-token`, {
       params: { token }
     });
   }
-
   // Reset password with token
   resetPassword(token: string, newPassword: string, confirmPassword: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/reset-password`, {
@@ -45,33 +41,27 @@ export class ApiService {
       confirmPassword
     });
   }
-
   getChristians(): Observable<any> {
     return this.http.get(`${this.baseUrl}/users`, { withCredentials: true });
   }
-
   getChristianById(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/users/${id}`, { withCredentials: true });
   }
   getChristianByName(name: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/users/name/${name}`, { withCredentials: true });
   }
-
   getChristianCount(): Observable<any> {
     return this.http.get(`${this.baseUrl}/users/count`, { withCredentials: true });
   }
-
   addChristian(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/users`, data, { withCredentials: true });
   }
-
   updateChristian(id: string, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/users/${id}`, data, { withCredentials: true });
   }
   deleteChristian(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/users/${id}`, { withCredentials: true });
   }
-
   getParishes(): Observable<any> {
     return this.http.get(`${this.baseUrl}/parish`, { withCredentials: true })
   }
@@ -84,15 +74,12 @@ export class ApiService {
   getParishByDeanery(deanery: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/parish/deanery/${deanery}`, { withCredentials: true });
   }
-
   updateParish(id: string, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/parish/${id}`, data, { withCredentials: true });
   }
-
   deleteParish(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/parish/${id}`, { withCredentials: true });
   }
-
   getBaptisms(): Observable<any> {
     return this.http.get(`${this.baseUrl}/baptism`, { withCredentials: true });
   }
@@ -111,7 +98,6 @@ export class ApiService {
   deleteBaptism(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/baptism/${id}`, { withCredentials: true });
   }
-
   getEucharists(): Observable<any> {
     return this.http.get(`${this.baseUrl}/eucharist`, { withCredentials: true });
   }
@@ -130,7 +116,6 @@ export class ApiService {
   deleteEucharist(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/eucharist/${id}`, { withCredentials: true });
   }
-
   getConfirmations(): Observable<any> {
     return this.http.get(`${this.baseUrl}/confirmation`, { withCredentials: true });
   }
@@ -149,40 +134,29 @@ export class ApiService {
   deleteConfirmation(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/confirmation/${id}`, { withCredentials: true });
   }
-
   // Marriage Records
   createMarriage(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/marriages`, data, { withCredentials: true });
   }
-
   getMarriages(): Observable<any> {
     return this.http.get(`${this.baseUrl}/marriages`, { withCredentials: true });
   }
-
   getMarriageById(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/marriages/${id}`, { withCredentials: true });
   }
-
   getFullMarriageByUserId(userId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/marriages/user/${userId}/full`, { withCredentials: true });
   }
-
-
-
-
   updateMarriage(id: string, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/marriages/${id}`, data, { withCredentials: true });
   }
-
   deleteMarriage(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/marriages/${id}`, { withCredentials: true });
   }
-
   // Marriage Parties
   createMarriageParty(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/marriage-parties`, data, { withCredentials: true });
   }
-
   deleteMarriageParty(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/marriage-parties/${id}`, { withCredentials: true })
   }
