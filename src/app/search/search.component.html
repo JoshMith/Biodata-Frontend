@@ -1,15 +1,30 @@
 <body>
     <div class="header">Search Christians</div>
-    <div class="div-home">
+    <!-- <div class="div-home">
         <a type="button" (click)="nav.goToDashboard()" style="cursor:pointer">Home</a>
-    </div>
+    </div> -->
 
     <div class="search-container">
-        <input type="search" class="search-box" placeholder="Search by Name, Phone, or Email" [(ngModel)]="searchQuery"
-            (keyup.enter)="searchChristianByName()" />
-        <button class="search-button" (click)="searchChristianByName()">Search</button>
-        <button class="clear-button" (click)="clearSearch()">Clear/Reset</button>
+
+    <div class="search-wrapper">
+        <i
+            class="ti ti-search search-icon"
+            (click)="searchChristianByName()">
+        </i>
+
+        <input
+            type="search"
+            class="search-box"
+            placeholder="Search by Name, Phone, or Email"
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="searchChristianByName()">
     </div>
+
+    <button class="clear-button" (click)="clearSearch()">
+        Clear
+    </button>
+
+</div>
 
     <!-- Error Message -->
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>

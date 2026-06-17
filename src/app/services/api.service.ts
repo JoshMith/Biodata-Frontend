@@ -8,8 +8,8 @@ import { LoginResponse } from '../auth/login/login.component';
 })
 export class ApiService {
   // private baseUrl = 'https://cbms.adnyeri.org/api'; // Backend URL
-  // private baseUrl = 'http://localhost:3000';  // Backend URL
-  private baseUrl = 'https://biodata-backend-cbms.up.railway.app'
+  private baseUrl = 'http://localhost:3000';  // Backend URL
+  // private baseUrl = 'https://biodata-backend-cbms.up.railway.app'
 
   constructor(private http: HttpClient) { }
 
@@ -218,6 +218,24 @@ export class ApiService {
     });
   }
 
-
+  downloadAuditLogs(params?: {
+    entity?: string;
+    action?: string;
+    actor_id?: string;
+    from?: string;
+    to?: string;
+  }): Observable<Blob> {
+    const query = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        if (v !== undefined && v !== '') query.set(k, String(v));
+      });
+    }
+    const qs = query.toString() ? '?' + query.toString() : '';
+    return this.http.get(`${this.baseUrl}/audit-logs/download${qs}`, {
+      withCredentials: true,
+      responseType: 'blob'
+    });
+  }
 
 }

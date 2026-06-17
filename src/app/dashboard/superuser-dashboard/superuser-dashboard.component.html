@@ -1,40 +1,6 @@
-<div class="shell">
+<div >
 
-    <aside class="sidebar">
-        <div class="sidebar-top">
-            <img src="../../../../public/logo.png" alt="Archdiocese of Nyeri" class="sidebar-logo"
-                onerror="this.style.display='none'">
-            <div class="sidebar-title">
-                <span class="s-main">Archdiocese</span>
-                <span class="s-sub">of Nyeri</span>
-            </div>
-        </div>
-
-        <nav class="sidebar-nav">
-            <button class="nav-item active" (click)="navigate('/dashboard')">
-                <i class="ti ti-layout-dashboard"></i> Dashboard
-            </button>
-            <button class="nav-item" (click)="navigate('/search')">
-                <i class="ti ti-search"></i> Search Christians
-            </button>
-            <button class="nav-item" *ngIf="isSuperuser" (click)="navigate('/personal-info')">
-                <i class="ti ti-user-plus"></i> Add Christian
-            </button>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-row">
-                <div class="user-avatar"><i class="ti ti-user"></i></div>
-                <div class="user-info">
-                    <span class="u-name">{{ user?.firstName || user?.first_name }}</span>
-                    <span class="u-role">{{ isSuperuser ? 'Superuser' : 'Viewer' }}</span>
-                </div>
-            </div>
-            <button class="sidebar-logout" (click)="logout()">
-                <i class="ti ti-logout"></i> Sign out
-            </button>
-        </div>
-    </aside>
+  
 
     <main class="main-content">
 
@@ -135,9 +101,6 @@
 
     </main>
 
-    <footer class="bottom-bar">
-        <span>© {{ currentYear }} Archdiocese of Nyeri</span>
-        <span class="motto">Ut Essemus Sancti</span>
-    </footer>
+    
 
 </div>
