@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet} from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 
 
@@ -16,11 +16,13 @@ export class MainLayoutComponent implements OnInit {
   user: any = null;
   isSuperuser = false;
   currentYear = new Date().getFullYear();
+  isDownloadingLogs = false;
+
 
   constructor(
     private router: Router,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const raw = localStorage.getItem('userLoggedIn');
@@ -35,32 +37,49 @@ export class MainLayoutComponent implements OnInit {
     this.isSuperuser = this.user?.role === 'superuser';
   }
 
-navigate(route: string): void {
-  this.router.navigate([route]);
 
-}
-goToDashboard(): void {
-  const role = this.user?.role?.toLowerCase();
-
-  switch (role) {
-    case 'superuser':
-    case 'viewer':
-      this.router.navigate(['/dashboard']);
-      break;
-
-    case 'editor':
-      this.router.navigate(['/dashboard/editor']);
-      break;
-
-    case 'member':
-      this.router.navigate(['/dashboard/member']);
-      break;
-
-    default:
-      console.error('Unknown role:', role);
-      this.router.navigate(['/login']);
+  downloadAuditLogs(): void {
+    this.isDownloadingLogs = true;
+    this.apiService.downloadAuditLogs().subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `audit_log_${new Date().toISOString().slice(0, 10)}.csv`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+        this.isDownloadingLogs = false;
+      },
+      error: () => { this.isDownloadingLogs = false; }
+    });
   }
-}
+
+  navigate(route: string): void {
+    this.router.navigate([route]);
+
+  }
+  goToDashboard(): void {
+    const role = this.user?.role?.toLowerCase();
+
+    switch (role) {
+      case 'superuser':
+      case 'viewer':
+        this.router.navigate(['/dashboard']);
+        break;
+
+      case 'editor':
+        this.router.navigate(['/dashboard/editor']);
+        break;
+
+      case 'member':
+        this.router.navigate(['/dashboard/member']);
+        break;
+
+      default:
+        console.error('Unknown role:', role);
+        this.router.navigate(['/login']);
+    }
+  }
 
   logout(): void {
     this.apiService.logoutChristian(this.user?.email).subscribe({

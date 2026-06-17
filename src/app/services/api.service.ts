@@ -244,6 +244,24 @@ export class ApiService {
     });
   }
 
-
+  downloadAuditLogs(params?: {
+    entity?: string;
+    action?: string;
+    actor_id?: string;
+    from?: string;
+    to?: string;
+  }): Observable<Blob> {
+    const query = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        if (v !== undefined && v !== '') query.set(k, String(v));
+      });
+    }
+    const qs = query.toString() ? '?' + query.toString() : '';
+    return this.http.get(`${this.baseUrl}/audit-logs/download${qs}`, {
+      withCredentials: true,
+      responseType: 'blob'
+    });
+  }
 
 }
