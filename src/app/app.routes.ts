@@ -26,117 +26,73 @@ import { MemberDashboardComponent } from './dashboard/member-dashboard/member-da
 import { EditorDashboardComponent } from './dashboard/editor-dashboard/editor-dashboard.component';
 
 export const routes: Routes = [
-  // --- Public routes (no auth needed) ---
+  // PUBLIC ROUTES
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'verifyEmail', component: VerifyEmailComponent },
 
-  // --- Any authenticated role ---
- {
-  path: '',
-  component: MainLayoutComponent,
-  canActivate: [authGuard],
-  children: [
-     {
+  // DEFAULT ENTRY → LOGIN
+  {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
-    {
-      path: 'dashboard',
-      component: SuperuserDashboardComponent,
-      canActivate: [roleGuard(['superuser', 'viewer'])]
-    },
-    {
-      path: 'dashboard/editor',
-      component: EditorDashboardComponent,
-      canActivate: [roleGuard(['editor'])]
-    },
-    {
-      path: 'dashboard/member',
-      component: MemberDashboardComponent,
-      canActivate: [roleGuard(['member'])]
-    },
-    {
-      path: 'search',
-      component: SearchComponent
-    },
-    {
-      path: 'sacrament-card',
-      component: SacramentCardComponent
-    },
-    {
-      path: 'marriage-card',
-      component: MarriageCardComponent
-    },
 
-    // Add records
-    {
-      path: 'personal-info',
-      component: PersonalInfoComponent,
-      canActivate: [roleGuard(['superuser', 'editor'])]
-    },
-    {
-      path: 'baptism',
-      component: BaptismComponent,
-      canActivate: [roleGuard(['superuser', 'editor'])]
-    },
-    {
-      path: 'eucharist',
-      component: EucharistComponent,
-      canActivate: [roleGuard(['superuser', 'editor'])]
-    },
-    {
-      path: 'confirmation',
-      component: ConfirmationComponent,
-      canActivate: [roleGuard(['superuser', 'editor'])]
-    },
-    {
-      path: 'marriage',
-      component: MarriageComponent,
-      canActivate: [roleGuard(['superuser', 'editor'])]
-    },
+  // PROTECTED AREA (AFTER LOGIN)
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [authGuard],
+    children: [
 
-    // Edit records
-    {
-      path: 'edit-personal-info',
-      component: PersonalInfoUpdateComponent,
-      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
-    },
-    {
-      path: 'edit-baptism',
-      component: BaptismUpdateComponent,
-      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
-    },
-    {
-      path: 'edit-eucharist',
-      component: EucharistUpdateComponent,
-      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
-    },
-    {
-      path: 'edit-confirmation',
-      component: ConfirmationUpdateComponent,
-      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
-    },
-    {
-      path: 'edit-marriage',
-      component: MarriageUpdateComponent,
-      canActivate: [roleGuard(['superuser', 'editor', 'member'])]
-    }
-  ]
-},
+      // DASHBOARDS (ROLE-BASED)
+      {
+        path: 'dashboard',
+        component: SuperuserDashboardComponent,
+        canActivate: [roleGuard(['superuser', 'viewer'])]
+      },
+      {
+        path: 'dashboard/editor',
+        component: EditorDashboardComponent,
+        canActivate: [roleGuard(['editor'])]
+      },
+      {
+        path: 'dashboard/member',
+        component: MemberDashboardComponent,
+        canActivate: [roleGuard(['member'])]
+      },
 
-// Dev route remains outside layout
-{
-  path: 'progress-bar',
-  component: ProgressBarComponent
-},
+      // DEFAULT AFTER LOGIN
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
 
-{
-  path: '',
-  redirectTo: 'login',
-  pathMatch: 'full'
-}
+      // OTHER FEATURES
+      { path: 'search', component: SearchComponent },
+      { path: 'sacrament-card', component: SacramentCardComponent },
+      { path: 'marriage-card', component: MarriageCardComponent },
+
+      { path: 'personal-info', component: PersonalInfoComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
+      { path: 'baptism', component: BaptismComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
+      { path: 'eucharist', component: EucharistComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
+      { path: 'confirmation', component: ConfirmationComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
+      { path: 'marriage', component: MarriageComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
+
+      { path: 'edit-personal-info', component: PersonalInfoUpdateComponent },
+      { path: 'edit-baptism', component: BaptismUpdateComponent },
+      { path: 'edit-eucharist', component: EucharistUpdateComponent },
+      { path: 'edit-confirmation', component: ConfirmationUpdateComponent },
+      { path: 'edit-marriage', component: MarriageUpdateComponent }
+    ]
+  },
+
+  // CATCH ALL
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];
