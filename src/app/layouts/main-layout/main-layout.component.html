@@ -25,7 +25,7 @@
                 <div class="user-avatar"><i class="ti ti-user"></i></div>
                 <div class="user-info">
                     <span class="u-name">{{ user?.firstName || user?.first_name }}</span>
-                    <span class="u-role">{{ isSuperuser ? 'Superuser' : 'Viewer' }}</span>
+                    <span class="u-role">{{ user?.role }}</span>
                 </div>
             </div>
             <button class="sidebar-logout" (click)="logout()">
