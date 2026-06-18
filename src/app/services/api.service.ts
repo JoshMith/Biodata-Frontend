@@ -1,7 +1,6 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
-import { LoginResponse } from '../auth/login/login.component';
 
 @Injectable({
   providedIn: 'root'
