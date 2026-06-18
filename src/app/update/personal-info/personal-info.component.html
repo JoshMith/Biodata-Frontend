@@ -7,7 +7,7 @@
         <h2>Personal Information Form</h2>
         <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 
-        <div class="success-message" *ngIf="!noRecord">Edit Biodata Information!</div>
+        <div class="success-message" *ngIf="!noRecord">Edit {{christianName}}`s Biodata Information!</div>
 
         <form [formGroup]="christianForm" (ngSubmit)="onSubmitChristianForm()" class="formContainer">
             <div class="section">

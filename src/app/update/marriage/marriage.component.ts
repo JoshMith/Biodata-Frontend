@@ -37,6 +37,7 @@ export class MarriageUpdateComponent implements OnInit {
   existingPartyIds: number[] = [];
   currentStep = 4;
   today = new Date().toISOString().split('T')[0];
+  christianName = '';
 
   constructor(
     private fb: FormBuilder,
@@ -71,6 +72,8 @@ export class MarriageUpdateComponent implements OnInit {
       }, 3000);
       return;
     }
+
+    this.christianName = this.getSelectedChristianName();
 
     if (this.parties.length === 0) {
       this.parties.push(this.createPartyGroup('groom'));
@@ -270,5 +273,12 @@ export class MarriageUpdateComponent implements OnInit {
   private getSelectedChristianId(): string | null {
     const s = localStorage.getItem('selectedChristian');
     return s ? JSON.parse(s).id : null;
+  }
+
+  private getSelectedChristianName(): string {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    if (!selectedChristian) return '';
+    const parsed = JSON.parse(selectedChristian);
+    return parsed?.name || parsed?.firstName || '';
   }
 }

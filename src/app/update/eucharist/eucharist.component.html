@@ -9,10 +9,10 @@
         <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 
         <div class="error-alert" *ngIf="noEucharist">
-            This Christian has not Received Eucharist! Add Eucharist Record
+            {{christianName}} has not Received Eucharist! Add Eucharist Record
         </div>
         <div class="success-message" *ngIf="!noEucharist">
-            Edit Eucharist Record!
+            Edit {{christianName}}`s Eucharist Record!
         </div>
         <form [formGroup]="eucharistForm" (ngSubmit)="onSubmitEucharistForm()" class="formContainer">
             <div class="section">

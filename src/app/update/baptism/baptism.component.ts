@@ -35,6 +35,7 @@ export class BaptismUpdateComponent implements OnInit {
   noBaptism = false;
   currentStep = 1; // Track the current step for the progress bar
   today = new Date().toISOString().split('T')[0];
+  christianName = '';
 
   ngOnInit(): void {
     console.log("Initializing baptism form");
@@ -57,6 +58,8 @@ export class BaptismUpdateComponent implements OnInit {
       this.errorMessage = 'No Christian selected';
       return;
     }
+
+    this.christianName = this.getSelectedChristianName();
 
     this.baptismService.getBaptismByUserId(christianId).subscribe({
       next: (data: any) => {
@@ -134,6 +137,13 @@ export class BaptismUpdateComponent implements OnInit {
   private getSelectedChristianId(): string | null {
     const selectedChristian = localStorage.getItem('selectedChristian');
     return selectedChristian ? JSON.parse(selectedChristian).id : null;
+  }
+
+  private getSelectedChristianName(): string {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    if (!selectedChristian) return '';
+    const parsed = JSON.parse(selectedChristian);
+    return parsed?.name || parsed?.firstName || '';
   }
 
   noFutureDateValidator(control: AbstractControl) {

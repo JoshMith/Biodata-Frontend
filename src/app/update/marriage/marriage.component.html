@@ -9,8 +9,8 @@
     <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 
     <div class="success-message" *ngIf="showSuccess">Marriage certificate submitted successfully!</div>
-    <div class="error-alert" *ngIf="noMarriage">This Christian is not Married! Add Marriage Record</div>
-    <div class="success-message" *ngIf="!noMarriage && !showSuccess">Edit Marriage Record!</div>
+    <div class="error-alert" *ngIf="noMarriage">{{christianName}} is not Married! Add Marriage Record</div>
+    <div class="success-message" *ngIf="!noMarriage && !showSuccess">Edit {{christianName}}`s Marriage Record!</div>
 
     <form [formGroup]="marriageForm" (ngSubmit)="onSubmit()">
 

@@ -9,10 +9,10 @@
         <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 
         <div class="error-alert" *ngIf="noConfirmation">
-            This Christian is not Confirmed! Add Confirmation Record
+            {{christianName}} is not Confirmed! Add Confirmation Record
         </div>
         <div class="success-message" *ngIf="!noConfirmation">
-            Edit Confirmation Record!
+            Edit {{christianName}}`s Confirmation Record!
         </div>
         <form [formGroup]="confirmationForm" (ngSubmit)="onSubmitConfirmationForm()" class="formContainer">
             <div class="section">

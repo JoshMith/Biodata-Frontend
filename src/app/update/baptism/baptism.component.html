@@ -9,10 +9,10 @@
         <app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 
         <div class="error-alert" *ngIf="noBaptism">
-            This Christian is not Baptized! Add Baptism Record
+            {{christianName}} is not Baptized! Add Baptism Record
         </div>
         <div class="success-message" *ngIf="!noBaptism">
-            Edit Baptism Record!
+            Edit {{christianName}}`s Baptism Record!
         </div>
         <form [formGroup]="baptismForm" (ngSubmit)="onSubmitBaptismForm()" class="formContainer">
             <div class="section">

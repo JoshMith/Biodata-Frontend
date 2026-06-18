@@ -57,6 +57,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
   isSuperuser = false;
   isMember = false;
   lockedParishName = '';
+  christianName = '';
 
   ngOnInit(): void {
     const raw = localStorage.getItem('userLoggedIn');
@@ -87,6 +88,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     this.userId = christianId;
     this.loadExistingData(christianId);
     this.checkSessionStorage();
+    this.christianName = this.getSelectedChristianName();
   }
 
   private loadExistingData(id: string): void {
@@ -234,6 +236,13 @@ export class PersonalInfoUpdateComponent implements OnInit {
   private getSelectedChristianId(): string | null {
     const s = localStorage.getItem('selectedChristian');
     return s ? JSON.parse(s).id : null;
+  }
+
+  private getSelectedChristianName(): string {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    if (!selectedChristian) return '';
+    const parsed = JSON.parse(selectedChristian);
+    return parsed?.name || parsed?.firstName || '';
   }
 
   noFutureDateValidator(control: AbstractControl) {

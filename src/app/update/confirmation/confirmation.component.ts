@@ -32,6 +32,7 @@ export class ConfirmationUpdateComponent implements OnInit {
   successMessage = '';
   existingConfirmationId: string | null = null;
   noConfirmation = false;
+  christianName = '';
   currentStep = 3; // Track the current step for the progress bar
   today = new Date().toISOString().split('T')[0];
 
@@ -56,6 +57,7 @@ export class ConfirmationUpdateComponent implements OnInit {
       this.errorMessage = 'No Christian selected';
       return;
     }
+    this.christianName = this.getSelectedChristianName();
 
     this.confirmationService.getConfirmationByUserId(christianId).subscribe({
       next: (data: any) => {
@@ -133,6 +135,13 @@ export class ConfirmationUpdateComponent implements OnInit {
   private getSelectedChristianId(): string | null {
     const selectedChristian = localStorage.getItem('selectedChristian');
     return selectedChristian ? JSON.parse(selectedChristian).id : null;
+  }
+
+  private getSelectedChristianName(): string {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    if (!selectedChristian) return '';
+    const parsed = JSON.parse(selectedChristian);
+    return parsed?.name || parsed?.firstName || '';
   }
 
   noFutureDateValidator(control: AbstractControl) {
