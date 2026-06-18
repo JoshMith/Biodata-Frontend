@@ -1,96 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
 
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height:100vh;
+    height: 100vh;
+    margin: 0;
+    background: var(--nyeri-cream);
+    font-family: 'DM Sans', sans-serif;
 }
 
-
-
 .auth-container {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    background-color: var(--nyeri-white);
+    padding: 40px 36px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(15, 61, 26, 0.13);
     text-align: center;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    border: 1px solid rgba(27, 94, 43, 0.1);
 }
 
 .auth-container h2 {
-    color: #4a004a;
-    margin-bottom: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--nyeri-green-dark);
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: 24px;
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    margin: 8px 0 16px;
-    border: 1px solid #c2ae6d;
-    border-radius: 5px;
-    font-size: 1rem;
+    padding: 11px 14px;
+    margin: 6px 0 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif;
     box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: var(--nyeri-black);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--nyeri-green);
+    box-shadow: 0 0 0 3px rgba(27, 94, 43, 0.12);
 }
 
 button {
     width: 100%;
     padding: 12px;
-    background-color: #4A002A;
-    color: white;
+    background-color: var(--nyeri-green);
+    color: var(--nyeri-white);
     border: none;
     cursor: pointer;
-    font-weight: bold;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: background-color 0.2s ease;
 }
 
-button:hover {
-    background-color: #c2ae6d;
-    color: #4A002A;
+button:hover:not(:disabled) {
+    background-color: var(--nyeri-green-dark);
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }
 
 a {
     margin-top: 16px;
     text-decoration: none;
-    color: #4a002a;
-    font-weight: bold;
-    font-size: 0.95rem;
+    color: var(--nyeri-green);
+    font-weight: 600;
+    font-size: 0.92rem;
 }
 
 a:hover {
-    color: #c2ae6d;
+    color: var(--nyeri-gold);
 }
 
-/* NEW: Error and Success Message Styling */
 .error {
-    color: red;
-    font-size: 0.9rem;
-    margin: 0.5rem 0;
+    color: #b91c1c;
+    font-size: 0.88rem;
+    margin: 0.4rem 0;
 }
 
 .success {
-    color: green;
-    font-size: 0.9rem;
-    margin: 0.5rem 0;
+    color: var(--nyeri-green);
+    font-size: 0.88rem;
+    margin: 0.4rem 0;
 }
 
-/* Optional: Focus style for accessibility */
 input:focus,
 button:focus {
-    outline: 2px solid #c2ae6d;
+    outline: 2px solid var(--nyeri-gold);
     outline-offset: 2px;
 }
 
-input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
-    border-left: 5px solid #a94442;
+input.ng-touched.ng-invalid,
+select.ng-touched.ng-invalid {
+    border-left: 4px solid #b91c1c;
 }
 
-input.ng-touched.ng-valid, select.ng-touched.ng-valid{
-    border-left: 5px solid green;
+input.ng-touched.ng-valid,
+select.ng-touched.ng-valid {
+    border-left: 4px solid var(--nyeri-green);
 }
 
 div p {
-    color: red;
+    color: #b91c1c;
+}
+
+.forgot-password-link {
+    margin-top: 12px;
 }

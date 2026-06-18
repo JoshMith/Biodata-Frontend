@@ -224,7 +224,7 @@
                     (click)="navigateToUpdatePersonalInfo()">
                     <strong>Edit Details</strong>
                 </button>
-                <button [disabled]="!canDeleteChristian" class="delete-button" title="Delete access only to superusers"
+                <button *ngIf="canDeleteChristian" class="delete-button" title="Delete access only to superusers"
                     (click)="deleteChristian()">
                     <strong>Delete Christian</strong>
                 </button>

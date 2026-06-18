@@ -1,4 +1,5 @@
-/* A4 Landscape Card Styles */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -10,9 +11,9 @@
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
-    background: #cccccc;
+    background: var(--nyeri-gray-light);
     padding: 2rem;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .language-controls {
@@ -25,26 +26,26 @@
 
 .lang-btn {
     width: auto;
-    background-color: #555555;
-    color: white;
+    background-color: var(--nyeri-navy);
+    color: var(--nyeri-white);
     border: none;
-    padding: 8px 20px;
+    padding: 8px 22px;
     cursor: pointer;
     font-size: 14px;
-    font-weight: bold;
-    border-radius: 2px;
-    transition: all 0.3s ease;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: 8px;
+    transition: background 0.2s ease;
 }
 
 .lang-btn:hover {
-    background-color: #777777;
+    background-color: var(--nyeri-green);
 }
 
 .lang-btn.active {
-    background-color: #1a1a1a;
-    border-bottom: 3px solid #7a5c00;
+    background-color: var(--nyeri-green-dark);
+    border-bottom: 3px solid var(--nyeri-gold);
 }
-
 
 .lang-version {
     width: 100%;
@@ -57,11 +58,11 @@
 .sheet {
     width: 297mm;
     height: 210mm;
-    background: #d6e4f0;
+    background: var(--nyeri-gold-pale);
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 16px rgba(15, 61, 26, 0.15);
 }
 
 .half {
@@ -73,7 +74,7 @@
 }
 
 .dot-line {
-    border-bottom: 1.5px dotted #555;
+    border-bottom: 1.5px dotted var(--nyeri-gray);
     margin-bottom: 5.5mm;
     height: 5mm;
 }
@@ -84,11 +85,13 @@
 }
 
 .note-title {
+    font-family: 'Cormorant Garamond', serif;
     font-size: 13pt;
     font-weight: bold;
     text-align: center;
     margin-bottom: 6mm;
     letter-spacing: 0.05em;
+    color: var(--nyeri-green-dark);
 }
 
 .note-lines {
@@ -103,9 +106,10 @@
     padding-top: 5mm;
     font-size: 7.5pt;
     font-style: italic;
-    color: #222;
+    color: var(--nyeri-green-dark);
     line-height: 1.6;
     text-align: center;
+    font-family: 'Cormorant Garamond', serif;
 }
 
 .cover-half {
@@ -114,29 +118,34 @@
     align-items: center;
     justify-content: flex-start;
     padding-top: 14mm;
+    border-left: 1px solid rgba(200, 151, 26, 0.4);
 }
 
 .arch-title {
+    font-family: 'Cormorant Garamond', serif;
     font-size: 13pt;
     font-weight: bold;
     text-align: center;
     letter-spacing: 0.04em;
     line-height: 1.4;
+    color: var(--nyeri-green-dark);
 }
 
 .arch-underline {
     width: 90%;
     height: 2px;
-    background: #222;
+    background: var(--nyeri-green-dark);
     margin: 2mm auto 2mm;
 }
 
 .kardi {
+    font-family: 'Cormorant Garamond', serif;
     font-size: 11pt;
     font-weight: bold;
     text-align: center;
     letter-spacing: 0.04em;
     margin-bottom: 6mm;
+    color: var(--nyeri-green);
 }
 
 .cross-svg {
@@ -147,16 +156,17 @@
 }
 
 .church-name {
+    font-family: 'Cormorant Garamond', serif;
     font-size: 11pt;
     font-weight: bold;
     text-align: center;
-    color: #7a5c00;
+    color: var(--nyeri-gold);
     line-height: 1.5;
     letter-spacing: 0.03em;
 }
 
 .cover-dot-line {
-    border-bottom: 1.5px dotted #555;
+    border-bottom: 1.5px dotted var(--nyeri-gray);
     width: 100%;
     margin: 6mm 0 3mm;
 }
@@ -167,7 +177,7 @@
     width: 100%;
     font-size: 8.5pt;
     font-weight: bold;
-    color: #222;
+    color: var(--nyeri-green-dark);
     justify-content: space-between;
 }
 
@@ -181,7 +191,7 @@
     display: flex;
     flex-direction: column;
     padding: 10mm 12mm 10mm 10mm;
-    border-left: 1px solid #aaaaaa;
+    border-left: 1px solid rgba(200, 151, 26, 0.4);
 }
 
 .field-row {
@@ -191,6 +201,7 @@
     font-size: 8.5pt;
     font-weight: bold;
     gap: 3mm;
+    color: var(--nyeri-black);
 }
 
 .field-row span {
@@ -200,11 +211,11 @@
 
 .field-dots {
     flex: 1;
-    border-bottom: 1.5px dotted #555;
+    border-bottom: 1.5px dotted var(--nyeri-gray);
     height: 4mm;
     font-weight: normal;
     font-size: 8pt;
-    color: #333;
+    color: var(--nyeri-green-dark);
     overflow: hidden;
     white-space: nowrap;
 }
@@ -215,6 +226,7 @@
     margin-bottom: 4.2mm;
     font-size: 8.5pt;
     font-weight: bold;
+    color: var(--nyeri-black);
 }
 
 .field-pair .part {
@@ -238,73 +250,80 @@
 }
 
 .section-title {
+    font-family: 'Cormorant Garamond', serif;
     font-size: 10.5pt;
     font-weight: bold;
     text-align: center;
     text-decoration: underline;
     margin: 5mm 0 4mm;
     letter-spacing: 0.05em;
+    color: var(--nyeri-green-dark);
 }
 
 .print-controls {
     text-align: center;
     margin: 10mm 0;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .print-button {
     width: auto;
-    background-color: #222222;
-    color: white;
+    background-color: var(--nyeri-green);
+    color: var(--nyeri-white);
     border: none;
-    padding: 10px 20px;
+    padding: 10px 24px;
     cursor: pointer;
     font-size: 14px;
-    font-weight: bold;
-    border-radius: 2px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: 10px;
+    transition: background 0.2s;
 }
 
 .print-button:hover {
-    background-color: #444444;
+    background-color: var(--nyeri-green-dark);
 }
 
 .loading {
     text-align: center;
     padding: 20px;
     font-size: 16px;
-    color: #4a002a;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--nyeri-green-dark);
 }
 
 .error {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .error p {
     text-align: center;
-    padding: 50px;
     font-size: 15px;
-    color: #d9534f;
-    background-color: #ffffff;
-    padding: 8px 15px;
-    border: solid 2px #6d5507;
-    border-radius: 4px;
+    color: var(--nyeri-maroon);
+    background-color: var(--nyeri-white);
+    padding: 8px 18px;
+    border: 2px solid var(--nyeri-gold);
+    border-radius: 8px;
 }
 
 .error button {
     margin-top: 10px;
-    padding: 8px 15px;
-    background: #6d5507;
-    color: white;
+    padding: 8px 18px;
+    background: var(--nyeri-green);
+    color: var(--nyeri-white);
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
 }
 
 .error button:hover {
-    background: #c2ae6d;
-    color: #4a002a;
+    background: var(--nyeri-green-dark);
 }
 
 @media print {
@@ -348,4 +367,4 @@
     .half {
         padding: 10mm;
     }
-}
+}   

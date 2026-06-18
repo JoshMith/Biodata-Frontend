@@ -12,8 +12,11 @@
             <button class="nav-item active" (click)="goToDashboard()">
                 <i class="ti ti-layout-dashboard"></i> Dashboard
             </button>
-            <button class="nav-item" (click)="navigate('/search')">
+            <button class="nav-item" *ngIf="!isMember" (click)="navigate('/search')">
                 <i class="ti ti-search"></i> Search Christians
+            </button>
+            <button class="nav-item" *ngIf="isMember" (click)="navigate('/search')"> 
+                <i class="ti ti-user"></i> My Profile
             </button>
             <button class="nav-item" *ngIf="isSuperuser" (click)="navigate('/personal-info')">
                 <i class="ti ti-user-plus"></i> Add Christian
@@ -29,7 +32,7 @@
                 <div class="user-avatar"><i class="ti ti-user"></i></div>
                 <div class="user-info">
                     <span class="u-name">{{ user?.firstName || user?.first_name }}</span>
-                    <span class="u-role">{{ user?.role }}</span>
+                    <span class="u-role">{{ user?.role | titlecase }}</span>
                 </div>
             </div>
             <button class="sidebar-logout" (click)="logout()">

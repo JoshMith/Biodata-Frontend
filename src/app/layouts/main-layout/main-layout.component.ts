@@ -15,6 +15,7 @@ export class MainLayoutComponent implements OnInit {
 
   user: any = null;
   isSuperuser = false;
+  isMember = false;
   currentYear = new Date().getFullYear();
   isDownloadingLogs = false;
 
@@ -35,6 +36,7 @@ export class MainLayoutComponent implements OnInit {
     this.user = JSON.parse(raw);
 
     this.isSuperuser = this.user?.role === 'superuser';
+    this.isMember = this.user?.role === 'member';
   }
 
 

@@ -1,86 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'DM Sans', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0;
-    /* background-image: url(images/sunset-sky.jpg); */
-    background-repeat: no-repeat;
-    background-position: center;
+    background: var(--nyeri-cream);
     min-height: 100vh;
 }
 
 .auth-container {
-    background-color:  rgba(255, 255, 255, 0.484);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    background-color: var(--nyeri-white);
+    padding: 36px 32px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(15, 61, 26, 0.13);
     text-align: center;
-    width: 350px;
+    width: 380px;
+    border: 1px solid rgba(27, 94, 43, 0.1);
 }
 
 .auth-container h2 {
-    color: #4A002A;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--nyeri-green-dark);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #C2AE6D;
-    border-radius: 5px;
-}
-
-    
-
-input, select {
+input,
+select {
     width: calc(100% - 22px);
     padding: 10px;
     margin: 5px 0;
-    border: 1px solid #ffb433;
-    border-radius: 5px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 0.93rem;
+    font-family: 'DM Sans', sans-serif;
     display: block;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: var(--nyeri-black);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--nyeri-green);
+    box-shadow: 0 0 0 3px rgba(27, 94, 43, 0.12);
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #4A002A;
-    color: white;
+    padding: 11px;
+    background-color: var(--nyeri-green);
+    color: var(--nyeri-white);
     border: none;
     cursor: pointer;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: 0.3s;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: background-color 0.2s;
+    margin-top: 8px;
 }
 
-button:hover {
-    background-color: #C2AE6D;
+button:hover:not(:disabled) {
+    background-color: var(--nyeri-green-dark);
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }
 
 a {
     margin-top: 10px;
     text-decoration: none;
-    color: #4A002A;
-    font-weight: bold;
+    color: var(--nyeri-green);
+    font-weight: 600;
 }
 
 a:hover {
-    color: #C2AE6D;
+    color: var(--nyeri-gold);
 }
 
-input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
-    border-left: 5px solid #a94442;
+label {
+    display: block;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--nyeri-gray);
+    margin: 8px 0 2px 2px;
 }
 
-input.ng-touched.ng-valid, select.ng-touched.ng-valid{
-    border-left: 5px solid green;
+input.ng-touched.ng-invalid,
+select.ng-touched.ng-invalid {
+    border-left: 4px solid #b91c1c;
+}
+
+input.ng-touched.ng-valid,
+select.ng-touched.ng-valid {
+    border-left: 4px solid var(--nyeri-green);
 }
 
 div form p {
-    color: black;
+    color: var(--nyeri-black);
 }
 
 div p {
-    color: red;
+    color: #b91c1c;
+    font-size: 0.83rem;
+    margin: 2px 0 0 2px;
+    text-align: left;
+}
+
+.login-link {
+    color: var(--nyeri-gray);
+    font-size: 0.9rem;
+    margin-top: 14px;
 }
