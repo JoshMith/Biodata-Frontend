@@ -16,7 +16,7 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
             if (allowedRoles.includes(user.role)) {
                 return true;
             }
-            // Redirect to their own dashboard rather than login
+            window.alert('Access denied: your role does not have permission to view this page.');
             router.navigate(['/dashboard']);
             return false;
         } catch {

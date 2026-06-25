@@ -9,7 +9,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-personal-info',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent],
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.css']
 })
@@ -53,8 +53,12 @@ export class PersonalInfoUpdateComponent implements OnInit {
   // Role-awareness
   loggedInUser: any = null;
   loggedInRole = '';
-  isEditor = false;
-  isSuperuser = false;
+  isSuperAdmin = false;
+  isSuperViewer = false;
+  isDeaneryViewer = false
+  isParishAdmin = false;
+  isParishViewer = false;
+  isSecretary = false;
   isMember = false;
   lockedParishName = '';
   christianName = '';
@@ -68,13 +72,18 @@ export class PersonalInfoUpdateComponent implements OnInit {
 
     this.loggedInUser = JSON.parse(raw);
     this.loggedInRole = this.loggedInUser?.role ?? '';
-    this.isEditor = this.loggedInRole === 'editor';
-    this.isSuperuser = this.loggedInRole === 'superuser';
+
+    this.isSuperAdmin = this.loggedInRole === 'superadmin';
+    this.isSuperViewer = this.loggedInRole === 'superviewer';
+    this.isDeaneryViewer = this.loggedInRole === 'deaneryviewer';
+    this.isParishAdmin = this.loggedInRole === 'parishadmin';
+    this.isParishViewer = this.loggedInRole === 'parishviewer';
+    this.isSecretary = this.loggedInRole === 'secretary';
     this.isMember = this.loggedInRole === 'member';
 
     this.loadInitialData();
 
-    if (this.isSuperuser) {
+    if (this.isSuperAdmin) {
       this.loadDeaneries();
       this.setupParishListener();
     }
@@ -108,16 +117,16 @@ export class PersonalInfoUpdateComponent implements OnInit {
 
   /**
    * After loading the Christian's data, apply role-based restrictions:
-   *  - Superuser: no restrictions (can change role, deanery, parish freely)
-   *  - Editor: parish/deanery locked to their own parish
+   *  - Superadmin: no restrictions (can change role, deanery, parish freely)
+   *  - Parishadmin/Secretary: parish/deanery locked to their own parish
    *  - Member: parish/deanery completely locked to the record's current parish; role also disabled
    */
   private applyRoleRestrictions(data: any): void {
-    if (!this.isSuperuser) {
+    if (!this.isSuperAdmin) {
       this.christianForm.get('role')?.disable();
     }
 
-    if (this.isSuperuser) {
+    if (this.isSuperAdmin) {
       return;
     }
 
@@ -149,7 +158,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     if (stored) {
       const parsed = JSON.parse(stored);
       // Never restore parish fields from session for restricted roles
-      if (!this.isSuperuser) {
+      if (!this.isSuperAdmin) {
         const { parish_id, deanery, role, ...rest } = parsed;
         this.christianForm.patchValue(rest);
       } else {

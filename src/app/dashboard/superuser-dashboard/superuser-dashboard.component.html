@@ -9,7 +9,7 @@
                 <h1>Archdiocese Overview</h1>
                 <p class="page-sub">Archdiocese of Nyeri — Diocese-wide statistics</p>
             </div>
-            <button class="btn-gold" *ngIf="isSuperuser" (click)="navigate('/personal-info')">
+            <button class="btn-gold" *ngIf="isSuperAdmin" (click)="navigate('/personal-info')">
                 <i class="ti ti-plus"></i> Add Christian
             </button>
         </div>

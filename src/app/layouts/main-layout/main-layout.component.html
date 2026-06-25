@@ -18,10 +18,10 @@
             <button class="nav-item" *ngIf="isMember" (click)="navigate('/search')"> 
                 <i class="ti ti-user"></i> My Profile
             </button>
-            <button class="nav-item" *ngIf="isSuperuser" (click)="navigate('/personal-info')">
+            <button class="nav-item" *ngIf="isSuperAdmin" (click)="navigate('/personal-info')">
                 <i class="ti ti-user-plus"></i> Add Christian
             </button>
-            <button class="nav-item" *ngIf="isSuperuser" (click)="downloadAuditLogs()" [disabled]="isDownloadingLogs">
+            <button class="nav-item" *ngIf="isSuperAdmin" (click)="downloadAuditLogs()" [disabled]="isDownloadingLogs">
                 <i class="ti" [class.ti-download]="!isDownloadingLogs" [class.ti-loader-2]="isDownloadingLogs"
                     [style.animation]="isDownloadingLogs ? 'spin 0.8s linear infinite' : 'none'"></i>
                 {{ isDownloadingLogs ? 'Downloading...' : 'Download Audit Log' }}

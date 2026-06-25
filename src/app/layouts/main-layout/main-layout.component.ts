@@ -14,7 +14,12 @@ import { ApiService } from '../../services/api.service';
 export class MainLayoutComponent implements OnInit {
 
   user: any = null;
-  isSuperuser = false;
+  isSuperAdmin = false;
+  isSuperViewer = false;
+  isDeaneryViewer = false;
+  isParishAdmin = false;
+  isParishViewer = false;
+  isSecretary = false;
   isMember = false;
   currentYear = new Date().getFullYear();
   isDownloadingLogs = false;
@@ -35,7 +40,12 @@ export class MainLayoutComponent implements OnInit {
 
     this.user = JSON.parse(raw);
 
-    this.isSuperuser = this.user?.role === 'superuser';
+    this.isSuperAdmin = this.user?.role === 'superadmin';
+    this.isSuperViewer = this.user?.role === 'superviewer';
+    this.isDeaneryViewer = this.user?.role === 'deaneryviewer';
+    this.isParishAdmin = this.user?.role === 'parishadmin';
+    this.isParishViewer = this.user?.role === 'parishviewer';
+    this.isSecretary = this.user?.role === 'secretary';
     this.isMember = this.user?.role === 'member';
   }
 
@@ -64,15 +74,19 @@ export class MainLayoutComponent implements OnInit {
     const role = this.user?.role?.toLowerCase();
 
     switch (role) {
-      case 'superuser':
-      case 'viewer':
+      case 'superadmin':
+      case 'superviewer':
         this.router.navigate(['/dashboard']);
         break;
-
-      case 'editor':
+      case 'parishadmin':
         this.router.navigate(['/dashboard/editor']);
         break;
-
+      case 'parishviewer':
+        this.router.navigate(['/dashboard/editor']);
+        break;
+      case 'secretary':
+        this.router.navigate(['/dashboard/editor']);
+        break;
       case 'member':
         this.router.navigate(['/dashboard/member']);
         break;

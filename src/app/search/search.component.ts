@@ -150,10 +150,10 @@ export class SearchComponent implements OnInit, OnDestroy {
                 this.sortChristians();
                 this.setBannerMessage(role);
                 // Still set UI permissions based on role
-                if (role === 'viewer') {
+                if (role === 'superviewer' || role === 'parishviewer' || role === 'deaneryviewer') {
                     this.canDeleteChristian = false;
                     this.canEditChristian = false;
-                } else if (role === 'editor' || role === 'member') {
+                } else if (role === 'parishadmin' || role === 'secretary' || role === 'member') {
                     this.canDeleteChristian = false;
                 }
             },
@@ -164,9 +164,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   private setBannerMessage(role: string): void {
     this.showBanner = true;
     const messages = {
-      superuser: 'You are logged in as SUPERUSER. You have full access to view and manage all Christians in the system.',
-      editor: 'You are logged in as EDITOR. You can view and manage Christians from your own parish only.',
-      viewer: 'You are logged in as VIEWER. You can only view Christians in the system.',
+      superadmin: 'You are logged in as SUPERADMIN. You have full access to view and manage all Christians in the system.',
+      parishadmin: 'You are logged in as PARISHADMIN. You can view and manage Christians from your own parish only.',
+      superviewer: 'You are logged in as SUPERVIEWER. You can view Christians in the system.',
+      deaneryviewer: 'You are logged in as DEANERYVIEWER. You can view Christians in the system.',
+      parishviewer: 'You are logged in as PARISHVIEWER. You can only view Christians in the system.',
+      secretary: 'You are logged in as SECRETARY. You can view and manage Christians from your own parish only.',
       member: 'You are logged in as MEMBER. You can only view and edit your own personal details.'
     };
 
@@ -257,12 +260,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Set edit permission — members can only edit their own record
     const session = this.getUserSession();
     const role = session?.role;
-    if (role === 'viewer') {
+    if (role === 'superviewer' || role === 'parishviewer' || role === 'deaneryviewer') {
         this.canEditChristian = false;
     } else if (role === 'member') {
         this.canEditChristian = christian.id === session?.id;
     } else {
-        this.canEditChristian = true; // superuser, editor
+        this.canEditChristian = true; // superadmin, parishadmin
     }
 
     this.loadParishName(christian.parish_id);

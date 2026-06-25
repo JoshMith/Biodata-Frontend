@@ -10,7 +10,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-confirmation',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })

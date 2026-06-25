@@ -10,7 +10,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-eucharist',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })

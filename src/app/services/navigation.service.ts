@@ -17,10 +17,12 @@ export class NavigationService {
     try {
       const role = JSON.parse(raw).role ?? '';
       switch (role) {
-        case 'superuser':
-        case 'viewer':
+        case 'superadmin':
+        case 'superviewer':
           return '/dashboard';
-        case 'editor':
+        case 'parishadmin':
+        case 'parishviewer':
+        case 'secretary':
           return '/dashboard/editor';
         case 'member':
           return '/dashboard/member';

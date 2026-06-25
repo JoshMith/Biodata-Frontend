@@ -68,7 +68,7 @@
                 <div class="church-info">
 
                     <!-- EDITOR: locked to their own parish, shown as read-only -->
-                    <div *ngIf="isEditor" class="form-row">
+                    <div *ngIf="isParishAdmin || isParishViewer || isSecretary" class="form-row">
                         <div class="form-group">
                             <label>Deanery</label>
                             <input type="text" [value]="userForm.get('deanery')?.value" disabled
@@ -84,8 +84,8 @@
                         </div>
                     </div>
 
-                    <!-- SUPERUSER / VIEWER: full free-choice dropdowns -->
-                    <div *ngIf="!isEditor" class="form-row">
+                    <!-- SUPERADMIN / VIEWER: full free-choice dropdowns -->
+                    <div *ngIf="isSuperAdmin" class="form-row">
                         <div class="form-group">
                             <label for="deanery">Deanery <span class="required-asterisk">*</span></label>
                             <select id="deanery" formControlName="deanery">

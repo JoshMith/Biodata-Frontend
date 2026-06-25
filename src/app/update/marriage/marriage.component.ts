@@ -10,7 +10,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-marriage',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent, ParishAutocompleteComponent, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './marriage.component.html',
   styleUrl: './marriage.component.css'
 })

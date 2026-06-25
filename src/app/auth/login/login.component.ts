@@ -80,11 +80,12 @@ export class LoginComponent {
 
       if (role === 'member') {
         this.router.navigate(['/dashboard/member']);
-      } else if (role === 'editor') {
+      } else if (role === 'parishadmin' || role === 'parishviewer' || role === 'secretary') {
         this.router.navigate(['/dashboard/editor']);
-      } else {
-        // superuser and viewer both go to the same overview dashboard
+      } else if (role === 'superadmin' || role === 'superviewer') {
         this.router.navigate(['/dashboard']);
+      } else {
+        this.router.navigate(['/login']);
       }
     }, 1500);
   }

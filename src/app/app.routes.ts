@@ -51,12 +51,12 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: SuperuserDashboardComponent,
-        canActivate: [roleGuard(['superuser', 'viewer'])]
+        canActivate: [roleGuard(['superadmin', 'superviewer'])]
       },
       {
         path: 'dashboard/editor',
         component: EditorDashboardComponent,
-        canActivate: [roleGuard(['editor'])]
+        canActivate: [roleGuard(['parishadmin', 'parishviewer', 'secretary'])]
       },
       {
         path: 'dashboard/member',
@@ -76,17 +76,17 @@ export const routes: Routes = [
       { path: 'sacrament-card', component: SacramentCardComponent },
       { path: 'marriage-card', component: MarriageCardComponent },
 
-      { path: 'personal-info', component: PersonalInfoComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
-      { path: 'baptism', component: BaptismComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
-      { path: 'eucharist', component: EucharistComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
-      { path: 'confirmation', component: ConfirmationComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
-      { path: 'marriage', component: MarriageComponent, canActivate: [roleGuard(['superuser', 'editor'])] },
+      { path: 'personal-info', component: PersonalInfoComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary'])] },
+      { path: 'baptism', component: BaptismComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary'])] },
+      { path: 'eucharist', component: EucharistComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary'])] },
+      { path: 'confirmation', component: ConfirmationComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary'])] },
+      { path: 'marriage', component: MarriageComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary'])] },
 
-      { path: 'edit-personal-info', component: PersonalInfoUpdateComponent },
-      { path: 'edit-baptism', component: BaptismUpdateComponent },
-      { path: 'edit-eucharist', component: EucharistUpdateComponent },
-      { path: 'edit-confirmation', component: ConfirmationUpdateComponent },
-      { path: 'edit-marriage', component: MarriageUpdateComponent }
+      { path: 'edit-personal-info', component: PersonalInfoUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
+      { path: 'edit-baptism', component: BaptismUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
+      { path: 'edit-eucharist', component: EucharistUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
+      { path: 'edit-confirmation', component: ConfirmationUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
+      { path: 'edit-marriage', component: MarriageUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] }
     ]
   },
 

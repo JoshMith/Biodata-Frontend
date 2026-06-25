@@ -15,7 +15,7 @@ import { catchError } from 'rxjs/operators';
 export class SuperuserDashboardComponent implements OnInit {
   user: any = null;
   isLoading = true;
-  isSuperuser = false;
+  isSuperAdmin = false;
 
   stats = { christians: 0, baptised: 0, eucharist: 0, confirmed: 0, married: 0 };
 
@@ -28,7 +28,7 @@ export class SuperuserDashboardComponent implements OnInit {
     const raw = localStorage.getItem('userLoggedIn');
     if (!raw) { this.router.navigate(['/login']); return; }
     this.user = JSON.parse(raw);
-    this.isSuperuser = this.user?.role === 'superuser';
+    this.isSuperAdmin = this.user?.role === 'superadmin';
 
     forkJoin({
       users: this.apiService.getChristians().pipe(catchError(() => of([]))),

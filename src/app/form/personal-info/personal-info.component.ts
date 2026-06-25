@@ -28,8 +28,13 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
   // Role-awareness
   loggedInUser: any = null;
   loggedInRole = '';
-  isEditor = false;
-  isSuperuser = false;
+  isSuperAdmin = false;
+  isSuperViewer = false;
+  isDeaneryViewer = false;
+  isParishAdmin = false;
+  isParishViewer = false;
+  isSecretary = false;
+  isMember = false;
   editorParishName = '';
 
   private fb = inject(FormBuilder);
@@ -72,10 +77,15 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loggedInUser = JSON.parse(raw);
     this.loggedInRole = this.loggedInUser?.role ?? '';
-    this.isEditor = this.loggedInRole === 'editor';
-    this.isSuperuser = this.loggedInRole === 'superuser';
+    this.isSuperAdmin = this.loggedInRole === 'superadmin';
+    this.isSuperViewer = this.loggedInRole === 'superviewer';
+    this.isDeaneryViewer = this.loggedInRole === 'deaneryviewer';
+    this.isParishAdmin = this.loggedInRole === 'parishadmin';
+    this.isParishViewer = this.loggedInRole === 'parishviewer';
+    this.isSecretary = this.loggedInRole === 'secretary';
+    this.isMember = this.loggedInRole === 'member';
 
-    if (this.isEditor) {
+    if (this.isParishAdmin || this.isSecretary || this.isMember) {
       this.lockEditorParish();
     } else {
       this.loadDeaneries();
@@ -85,7 +95,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     const storedFormData = sessionStorage.getItem('userFormData');
     if (storedFormData) {
       const formData = JSON.parse(storedFormData);
-      if (this.isEditor) {
+      if (this.isParishAdmin || this.isSecretary || this.isMember) {
         const { parish_id, deanery, ...rest } = formData;
         this.userForm.patchValue(rest);
       } else {

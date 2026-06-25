@@ -10,7 +10,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-baptism',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, ProgressBarComponent, ParishAutocompleteComponent],
   templateUrl: './baptism.component.html',
   styleUrl: './baptism.component.css'
 })
