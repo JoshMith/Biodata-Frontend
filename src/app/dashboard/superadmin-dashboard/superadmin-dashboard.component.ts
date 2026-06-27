@@ -6,13 +6,13 @@ import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-superuser-dashboard',
+  selector: 'app-superadmin-dashboard',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './superuser-dashboard.component.html',
-  styleUrl: './superuser-dashboard.component.css'
+  templateUrl: './superadmin-dashboard.component.html',
+  styleUrl: './superadmin-dashboard.component.css'
 })
-export class SuperuserDashboardComponent implements OnInit {
+export class SuperadminDashboardComponent implements OnInit {
   user: any = null;
   isLoading = true;
   isSuperAdmin = false;

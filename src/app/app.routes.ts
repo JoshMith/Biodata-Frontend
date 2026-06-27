@@ -21,7 +21,7 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
-import { SuperuserDashboardComponent } from './dashboard/superuser-dashboard/superuser-dashboard.component';
+import { SuperadminDashboardComponent } from './dashboard/superadmin-dashboard/superadmin-dashboard.component';
 import { MemberDashboardComponent } from './dashboard/member-dashboard/member-dashboard.component';
 import { EditorDashboardComponent } from './dashboard/editor-dashboard/editor-dashboard.component';
 
@@ -50,7 +50,7 @@ export const routes: Routes = [
       // DASHBOARDS (ROLE-BASED)
       {
         path: 'dashboard',
-        component: SuperuserDashboardComponent,
+        component: SuperadminDashboardComponent,
         canActivate: [roleGuard(['superadmin', 'superviewer'])]
       },
       {
