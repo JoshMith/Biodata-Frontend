@@ -65,6 +65,7 @@ export class MainLayoutComponent implements OnInit {
       error: () => { this.isDownloadingLogs = false; }
     });
   }
+  
 
   navigate(route: string): void {
     this.router.navigate([route]);
