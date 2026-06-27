@@ -40,7 +40,7 @@ export class DeaneryDashboardComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    console.log('RAW USER FROM LOCALSTORAGE:', raw);
+
 
 
     this.user = JSON.parse(raw);

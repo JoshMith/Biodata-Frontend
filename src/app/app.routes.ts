@@ -23,7 +23,7 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { SuperuserDashboardComponent } from './dashboard/superuser-dashboard/superuser-dashboard.component';
 import { MemberDashboardComponent } from './dashboard/member-dashboard/member-dashboard.component';
-import { EditorDashboardComponent } from './dashboard/editor-dashboard/editor-dashboard.component';
+import { ParishDashboardComponent } from './dashboard/parish-dashboard/parish-dashboard.component';
 import { DeaneryDashboardComponent } from './dashboard/deanery-dashboard/deanery-dashboard.component';
 
 export const routes: Routes = [
@@ -56,7 +56,7 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard/editor',
-        component: EditorDashboardComponent,
+        component: ParishDashboardComponent,
         canActivate: [roleGuard(['parishadmin', 'parishviewer', 'secretary'])]
       },
       {

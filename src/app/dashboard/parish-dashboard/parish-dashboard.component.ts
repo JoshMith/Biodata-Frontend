@@ -6,13 +6,13 @@ import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-editor-dashboard',
+  selector: 'app-parish-dashboard',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './editor-dashboard.component.html',
-  styleUrl: './editor-dashboard.component.css'
+  templateUrl: './parish-dashboard.component.html',
+  styleUrl: './parish-dashboard.component.css'
 })
-export class EditorDashboardComponent implements OnInit {
+export class ParishDashboardComponent implements OnInit {
   user: any = null;
   parishName = '';
   deaneryName = '';
