@@ -1,0 +1,91 @@
+<div class="main-content">
+
+  <div class="page-header">
+    <div>
+      <h1>Deanery Overview</h1>
+      <p class="page-sub">{{ deaneryName }} — Deanery statistics</p>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading">
+
+    <!-- Top stats -->
+    <div class="stats-grid">
+
+      <div class="stat-card green">
+        <div class="stat-icon"><i class="ti ti-users"></i></div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.christians }}</span>
+          <span class="stat-label">Total Christians</span>
+        </div>
+      </div>
+
+      <div class="stat-card gold">
+        <div class="stat-icon"><i class="ti ti-droplet"></i></div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.baptised }}</span>
+          <span class="stat-label">Baptised</span>
+        </div>
+      </div>
+
+      <div class="stat-card navy">
+        <div class="stat-icon"><i class="ti ti-bread"></i></div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.eucharist }}</span>
+          <span class="stat-label">First Eucharist</span>
+        </div>
+      </div>
+
+      <div class="stat-card maroon">
+        <div class="stat-icon"><i class="ti ti-flame"></i></div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.confirmed }}</span>
+          <span class="stat-label">Confirmed</span>
+        </div>
+      </div>
+
+      <div class="stat-card dark">
+        <div class="stat-icon"><i class="ti ti-heart"></i></div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.married }}</span>
+          <span class="stat-label">Married</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Parish breakdown ONLY -->
+    <div class="breakdown-grid">
+
+      <div class="breakdown-card full">
+        <h2>Parishes in {{ deaneryName }}</h2>
+
+        <div class="bar-list">
+
+          <div class="bar-row" *ngFor="let p of parishes">
+            <span class="bar-label">{{ p.name }}</span>
+
+            <div class="bar-track">
+              <div class="bar-fill green"
+                   [style.width.%]="(p.count / maxParishCount) * 100">
+              </div>
+            </div>
+
+            <span class="bar-count">{{ p.count }}</span>
+          </div>
+
+          <div class="empty-state" *ngIf="parishes.length === 0">
+            No parish data available
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+</div>

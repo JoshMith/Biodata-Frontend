@@ -84,7 +84,10 @@ export class LoginComponent {
         this.router.navigate(['/dashboard/editor']);
       } else if (role === 'superadmin' || role === 'superviewer') {
         this.router.navigate(['/dashboard']);
-      } else {
+      } else if(role ==="deaneryviewer"){
+        this.router.navigate(['/dashboard/deanery'])
+      }
+      else {
         this.router.navigate(['/login']);
       }
     }, 1500);

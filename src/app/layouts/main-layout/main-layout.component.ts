@@ -78,6 +78,9 @@ export class MainLayoutComponent implements OnInit {
       case 'superviewer':
         this.router.navigate(['/dashboard']);
         break;
+      case 'deaneryviewer':
+        this.router.navigate(['/dashboard/deanery']);
+        break;
       case 'parishadmin':
         this.router.navigate(['/dashboard/editor']);
         break;

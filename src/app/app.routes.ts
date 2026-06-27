@@ -24,6 +24,7 @@ import { roleGuard } from './guards/role.guard';
 import { SuperuserDashboardComponent } from './dashboard/superuser-dashboard/superuser-dashboard.component';
 import { MemberDashboardComponent } from './dashboard/member-dashboard/member-dashboard.component';
 import { EditorDashboardComponent } from './dashboard/editor-dashboard/editor-dashboard.component';
+import { DeaneryDashboardComponent } from './dashboard/deanery-dashboard/deanery-dashboard.component';
 
 export const routes: Routes = [
   // PUBLIC ROUTES
@@ -57,6 +58,11 @@ export const routes: Routes = [
         path: 'dashboard/editor',
         component: EditorDashboardComponent,
         canActivate: [roleGuard(['parishadmin', 'parishviewer', 'secretary'])]
+      },
+      {
+        path:'dashboard/deanery',
+        component:DeaneryDashboardComponent,
+        canActivate:[roleGuard(['deaneryviewer'])]
       },
       {
         path: 'dashboard/member',
