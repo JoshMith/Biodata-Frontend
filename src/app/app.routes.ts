@@ -55,7 +55,7 @@ export const routes: Routes = [
         canActivate: [roleGuard(['superadmin', 'superviewer'])]
       },
       {
-        path: 'dashboard/editor',
+        path: 'dashboard/parish',
         component: ParishDashboardComponent,
         canActivate: [roleGuard(['parishadmin', 'parishviewer', 'secretary'])]
       },

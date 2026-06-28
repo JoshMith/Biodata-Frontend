@@ -81,7 +81,7 @@ export class LoginComponent {
       if (role === 'member') {
         this.router.navigate(['/dashboard/member']);
       } else if (role === 'parishadmin' || role === 'parishviewer' || role === 'secretary') {
-        this.router.navigate(['/dashboard/editor']);
+        this.router.navigate(['/dashboard/parish']);
       } else if (role === 'superadmin' || role === 'superviewer') {
         this.router.navigate(['/dashboard']);
       } else if(role ==="deaneryviewer"){

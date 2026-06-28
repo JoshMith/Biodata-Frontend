@@ -83,13 +83,13 @@ export class MainLayoutComponent implements OnInit {
         this.router.navigate(['/dashboard/deanery']);
         break;
       case 'parishadmin':
-        this.router.navigate(['/dashboard/editor']);
+        this.router.navigate(['/dashboard/parish']);
         break;
       case 'parishviewer':
-        this.router.navigate(['/dashboard/editor']);
+        this.router.navigate(['/dashboard/parish']);
         break;
       case 'secretary':
-        this.router.navigate(['/dashboard/editor']);
+        this.router.navigate(['/dashboard/parish']);
         break;
       case 'member':
         this.router.navigate(['/dashboard/member']);

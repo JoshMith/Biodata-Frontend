@@ -20,10 +20,12 @@ export class NavigationService {
         case 'superadmin':
         case 'superviewer':
           return '/dashboard';
+        case 'deaneryviewer':
+          return '/dashboard/deanery';
         case 'parishadmin':
         case 'parishviewer':
         case 'secretary':
-          return '/dashboard/editor';
+          return '/dashboard/parish';
         case 'member':
           return '/dashboard/member';
         default:
