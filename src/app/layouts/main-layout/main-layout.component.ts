@@ -50,23 +50,6 @@ export class MainLayoutComponent implements OnInit {
   }
 
 
-  downloadAuditLogs(): void {
-    this.isDownloadingLogs = true;
-    this.apiService.downloadAuditLogs().subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `audit_log_${new Date().toISOString().slice(0, 10)}.csv`;
-        link.click();
-        window.URL.revokeObjectURL(url);
-        this.isDownloadingLogs = false;
-      },
-      error: () => { this.isDownloadingLogs = false; }
-    });
-  }
-  
-
   navigate(route: string): void {
     this.router.navigate([route]);
 

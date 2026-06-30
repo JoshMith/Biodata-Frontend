@@ -21,10 +21,8 @@
             <button class="nav-item" *ngIf="isSuperAdmin" (click)="navigate('/personal-info')">
                 <i class="ti ti-user-plus"></i> Add Christian
             </button>
-            <button class="nav-item" *ngIf="isSuperAdmin" (click)="downloadAuditLogs()" [disabled]="isDownloadingLogs">
-                <i class="ti" [class.ti-download]="!isDownloadingLogs" [class.ti-loader-2]="isDownloadingLogs"
-                    [style.animation]="isDownloadingLogs ? 'spin 0.8s linear infinite' : 'none'"></i>
-                {{ isDownloadingLogs ? 'Downloading...' : 'Download Audit Log' }}
+            <button class="nav-item" *ngIf="isSuperAdmin" (click)="navigate('/audit-logs')">
+                <i class="ti ti-file-text"></i> View Audit Logs
             </button>
         </nav>
         <div class="sidebar-footer">

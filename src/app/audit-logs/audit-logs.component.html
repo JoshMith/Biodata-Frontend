@@ -1,1 +1,152 @@
-<p>audit-logs works!</p>
+<!-- src/app/components/audit-logs/audit-logs.component.html -->
+
+<div class="audit-page">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h1>Audit Logs</h1>
+      <p class="page-sub">
+        {{ totalItems() | number }} record{{ totalItems() === 1 ? '' : 's' }} found
+      </p>
+    </div>
+    <button class="btn-gold" (click)="exportCsv()">
+      <i class="ti ti-download"></i> Export CSV
+    </button>
+  </div>
+
+  <!-- ── Filters ──────────────────────────────────────────────────────────── -->
+  <div class="audit-filters" [formGroup]="filterForm">
+    <h2>
+      <i class="ti ti-filter"></i> Filters
+    </h2>
+
+    <div class="filter-grid">
+
+      <div class="filter-field">
+        <label>Entity</label>
+        <select formControlName="entity">
+          <option value="">All entities</option>
+          @for (e of entityOptions; track e) {
+            <option [value]="e">{{ e }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label>Action</label>
+        <select formControlName="action">
+          <option value="">All actions</option>
+          @for (a of actionOptions; track a) {
+            <option [value]="a">{{ a }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label>Actor email</label>
+        <input type="email" formControlName="actorEmail" placeholder="Search email…" />
+      </div>
+
+      <div class="filter-field">
+        <label>From</label>
+        <input type="date" formControlName="from" />
+      </div>
+
+      <div class="filter-field">
+        <label>To</label>
+        <input type="date" formControlName="to" />
+      </div>
+
+    </div>
+
+    <div class="filter-actions">
+      <button class="btn-apply" (click)="applyFilters()">Apply</button>
+      <button class="btn-reset" (click)="resetFilters()">Reset</button>
+    </div>
+  </div>
+
+  <!-- ── Loading ──────────────────────────────────────────────────────────── -->
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="spinner"></span>
+    </div>
+  }
+
+  <!-- ── Error ────────────────────────────────────────────────────────────── -->
+  @if (error() && !loading()) {
+    <div class="error-state">{{ error() }}</div>
+  }
+
+  <!-- ── Table ────────────────────────────────────────────────────────────── -->
+  @if (!loading() && !error()) {
+    <div class="audit-table-wrapper">
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Actor</th>
+            <th>Role</th>
+            <th>Action</th>
+            <th>Entity</th>
+            <th>Entity ID</th>
+            <th>Detail</th>
+            <th>IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (log of logs(); track log.id) {
+            <tr>
+              <td class="cell--timestamp">
+                {{ log.created_at | date:'dd MMM yyyy, HH:mm' }}
+              </td>
+              <td class="cell--email">{{ log.actor_email }}</td>
+              <td><span class="role-tag">{{ log.actor_role }}</span></td>
+              <td>
+                <span class="badge" [ngClass]="actionClass(log.action)">
+                  {{ log.action }}
+                </span>
+              </td>
+              <td>{{ log.entity }}</td>
+              <td class="cell--mono">{{ log.entity_id ?? '—' }}</td>
+              <td class="cell--detail" [title]="log.detail ?? ''">
+                {{ parseDetail(log.detail) }}
+              </td>
+              <td class="cell--mono">{{ log.ip_address ?? '—' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="cell--empty">No audit logs found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── Pagination ──────────────────────────────────────────────────────── -->
+    @if (totalPages() > 1) {
+      <div class="audit-pagination">
+        <button class="page-btn"
+                [disabled]="currentPage() === 1"
+                (click)="goToPage(currentPage() - 1)">
+          <i class="ti ti-chevron-left"></i>
+        </button>
+
+        @for (p of visiblePages(); track p) {
+          <button class="page-btn"
+                  [class.page-btn--active]="p === currentPage()"
+                  (click)="goToPage(p)">
+            {{ p }}
+          </button>
+        }
+
+        <button class="page-btn"
+                [disabled]="currentPage() === totalPages()"
+                (click)="goToPage(currentPage() + 1)">
+          <i class="ti ti-chevron-right"></i>
+        </button>
+      </div>
+    }
+  }
+
+</div>

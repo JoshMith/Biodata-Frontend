@@ -25,6 +25,7 @@ import { SuperadminDashboardComponent } from './dashboard/superadmin-dashboard/s
 import { MemberDashboardComponent } from './dashboard/member-dashboard/member-dashboard.component';
 import { ParishDashboardComponent } from './dashboard/parish-dashboard/parish-dashboard.component';
 import { DeaneryDashboardComponent } from './dashboard/deanery-dashboard/deanery-dashboard.component';
+import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 
 export const routes: Routes = [
   // PUBLIC ROUTES
@@ -92,7 +93,14 @@ export const routes: Routes = [
       { path: 'edit-baptism', component: BaptismUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
       { path: 'edit-eucharist', component: EucharistUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
       { path: 'edit-confirmation', component: ConfirmationUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
-      { path: 'edit-marriage', component: MarriageUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] }
+      { path: 'edit-marriage', component: MarriageUpdateComponent, canActivate: [roleGuard(['superadmin', 'parishadmin', 'secretary', 'member'])] },
+
+      // AUDIT LOGS — superadmin and superviewer only
+      {
+        path: 'audit-logs',
+        component: AuditLogsComponent,
+        canActivate: [roleGuard(['superadmin', 'superviewer'])]
+      },
     ]
   },
 
